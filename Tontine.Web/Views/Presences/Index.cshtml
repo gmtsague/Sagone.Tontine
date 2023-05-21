@@ -1,0 +1,101 @@
+﻿@model IEnumerable<Tontine.Entities.Models.Presence>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Dateop)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Isabsent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Globalverse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Soldedebut)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Soldefin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cumuldetteapres)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Codeop)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Numbordero)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdcompteNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdinscritNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdmodeNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dateop)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Isabsent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Globalverse)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Soldedebut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Soldefin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cumuldetteapres)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Codeop)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Numbordero)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id.Idannee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdcompteNavigation.Idcompte)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdinscritNavigation.Idinscrit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdmodeNavigation.Idmode)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Idpresence">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Idpresence">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Idpresence">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,30 @@
+﻿@model Meeting.Web.Dto.ModepaieDto
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@*<h1>Details</h1>*@
+
+<div>
+    @*<h4>CoreModepaie</h4>
+    <hr />*@
+    <dl class="row">
+         <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Libelle)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.IsCash)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.IsCash)
+        </dd>
+    </dl>
+</div>
+<div class="visually-hidden">
+    <a asp-action="Edit" asp-route-id="@Model?.ModepaieId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

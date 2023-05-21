@@ -1,0 +1,95 @@
+﻿@model IEnumerable<Meeting.Web.Dto.PreferenceDto>
+@*@model IEnumerable<Meeting.Web.Dto.Preference>*@
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h5 class="mb-4">@ViewBag.TitleObj.ListTitle</h5>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead class="table-primary">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TauxInteretMensuel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TauxInteretPenalite)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TauxPenaliteCotisation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnableAutoGenPresence)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnableSigningOutcome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnableMaxDelayPenalites)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnableAutoDispatchIncome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnableFixedAmountFees)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnableSecoursInsurance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnableFixedFeesByAnten)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SettingId)
+            </th>
+            <th></th>
+        </tr>
+    </thead class="table-primary">
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TauxInteretMensuel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TauxInteretPenalite)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TauxPenaliteCotisation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnableAutoGenPresence)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnableSigningOutcome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnableMaxDelayPenalites)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnableAutoDispatchIncome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnableFixedAmountFees)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnableSecoursInsurance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnableFixedFeesByAnten)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SettingId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SettingId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.SettingId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.SettingId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

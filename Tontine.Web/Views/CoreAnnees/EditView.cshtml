@@ -1,0 +1,58 @@
+﻿@model Tontine.Entities.Models.CoreAnnee
+
+<h4>CoreAnnee</h4>
+<hr />
+<div class="row justify-content-center">
+    <div @*class="col-md-4"*@ >
+        <form asp-action="Edit" method="post" asp-route-id="@Model.Idannee">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Idannee" />
+            <div class="form-group">
+                <label asp-for="Idbureau" class="control-label"></label>
+                <select asp-for="Idbureau" class="form-control" asp-items="ViewBag.Idbureau"></select>
+                <span asp-validation-for="Idbureau" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                    <label asp-for="Libelle" class="control-label"></label>
+                    <input asp-for="Libelle" class="form-control" required />
+                    <span asp-validation-for="Libelle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Datedebut" class="control-label"></label>
+                <input asp-for="Datedebut" class="form-control" type="datetime" required />
+                <span asp-validation-for="Datedebut" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Datefin" class="control-label"></label>
+                <input asp-for="Datefin" class="form-control" type="datetime" required />
+                <span asp-validation-for="Datefin" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Iscurrent" /> @Html.DisplayNameFor(model => model.Iscurrent)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Isclosed" /> @Html.DisplayNameFor(model => model.Isclosed)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nbdivision" class="control-label"></label>
+                <input asp-for="Nbdivision" class="form-control" min="1"  required />
+                <span asp-validation-for="Nbdivision" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

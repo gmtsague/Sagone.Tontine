@@ -1,0 +1,49 @@
+﻿@model Meeting.Web.Dto.ConfigvisaDto
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@*<h1>Details</h1>*@
+
+<div>
+    @*<h4>MeetConfigVisa</h4>
+    <hr />*@
+    <dl class="row">
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Annee)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Annee.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Poste)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Poste.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Typerub)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Typerub.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Numordre)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Numordre)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.SignByOrdre)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.SignByOrdre)
+        </dd>
+
+    </dl>
+</div>
+<div class="visually-hidden">
+    <a asp-action="Edit" asp-route-id="@Model?.ConfigvisaId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

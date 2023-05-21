@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Tontine.Entities.Models.CoreBankaccount>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Numcompte)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Isactive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Solde)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdbankNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdetabNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdpersonNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Numcompte)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Isactive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Solde)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdbankNavigation.Idbank)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdetabNavigation.Idetab)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdpersonNavigation.Idperson)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Idcompte">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Idcompte">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Idcompte">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

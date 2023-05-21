@@ -1,0 +1,81 @@
+﻿@model Meeting.Web.Dto.SeanceDto
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@*<h1>Create</h1>*@
+
+@*<h4>MeetSeance</h4>
+<hr />*@
+<div class="row justify-content-center">
+    <div class="card-body">
+        <form asp-formhelper="true" asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group  p-2 visually-hidden">
+                <label asp-for="AnneeId" class="control-label"></label>
+                <input type="hidden" asp-for="AnneeId" class="form-control" />
+                @*<select asp-for="AnneeId" class ="form-control form-select" asp-items="ViewBag.AnneeId"><option value=""> Choose an item </option></select>*@
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="DivisionId" class="control-label"></label>
+                <select asp-for="DivisionId" class ="form-control form-select" asp-items="ViewBag.DivisionId"><option value=""> Choose an item </option></select>
+            </div>
+            <div class="form-group  p-2 visually-hidden">
+                <label asp-for="EtabId" class="control-label"></label>
+                <input type="hidden" asp-for="EtabId" class="form-control" />
+
+                @*<select asp-for="EtabId" class ="form-control form-select" asp-items="ViewBag.EtabId"><option value=""> Choose an item </option></select>*@
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="AntenneId" class="control-label"></label>
+                <select asp-for="AntenneId" class ="form-control form-select" asp-items="ViewBag.AntenneId"><option value=""> Choose an item </option></select>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="Opendate" class="control-label"></label>
+                <input asp-for="Opendate" class="form-control" readonly />
+                <span asp-validation-for="Opendate" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="Closedate" class="control-label"></label>
+                <input asp-for="Closedate" class="form-control" readonly/>
+                <span asp-validation-for="Closedate" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="TotalEntrees" class="control-label"></label>
+                <input asp-for="TotalEntrees" class="form-control" readonly />
+                <span asp-validation-for="TotalEntrees" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="TotalSorties" class="control-label"></label>
+                <input asp-for="TotalSorties" class="form-control" readonly />
+                <span asp-validation-for="TotalSorties" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="Depensecollation" class="control-label"></label>
+                <input asp-for="Depensecollation" class="form-control" readonly />
+                <span asp-validation-for="Depensecollation" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2 visually-hidden">
+                <label asp-for="Compterendu" class="control-label"></label>
+                <textarea asp-for="Compterendu" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Compterendu" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2 visually-hidden">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2 visually-hidden">
+                <div>
+                    <a asp-action="Index">Back to List</a>
+                </div>                
+                <input id="regularSubmitBtn" type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

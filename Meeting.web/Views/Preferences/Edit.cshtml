@@ -1,0 +1,80 @@
+﻿@model Meeting.Web.Dto.PreferenceDto
+@*@model Meeting.Web.Dto.Preference*@
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@*<h1>Edit</h1>*@
+
+<h4>MeetPreference</h4>
+<hr />
+<div class="row justify-content-center">
+    <div class="card-body">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="SettingId" />
+            <div class="form-group  p-2">
+                <label asp-for="TauxInteretMensuel" class="control-label"></label>
+                <input asp-for="TauxInteretMensuel" class="form-control" />
+                <span asp-validation-for="TauxInteretMensuel" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="TauxInteretPenalite" class="control-label"></label>
+                <input asp-for="TauxInteretPenalite" class="form-control" />
+                <span asp-validation-for="TauxInteretPenalite" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="TauxPenaliteCotisation" class="control-label"></label>
+                <input asp-for="TauxPenaliteCotisation" class="form-control" />
+                <span asp-validation-for="TauxPenaliteCotisation" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="EnableAutoGenPresence" class="control-label"></label>
+                <input asp-for="EnableAutoGenPresence" class="form-control" />
+                <span asp-validation-for="EnableAutoGenPresence" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check m-2">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="EnableSigningOutcome" /> @Html.DisplayNameFor(model => model.EnableSigningOutcome)
+                </label>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="EnableMaxDelayPenalites" class="control-label"></label>
+                <input asp-for="EnableMaxDelayPenalites" class="form-control" />
+                <span asp-validation-for="EnableMaxDelayPenalites" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="EnableAutoDispatchIncome" class="control-label"></label>
+                <input asp-for="EnableAutoDispatchIncome" class="form-control" />
+                <span asp-validation-for="EnableAutoDispatchIncome" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check m-2">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="EnableFixedAmountFees" /> @Html.DisplayNameFor(model => model.EnableFixedAmountFees)
+                </label>
+            </div>
+            <div class="form-group form-check m-2">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="EnableSecoursInsurance" /> @Html.DisplayNameFor(model => model.EnableSecoursInsurance)
+                </label>
+            </div>
+            <div class="form-group form-check m-2">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="EnableFixedFeesByAnten" /> @Html.DisplayNameFor(model => model.EnableFixedFeesByAnten)
+                </label>
+            </div>
+            <div class="form-group  p-2">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Meeting.Web.Dto.InscriptionDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h5 class="mb-4">@ViewBag.TitleObj.ListTitle</h5>
+
+<div class="d-flex justify-content-between gap-2 m-2">
+    <a asp-action="Create" onclick="return DisplayForm('@ViewBag.TitleObj.CreateTitle', null, event);"
+       data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal" class="btn btn-sm btn-secondary">Create New</a>
+    
+       <div class="d-sm-inline-block d-sm-grid">
+        <form asp-formhelper="true" asp-action="InscriptionsByAntenne" asp-controller="Inscriptions" method="GET" asp-antiforgery="true">
+
+            <label for="AntenneFilter" class="control-label" title="Antenne Filter">
+                <select for="AntenneFilter" id="AntenneFilterInsc" name="antenneId" class="form-control form-select form-select-sm" asp-items="ViewBag.AntennesData" onchange="/*$('#btnAntenneSubmit').click();*/">
+                    <option value="0"> All regions </option>
+                </select>
+            </label>
+            <input type="submit" id="btnAntenneSubmit" hidden value="submit" />
+        </form>
+    </div>
+    
+    <a asp-action="Index"><i class="fas fa-rotate-right fa-lg" title="Refresh"></i>Refresh</a>
+</div>
+
+<div id="InscriptionContainer">
+    <partial name="_PartialGridViewInscriptions" model="@Model" />
+</div>
+<partial name="_SharedModalForms" />
+@section Scripts{
+    <script>
+        $(function () {
+            $("#AntenneFilterInsc").change(function () {
+                $.ajax({
+                    type: "Get",
+                    url: "/Inscriptions/InscriptionsByAntenne?id=" + $(this).val(),  //remember change the controller to your owns.
+                    success: function (data) {
+                        $("#InscriptionContainer").html("");
+                        $("#InscriptionContainer").html(data);
+                    },
+                    error: function (response) {
+                        console.log(response.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+}

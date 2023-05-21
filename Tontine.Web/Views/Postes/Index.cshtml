@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Tontine.Entities.Models.Poste>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create" onclick="DisplayForm(null, event); return false;">Create New</a>
+</p>
+<div class="table-responsive table-responsive-sm table-responsive-md" style00="overflow-x:auto;">
+    <table id="postesDatatable" class="table table-hover table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Libelle)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Ispresident)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Istresorier)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Issg)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Issga)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Iscc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ismembre)
+            </th>*@
+            <th class="text-center">
+                <a asp-action="Index"><i class="fas fa-rotate-right fa-lg" title="Refresh"></i></a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Idposte" onclick="DisplayForm(null, event); return false;">
+                    @Html.DisplayFor(modelItem => item.Libelle)
+                </a>
+            </td>
+        @*   <td>
+                @Html.DisplayFor(modelItem => item.Ispresident)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Istresorier)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Issg)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Issga)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Iscc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ismembre)
+            </td>*@
+            <td>
+
+                <a asp-action="Details" asp-route-id="@item.Idposte" onclick="DisplayForm(null, event); return false;">
+                            <i class="far fa-eye fa-lg" title="Details"></i>
+                </a> |
+                <a asp-action="Delete" asp-route-id="@item.Idposte" onclick="DisplayForm(null, event); return false;">
+                            <i class="far fa-trash-can fa-lg" title="Delete"></i>
+                </a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+<partial name="_SharedModalForms" />

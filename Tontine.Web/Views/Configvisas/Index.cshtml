@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Tontine.Entities.Models.Configvisa>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create" onclick="DisplayForm(null, event); return false;">Create New</a>
+</p>
+<div class="table-responsive table-responsive-sm table-responsive-md" style00="overflow-x:auto;">
+    <table id="annualEngagementsDatatable" class="table table-hover table-striped ">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Numordre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdanneeNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdposteNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdtypeNavigation)
+            </th>
+                <th class="text-center">
+                    <a asp-action="Index"><i class="fas fa-rotate-right fa-lg" title="Refresh"></i></a>
+                </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Numordre)
+            </td>
+            <td>
+                        <a asp-action="Edit" asp-route-id="@item.Idconfigvisa" onclick="DisplayForm(null, event); return false;">
+                            @Html.DisplayFor(modelItem => item.IdanneeNavigation.Libelle) 
+                        </a>
+            </td>
+            <td>
+                        <a asp-action="Edit" asp-route-id="@item.Idconfigvisa" onclick="DisplayForm(null, event); return false;"> 
+                            @Html.DisplayFor(modelItem => item.IdposteNavigation.Libelle)
+                        </a>
+            </td>
+            <td>
+                        <a asp-action="Edit" asp-route-id="@item.Idconfigvisa" onclick="DisplayForm(null, event); return false;"> 
+                            @Html.DisplayFor(modelItem => item.IdtypeNavigation.Libelle)
+                        </a>
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Idconfigvisa" onclick="DisplayForm(null, event); return false;">
+                    <i class="far fa-eye fa-lg" title="Details"></i>
+                </a> |
+                <a asp-action="Delete" asp-route-id="@item.Idconfigvisa" onclick="DisplayForm(null, event); return false;">
+                    <i class="far fa-trash-can fa-lg" title="Delete"></i>
+                </a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+<partial name="_SharedModalForms" />

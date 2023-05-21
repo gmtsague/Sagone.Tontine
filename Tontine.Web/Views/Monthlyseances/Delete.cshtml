@@ -1,0 +1,82 @@
+﻿@model Tontine.Entities.Models.Monthlyseance
+
+@{
+   // ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Monthlyseance</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Dateseance)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Dateseance)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Heuredebut)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Heuredebut)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Libelle)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Libelle)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Numordre)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Numordre)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Totalcotise)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Totalcotise)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Totalsortie)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Totalsortie)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Montantpercu)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Montantpercu)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Visarestants)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Visarestants)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.IdanneeNavigation)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.IdanneeNavigation.Idannee)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.IdinscritNavigation)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.IdinscritNavigation.Idinscrit)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Idannee" />
+        <input type="hidden" asp-for="Iddivision" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

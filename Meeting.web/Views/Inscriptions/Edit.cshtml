@@ -1,0 +1,109 @@
+﻿@model Meeting.Web.Dto.InscriptionDto
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@*<h1>Edit</h1>*@
+
+@*<h4>InscriptionDto</h4>
+<hr />*@
+<div class="row justify-content-center">
+    <div class="card-body">
+        <form asp-formhelper="true" asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Idinscrit" />
+            <div class="form-group  p-2 visually-hidden">
+                <label asp-for="EtabId" class="control-label"></label>
+                <input asp-for="EtabId" class="form-control" type="hidden" />
+                <span asp-validation-for="EtabId" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2 visually-hidden">
+                <label asp-for="AnneeId" class="control-label"></label>
+                <input asp-for="AnneeId" class="form-control" type="hidden" />
+                @*<select asp-for="AnneeId" class="form-control form-select" asp-items="ViewBag.AnneeId"><option value=""> Choose an item </option></select>*@
+                <span asp-validation-for="AnneeId" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="AntenneId" class="control-label"></label>
+                <select asp-for="AntenneId" class="form-control form-select" asp-items="ViewBag.AntenneId"><option value=""> Choose an item </option></select>
+                <span asp-validation-for="AntenneId" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="PersonId" class="control-label"></label>
+                <select asp-for="PersonId" class="form-control form-select" asp-items="ViewBag.PersonId"><option value=""> Choose an item </option></select>
+                <span asp-validation-for="PersonId" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="Dateinscrit" class="control-label"></label>
+                <input asp-for="Dateinscrit" class="form-control" type="datetime" />
+                <span asp-validation-for="Dateinscrit" class="text-danger"></span>
+            </div>
+            @*<div class="form-group  p-2">
+                <label asp-for="Datesuspension" class="control-label"></label>
+                <input asp-for="Datesuspension" class="form-control" type="datetime" />
+                <span asp-validation-for="Datesuspension" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check m-2">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                </label>
+            </div>*@
+            @*<div class="form-group  p-2">
+                <label asp-for="Nocni" class="control-label"></label>
+                <input asp-for="Nocni" class="form-control" />
+                <span asp-validation-for="Nocni" class="text-danger"></span>
+            </div>*@
+            <div class="form-group  p-2">
+                <label asp-for="Soldedebut" class="control-label"></label>
+                <input asp-for="Soldedebut" class="form-control" type="number" />
+                <span asp-validation-for="Soldedebut" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="Soldefin" class="control-label"></label>
+                <input asp-for="Soldefin" class="form-control" type="number" />
+                <span asp-validation-for="Soldefin" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="Tauxcotisation" class="control-label"></label>
+                <input asp-for="Tauxcotisation" class="form-control" type="number" />
+                <span asp-validation-for="Tauxcotisation" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="TotalVerse" class="control-label"></label>
+                <input asp-for="TotalVerse" class="form-control" type="number" />
+                <span asp-validation-for="TotalVerse" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="Cumuldettes" class="control-label"></label>
+                <input asp-for="Cumuldettes" class="form-control" type="number" />
+                <span asp-validation-for="Cumuldettes" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="Cumulpenalites" class="control-label"></label>
+                <input asp-for="Cumulpenalites" class="form-control" type="number" />
+                <span asp-validation-for="Cumulpenalites" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check m-2">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Endette" /> @Html.DisplayNameFor(model => model.Endette)
+                </label>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="ReportNouveau" class="control-label"></label>
+                <input asp-for="ReportNouveau" class="form-control" type="number" />
+                <span asp-validation-for="ReportNouveau" class="text-danger"></span>
+            </div>
+            <div class="form-group d-flex justify-content-around border-1 border-secondary border-top p-2 visually-hidden">
+                <div>
+                    <a asp-action="Index">Back to List</a>
+                </div>
+                <input id="regularSubmitBtn" type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

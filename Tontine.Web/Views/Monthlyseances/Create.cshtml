@@ -1,0 +1,76 @@
+﻿@model Tontine.Entities.Models.Monthlyseance
+
+@{
+  //  ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Monthlyseance</h4>
+<hr />
+<div class="row justify-content-center">
+    <div @*class="col-md-4"*@>
+        <form asp-formhelper="true" asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Idannee" class="control-label"></label>
+                <select asp-for="Idannee" class ="form-control" asp-items="ViewBag.Idannee"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Idinscrit" class="control-label"></label>
+                <select asp-for="Idinscrit" class ="form-control" asp-items="ViewBag.Idinscrit"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Dateseance" class="control-label"></label>
+                <input asp-for="Dateseance" class="form-control" type="datetime" onchange="DefineCustomNumOrderAndMonthNameFromDate(this); " />
+                <span asp-validation-for="Dateseance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Heuredebut" class="control-label"></label>
+                <input asp-for="Heuredebut" class="form-control" type="time" />
+                <span asp-validation-for="Heuredebut" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Libelle" class="control-label"></label>
+                <input asp-for="Libelle" class="form-control" readonly />
+                <span asp-validation-for="Libelle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Numordre" class="control-label"></label>
+                <input asp-for="Numordre" class="form-control" type="number"  />
+                <span asp-validation-for="Numordre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Totalcotise" class="control-label"></label>
+                <input asp-for="Totalcotise" class="form-control" type="number" />
+                <span asp-validation-for="Totalcotise" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Totalsortie" class="control-label"></label>
+                <input asp-for="Totalsortie" class="form-control" type="number" />
+                <span asp-validation-for="Totalsortie" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Montantpercu" class="control-label"></label>
+                <input asp-for="Montantpercu" class="form-control" type="number" />
+                <span asp-validation-for="Montantpercu" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Visarestants" class="control-label"></label>
+                <input asp-for="Visarestants" class="form-control" type="number" />
+                <span asp-validation-for="Visarestants" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

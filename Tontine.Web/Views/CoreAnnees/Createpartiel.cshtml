@@ -1,0 +1,60 @@
+﻿@model Tontine.Entities.Models.CoreAnnee
+
+<div>
+<h4>CoreAnnee</h4>
+<hr />
+<div class="row justify-content-center">
+    <div class="col-md-12">
+           <form asp-formhelper="true" asp-action="Create">
+           @*<form asp-action="Create">*@
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Idbureau" class="control-label">Bureau</label>
+                    <select asp-for="Idbureau" class="form-control" asp-items="ViewBag.Idbureau"></select>
+                    <!--<select asp-for="Idbureau" class="form-control" 
+                            asp-items="new SelectList(@ViewBag.IdbureauNavigation, nameof(Bureau.Idbureau), nameof(Bureau.Libelle))"></select>-->
+            </div>
+            <div class="form-group">
+                <label asp-for="Libelle" class="control-label"></label>
+                    <input asp-for="Libelle" class="form-control" required />
+                <span asp-validation-for="Libelle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Datedebut" class="control-label"></label>
+                <input asp-for="Datedebut" class="form-control" type="date" required />
+                <span asp-validation-for="Datedebut" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Datefin" class="control-label"></label>
+                    <input asp-for="Datefin" class="form-control" type="date" required />
+                <span asp-validation-for="Datefin" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Iscurrent" /> @Html.DisplayNameFor(model => model.Iscurrent)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Isclosed" /> @Html.DisplayNameFor(model => model.Isclosed)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nbdivision" class="control-label"></label>
+                <input asp-for="Nbdivision" class="form-control" min="1" value="12" required />
+                <span asp-validation-for="Nbdivision" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

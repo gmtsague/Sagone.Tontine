@@ -1,0 +1,98 @@
+﻿@model Meeting.Web.Dto.PresenceDto
+
+@{
+    ViewData["Title"] = "Details";
+    int ligne = 0;
+}
+
+@*<h1>Details</h1>*@
+
+<div>
+    @*<h4>PresenceDto</h4>
+    <hr />*@
+    <dl class="row">
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Seance)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Seance.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Idinscrit)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Inscription.FullName)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Dateop)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Dateop)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.IsAbsent)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.IsAbsent)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.VerseCash)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.VerseCash)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.VerseTransfert)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.VerseTransfert)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.NumBordero)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.NumBordero)
+        </dd>
+
+    </dl>
+    <div>
+        <table class="table table-sm border-top">
+            <caption class="caption-top text-center text-nowrap">Engagements payés au cours de la séance</caption>
+            <thead>
+                <tr>
+                    <th>N#</th>
+                    <th>Engagements</th>
+                    <th>Payer</th>
+                    <th>Solde</th>
+                </tr>
+            </thead>
+            @if (Model.EntreeCaisses != null)
+            {
+                @foreach (var item in Model.EntreeCaisses)
+                {
+                    <tr class="text-nowrap">
+                        <td>
+                            @(ligne + 1)
+                            @*<input type="hidden" name="EntreeCaisses[@ligne].EngagementId" value="@item.EngagementId" class="form-control" />
+                            <input type="hidden" name="EntreeCaisses[@ligne].PresenceId" value="@item.PresenceId" class="form-control" />*@
+                        </td>
+                        <td>                            
+                            <label for="Montantverse-@ligne" class="control-label">@item.Engagement.Rubrique.Libelle</label>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m=>item.Montantverse)
+                        </td>
+                        <td class="text-end @(item.Engagement.Solde < 0 ? "text-danger":"text-secondary")">
+                            @Html.DisplayFor(m=>item.Engagement.Solde)
+                        </td>
+                    </tr>
+                    ligne++;
+                }
+            }
+        </table>
+    </div>
+</div>
+<div class="visually-hidden">
+    <a asp-action="Edit" asp-route-id="@Model?.PresenceId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

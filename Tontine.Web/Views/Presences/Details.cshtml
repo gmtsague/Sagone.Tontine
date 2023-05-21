@@ -1,0 +1,90 @@
+﻿@model Tontine.Entities.Models.Presence
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Presence</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Dateop)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Dateop)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Isabsent)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Isabsent)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Globalverse)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Globalverse)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Soldedebut)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Soldedebut)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Soldefin)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Soldefin)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Cumuldetteapres)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Cumuldetteapres)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Codeop)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Codeop)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Numbordero)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Numbordero)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id.Idannee)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdcompteNavigation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdcompteNavigation.Idcompte)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdinscritNavigation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdinscritNavigation.Idinscrit)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdmodeNavigation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdmodeNavigation.Idmode)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Idpresence">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,108 @@
+﻿@page
+@model Meeting.web.Controllers.Settings.IndexModel
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead class="table-primary">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CoreAnnee[0].CreateUid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CoreAnnee[0].UpdateUid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CoreAnnee[0].CreateAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CoreAnnee[0].UpdateAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CoreAnnee[0].Libelle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CoreAnnee[0].Datedebut)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CoreAnnee[0].Datefin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CoreAnnee[0].IsCurrent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CoreAnnee[0].IsClosed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CoreAnnee[0].Nbdivision)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CoreAnnee[0].CopyDataFromPrevious)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CoreAnnee[0].Bureau)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CoreAnnee[0].Frequence)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CoreAnnee[0].PreviousYear)
+            </th>
+            <th></th>
+        </tr>
+    </thead class="table-primary">
+    <tbody>
+@foreach (var item in Model.CoreAnnee) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateUid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdateUid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdateAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Libelle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Datedebut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Datefin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCurrent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsClosed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nbdivision)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CopyDataFromPrevious)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bureau.BureauId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Frequence.FrequenceId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PreviousYear.AnneeId)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.AnneeId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.AnneeId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.AnneeId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

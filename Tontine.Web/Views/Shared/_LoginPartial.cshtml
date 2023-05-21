@@ -1,0 +1,169 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<ul class="navbar-nav me-auto">
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Paramètres-0xxx</a>
+        <ul class="dropdown-menu">
+            <li>
+                <a class="dropdown-item disabled" asp-area="" asp-controller="CoreEtablissements" asp-action="Index">Enregistrer l'association<span class="badge bg-danger"> ! </span></a>
+            </li>
+            <li>
+                <a class="dropdown-item disabled" asp-area="" asp-controller="Antennes" asp-action="Index">Antennes  <span class="badge bg-danger"> ! </span></a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="" asp-controller="CoreAnnees" asp-action="Index">Exercices Annuels</a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="" asp-controller="Bureaux" asp-action="Index">Bureaux</a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+                <a class="dropdown-item" asp-area="" asp-controller="CoreBanks" asp-action="Index">Banques</a>
+            </li>
+            <li>
+                <a class="dropdown-item disabled" asp-area="" asp-controller="CoreBankaccounts" asp-action="Index">Comptes bancaires  <span class="badge bg-danger"> ! </span></a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="" asp-controller="Annualengagements" asp-action="Index">Engagements annuels</a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="" asp-controller="Configvisas" asp-action="Index">Paramétrer la signature des documents</a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+                <a class="dropdown-item disabled" asp-area="" asp-controller="Modepaies" asp-action="Index">Mode de paiement  <span class="badge bg-danger"> ! </span></a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="" asp-controller="Postes" asp-action="Index">Postes</a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="" asp-controller="Rubriques" asp-action="Index">Rubriques financières</a>
+            </li>
+        </ul>
+    </li>
+
+    <li class="nav-item dropdown d-inline-flex">
+        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Traitements-001</a>
+        <ul class="dropdown-menu">
+            <li>
+                <a class="dropdown-item" asp-area="" asp-controller="Persons" asp-action="Index">Personnes</a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="" asp-controller="Inscriptions" asp-action="Index">Inscriptions</a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="" asp-controller="Monthlyseances" asp-action="Index">Ordre de passages</a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="" asp-controller="Presences" asp-action="Index">Presences  <span class="badge bg-danger"> ! </span></a>
+            </li>
+            <li>
+                <a class="dropdown-item disabled" asp-area="" asp-controller="EntreeSorties" asp-action="Index">Entrées/Sorties  <span class="badge bg-danger"> ! </span></a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+                <a class="dropdown-item" asp-area="" asp-controller="Prets" asp-action="Index">Prêts</a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="" asp-controller="Aides" asp-action="Index">Aides</a>
+            </li>
+        </ul>
+    </li>
+</ul>
+<ul class="navbar-nav">
+
+@if (SignInManager.IsSignedIn(User))
+{
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Paramètres</a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item" asp-area="" asp-controller="CoreEtablissements" asp-action="Index">Enregistrer l'association</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" asp-area="" asp-controller="Aides" asp-action="Index">Aides</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" asp-area="" asp-controller="Antennes" asp-action="Index">Antennes</a>
+                </li>
+                <li>
+                    <a  class="dropdown-item" asp-area="" asp-controller="CoreAnnees" asp-action="Index">Exercices Annuels</a>
+                </li>
+                <li>
+                    <a  class="dropdown-item" asp-area="" asp-controller="Bureaux" asp-action="Index">Bureaux</a>
+                </li>
+                <li><hr class="dropdown-divider"><hr/></li>
+                <li>
+                    <a  class="dropdown-item" asp-area="" asp-controller="CoreBanks" asp-action="Index">Banques</a>
+                </li>
+                <li>
+                    <a  class="dropdown-item" asp-area="" asp-controller="CoreBankaccounts" asp-action="Index">Comptes bancaires</a>
+                </li>
+                <li>
+                    <a  class="dropdown-item" asp-area="" asp-controller="Annualengagements" asp-action="Index">Engagements annuels</a>
+                </li>
+                <li>
+                    <a  class="dropdown-item" asp-area="" asp-controller="Configvisas" asp-action="Index">Paramétrer la signature des documents</a>
+                </li>
+                <li><hr class="dropdown-divider"><hr/></li>
+                <li>
+                    <a  class="dropdown-item" asp-area="" asp-controller="Modepaies" asp-action="Index">Mode de paiement</a>
+                </li>
+                <li>
+                    <a  class="dropdown-item" asp-area="" asp-controller="Prets" asp-action="Index">Prêts</a>
+                </li>
+                <li>
+                    <a  class="dropdown-item" asp-area="" asp-controller="Postes" asp-action="Index">Postes</a>
+                </li>
+                <li>
+                    <a  class="dropdown-item" asp-area="" asp-controller="Rubriques" asp-action="Index">Rubriques financières</a>
+                </li>
+            </ul>
+    </li>
+
+       <li class="nav-item dropdown d-inline-flex">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Traitements</a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item" asp-area="" asp-controller="CoreEtablissements" asp-action="Index">Enregistrer</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" asp-area="" asp-controller="CoreEtablissements" asp-action="Index">Enregistrer</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" asp-area="" asp-controller="CoreEtablissements" asp-action="Index">Enregistrer</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" asp-area="" asp-controller="CoreEtablissements" asp-action="Index">Enregistrer</a>
+                </li>
+            </ul>
+        </li>
+
+        <!--<li class="nav-item">
+            <a  class="dropdown-item" asp-area="" asp-controller="Modepaies" asp-action="Index">Mode de paiement</a>
+        </li>
+
+        <li class="nav-item">
+            <a  class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        </li>-->
+    <li class="nav-item">
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+    </li>
+    <li class="nav-item">
+        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>
+    <li class="nav-item">
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+}
+</ul>

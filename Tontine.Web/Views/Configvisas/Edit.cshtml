@@ -1,0 +1,49 @@
+﻿@model Tontine.Entities.Models.Configvisa
+
+@{
+   // ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Configvisa</h4>
+<hr />
+<div class="row justify-content-center">
+    <div @*class="col-md-4"*@>
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Idconfigvisa" />
+            <div class="form-group">
+                <label asp-for="Idposte" class="control-label"></label>
+                <select asp-for="Idposte" class="form-control" asp-items="ViewBag.Idposte"></select>
+                <span asp-validation-for="Idposte" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Idannee" class="control-label"></label>
+                <select asp-for="Idannee" class="form-control" asp-items="ViewBag.Idannee"></select>
+                <span asp-validation-for="Idannee" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Idtype" class="control-label"></label>
+                <select asp-for="Idtype" class="form-control" asp-items="ViewBag.Idtype"></select>
+                <span asp-validation-for="Idtype" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Numordre" class="control-label"></label>
+                <input asp-for="Numordre" class="form-control" type="number" />
+                <span asp-validation-for="Numordre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

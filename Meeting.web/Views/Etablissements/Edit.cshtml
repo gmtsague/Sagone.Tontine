@@ -1,0 +1,78 @@
+﻿@model Meeting.Web.Dto.EtablissementDto
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@*<h1>Edit</h1>*@
+
+<h4>CoreEtablissement</h4>
+<hr />
+<div class="row justify-content-center">
+    <div class="card-body">
+        <form asp-action="Edit">
+            <div class="form-group  p-2">
+                <div class="d-flex justify-content-between border-1 border-secondary border-top p-1">
+                    <button class="btn">
+                        <a asp-action="Index">Back to List</a>
+                    </button>
+                    
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+                <hr />
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="EtabId" />
+             <div class="form-group p-2">
+                <label asp-for="CountryId" class="control-label"></label>
+                <select asp-for="CountryId" class="form-control form-select" asp-items="ViewBag.CountryId"><option value=""> Choose an item </option></select>
+                <span asp-validation-for="CountryId" class="text-danger"></span>
+            </div>
+            <div class="form-group p-2">
+                <label asp-for="Libelle" class="control-label"></label>
+                <input asp-for="Libelle" class="form-control" />
+                <span asp-validation-for="Libelle" class="text-danger"></span>
+            </div>
+            <div class="form-group p-1">
+                <label asp-for="Adresse" class="control-label"></label>
+                <input asp-for="Adresse" class="form-control" />
+                <span asp-validation-for="Adresse" class="text-danger"></span>
+            </div>
+            <div class="form-group p-2">
+                <label asp-for="Creationdate" class="control-label"></label>
+                <input asp-for="Creationdate" class="form-control" type="date" />
+                <span asp-validation-for="Creationdate" class="text-danger"></span>
+            </div>
+            <div class="form-group p-2">
+                <label asp-for="DeployedUrl" class="control-label"></label>
+                <input asp-for="DeployedUrl" class="form-control" />
+                <span asp-validation-for="DeployedUrl" class="text-danger"></span>
+            </div>
+            @*<div class="form-group p-2">
+                <label asp-for="DatabaseName" class="control-label"></label>
+                <input asp-for="DatabaseName" class="form-control" />
+                <span asp-validation-for="DatabaseName" class="text-danger"></span>
+            </div>
+            <div class="form-group p-2">
+                <label asp-for="ConnString" class="control-label"></label>
+                <input asp-for="ConnString" class="form-control" />
+                <span asp-validation-for="ConnString" class="text-danger"></span>
+            </div>
+            *@
+            <div class="form-group m-2 form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="EnableMultiAntenne" /> @Html.DisplayNameFor(model => model.EnableMultiAntenne)
+                </label>
+            </div>
+            <div class="form-group d-flex justify-content-around border-1 border-secondary border-top p-2">
+                <div>
+                    <a asp-action="Index">Back to List</a>
+                </div>
+                <input type="submit" value="Save" class="btn btn-primary" />                                                      
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

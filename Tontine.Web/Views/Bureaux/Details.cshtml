@@ -1,0 +1,54 @@
+﻿@model Tontine.Entities.Models.Bureau
+
+@{
+    //ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Bureau</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Libelle)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Libelle)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Debut)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Debut)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Fin)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Fin)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Nbperson)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Nbperson)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Nbvotes)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Nbvotes)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Nbabstention)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Nbabstention)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Idbureau">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

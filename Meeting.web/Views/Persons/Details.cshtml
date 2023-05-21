@@ -1,0 +1,108 @@
+﻿@model Meeting.Web.Dto.PersonDto
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@*<h1>Details</h1>*@
+
+<div>
+    @*<h4>CorePerson</h4>
+    <hr />*@
+    <dl class="row">
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Nom)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Nom)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Prenom)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Prenom)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Datenais)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Datenais)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Lieunais)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Lieunais)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Sexe)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Sexe)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Adresse)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Adresse)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.AdhesionDate)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.AdhesionDate)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Nocni)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Nocni)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.CniExpireDate)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.CniExpireDate)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.IsVisible)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.IsVisible)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.AnneePromo)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.AnneePromo)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Country.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Etab)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Etab.EtabId)
+        </dd>
+    </dl>
+</div>
+<div class="visually-hidden">
+    <a asp-action="Edit" asp-route-id="@Model?.PersonId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

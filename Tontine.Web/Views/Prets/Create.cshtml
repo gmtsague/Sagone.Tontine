@@ -1,0 +1,52 @@
+﻿@model Tontine.Entities.Models.Pret
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Pret</h4>
+<hr />
+<div class="row justify-content-center">
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Idevts" class="control-label"></label>
+                <select asp-for="Idevts" class ="form-control" asp-items="ViewBag.Idevts"></select>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Ispret" /> @Html.DisplayNameFor(model => model.Ispret)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Dureepret" class="control-label"></label>
+                <input asp-for="Dureepret" class="form-control" />
+                <span asp-validation-for="Dureepret" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Montantinteret" class="control-label"></label>
+                <input asp-for="Montantinteret" class="form-control" />
+                <span asp-validation-for="Montantinteret" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Montantpenalite" class="control-label"></label>
+                <input asp-for="Montantpenalite" class="form-control" />
+                <span asp-validation-for="Montantpenalite" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

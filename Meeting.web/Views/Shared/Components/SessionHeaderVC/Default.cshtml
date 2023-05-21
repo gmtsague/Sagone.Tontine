@@ -1,0 +1,32 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var baseurl = TempData.Peek("BaseUrl"); //ViewBag.BaseUrl;
+    //@model Meeting.web.Controllers.SessionEntitiesDto        
+    <div class="d-flex justify-content-start">
+        <div class="p-1">
+            <form asp-formhelper="true" asp-action="setdefault" asp-controller="Etablissements" asp-antiforgery="true" method="post">
+
+                <label for="EtabId" class="control-label" title="Default Association">
+                    <select for="EtabId" id="EtabId" name="id" class="form-control form-select form-select-sm" asp-items="ViewBag.DefaultEtabId" onchange="$('#btnEtabSubmit').click(); return false;">
+                        <option value=""> Default Association </option>
+                    </select>
+                </label>
+                <input type="submit" id="btnEtabSubmit" hidden value="submit" />
+            </form>
+        </div>
+        <div class="p-1">
+            <form asp-formhelper="true" asp-action="setdefault" asp-controller="Annees" asp-antiforgery="true" method="post">
+
+                <label for="SelectedGlobalYear" class="control-label" title="Default Year">
+                    <select for="SelectedGlobalYear" id="SelectedGlobalYear" name="id" class="form-control form-select form-select-sm" asp-items="ViewBag.DefaultAnneeId" onchange="$('#btnYearSubmit').click(); return false;">
+                        <option value=""> Default Year </option>
+                    </select>
+                </label>
+                <input type="submit" id="btnYearSubmit" hidden value="submit" />
+            </form>
+        </div>
+      @*  <sub class="badge bg-info"> COMPONENT VIEW</sub> *@
+    </div>
+}

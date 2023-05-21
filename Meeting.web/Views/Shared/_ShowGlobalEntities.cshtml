@@ -1,0 +1,19 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    //@model Meeting.web.Controllers.SessionEntitiesDto
+
+<div class="d-flex justify-content-start overflow-hidden">
+    <div class="p-1">
+            <label for="GlobalSelectedEtab" class="control-label" title="Default Association">
+                <select for="EtabId" id ="EtabId" class="form-control form-select" asp-items="ViewBag.DefaultEtabId"><option value=""> Default Association </option></select>
+        </label>
+    </div>        
+    <div class="p-1">
+            <label for="GlobalSelectedYear" @*asp-for="GlobalSelectedYear"*@ class="control-label" title="Default Year">
+                <select id="SelectedYear" for="GlobalSelectedYear" class="form-control form-select" asp-items="ViewBag.DefaultAnneeId"><option value=""> Default Year </option></select>
+        </label>
+    </div>
+</div>
+}

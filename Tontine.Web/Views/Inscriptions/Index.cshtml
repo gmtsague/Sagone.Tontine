@@ -1,0 +1,127 @@
+﻿@model IEnumerable<Tontine.Entities.Models.Inscription>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create" onclick="DisplayForm(null, event); return false;">Create New</a>
+</p>
+<div style="overflow-x:auto;">
+    <table id="inscriptionsDatatable" class="table table-hover table-striped table-responsive ">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.IdpersonNavigation)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Dateinscrit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Datesuspension)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Isactive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nocni)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Soldedebut)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Soldefin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tauxcotisation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Totalverse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cumuldettes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cumulpenalites)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Endette)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdanneeNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdantenneNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdposteNavigation)
+            </th>
+            <th class="text-center">
+                <a asp-action="Index"><i class="fas fa-rotate-right fa-lg" title="Refresh"></i></a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                        <a asp-action="Edit" asp-route-id="@item.Idinscrit" onclick="DisplayForm(null, event); return false;"> @Html.DisplayFor(modelItem => item.IdpersonNavigation.Nom)  @Html.DisplayFor(modelItem => item.IdpersonNavigation.Prenom)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dateinscrit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Datesuspension)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Isactive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nocni)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Soldedebut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Soldefin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tauxcotisation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Totalverse)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cumuldettes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cumulpenalites)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Endette)
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.Idinscrit" onclick="DisplayForm(null, event); return false;"> @Html.DisplayFor(modelItem => item.IdanneeNavigation.Libelle)</a>
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.Idinscrit" onclick="DisplayForm(null, event); return false;"> @Html.DisplayFor(modelItem => item.IdantenneNavigation.Libelle)</a>
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.Idinscrit" onclick="DisplayForm(null, event); return false;"> @Html.DisplayFor(modelItem => item.IdposteNavigation.Libelle)</a>
+            </td>
+            <td>
+                    <a asp-action="Details" asp-route-id="@item.Idinscrit" onclick="DisplayForm(null, event); return false;">
+                        <i class="far fa-eye fa-lg" title="Details"></i>
+                    </a> |
+                    <a asp-action="Delete" asp-route-id="@item.Idinscrit" onclick="DisplayForm(null, event); return false;">
+                        <i class="far fa-trash-can fa-lg" title="Delete"></i>
+                    </a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+<partial name="_SharedModalForms" />

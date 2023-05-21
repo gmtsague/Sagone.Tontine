@@ -1,0 +1,79 @@
+﻿@model Meeting.Web.Dto.SortieCaisseDto
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@*<h1>Details</h1>*@
+
+<div>
+    @*<h4>MeetSortieCaisse</h4>
+    <hr />*@
+    <dl class="row">
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.RefNo)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.RefNo)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.BenefPrincipal)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.BenefPrincipal)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Engagement)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Engagement.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.IdinscritNavigation)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.IdinscritNavigation.FullName)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Seance)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Seance.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Dateevts)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Dateevts)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Montantpercu)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Montantpercu)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Note)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Note)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.IsClosed)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.IsClosed)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Visarestants)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Visarestants)
+        </dd>
+
+    </dl>
+</div>
+<div class="visually-hidden">
+    <a asp-action="Edit" asp-route-id="@Model?.SortiecaisseId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

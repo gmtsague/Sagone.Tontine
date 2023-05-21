@@ -1,0 +1,49 @@
+﻿@model Tontine.Entities.Models.CoreEtablissement
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>CoreEtablissement</h4>
+<hr />
+<div class="row justify-content-center">
+    <div class="card-body">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Idetab" />
+            <div class="form-group">
+                <label asp-for="PaysId" class="control-label"></label>
+                <select asp-for="PaysId" class="form-control" asp-items="ViewBag.PaysId"></select>
+                <span asp-validation-for="PaysId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Libelle" class="control-label"></label>
+                <input asp-for="Libelle" class="form-control" />
+                <span asp-validation-for="Libelle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Agrement" class="control-label"></label>
+                <input asp-for="Agrement" class="form-control" />
+                <span asp-validation-for="Agrement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Dossierfiscale" class="control-label"></label>
+                <input asp-for="Dossierfiscale" class="form-control" />
+                <span asp-validation-for="Dossierfiscale" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

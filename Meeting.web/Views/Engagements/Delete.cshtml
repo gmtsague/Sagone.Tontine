@@ -1,0 +1,64 @@
+﻿@model Meeting.Web.Dto.EngagementDto
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+@*<h1>Delete</h1>*@
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+   @* <h4>MeetEngagement</h4>
+    <hr />*@
+    <dl class="row">
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Person)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Person.FullName)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Rubrique)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Rubrique.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Cumulverse)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Cumulverse)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Solde)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Solde)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.IsOutcome)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.IsOutcome)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.IsClosed)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.IsClosed)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.EngagementDate)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.EngagementDate)
+        </dd>
+
+    </dl>
+    
+    <form asp-formhelper="true" asp-action="Delete" class="visually-hidden">
+        <input type="hidden" asp-for="EngagementId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

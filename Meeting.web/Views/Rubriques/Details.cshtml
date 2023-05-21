@@ -1,0 +1,66 @@
+﻿@model Meeting.Web.Dto.RubriqueDto
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@*<h1>Details</h1>*@
+
+<div>
+    @*<h4>MeetRubrique</h4>
+    <hr />*@
+    <dl class="row">
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Libelle)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Nbmandataire)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Nbmandataire)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Montantroute)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Montantroute)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.MontantPerson)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.MontantPerson)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.IsOutcome)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.IsOutcome)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Commentaire)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Commentaire)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Annee)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Annee.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Typerub)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Typerub.Libelle)
+        </dd>
+    </dl>
+</div>
+<div class="visually-hidden">
+    <a asp-action="Edit" asp-route-id="@Model?.RubriqueId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

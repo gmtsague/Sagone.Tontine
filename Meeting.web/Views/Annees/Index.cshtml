@@ -1,0 +1,121 @@
+﻿@model IEnumerable<Meeting.Web.Dto.AnneeDto>
+@*@model IEnumerable<Meeting.Web.Dto.Annee>*@
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h5 class="mb-4">@ViewBag.TitleObj.ListTitle</h5>
+
+<div class="d-flex justify-content-between m-2">
+    <a asp-action="Create" onclick="return DisplayForm('@ViewBag.TitleObj.CreateTitle', null,event);"
+        data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal" class="btn btn-sm btn-secondary" role="button" >Create New</a>
+
+    <a asp-action="Index"><i class="fas fa-rotate-right fa-lg" title="Refresh"></i>Refresh</a>
+</div>
+<div class="table-responsive table-responsive-sm table-responsive-md mt-2 pb-2" >
+    <table class="table table-hover ">
+        <thead class="table-primary">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Libelle)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Datedebut)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Datefin)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.IsCurrent)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.IsClosed)
+                </th>
+                <th class="text-end">
+                    @Html.DisplayNameFor(model => model.Nbdivision)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.CopyDataFromPrevious)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Bureau)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.FrequenceId)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.PreviousYear)
+                </th>
+                <th></th>
+            </tr>
+        </thead class="table-primary">
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                <div class="dropdown dropend">
+                    <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                        @Html.DisplayFor(modelItem => item.Libelle)
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.AnneeId" onclick="return DisplayForm('@ViewBag.TitleObj.EditTitle', null, event);"
+                            data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal" >Edit</a>
+                        <a class="dropdown-item" asp-action="Details" asp-route-id="@item.AnneeId" onclick="return DisplayForm('@ViewBag.TitleObj.DetailsTitle', null, event);"
+                            data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal" >Details</a>
+                        <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.AnneeId" onclick="return DisplayForm('@ViewBag.TitleObj.DeleteTitle', null, event);"
+                            data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal" >Delete</a>
+                        
+                        <a class="dropdown-item" asp-action="Setdefault" asp-route-id="@item.AnneeId">Set Default</a>
+                        <form asp-formhelper="true" asp-action="SetDefault">
+                            <input type="hidden" asp-for="@item.AnneeId" />
+                            <input type="submit" value="Set Default" class="btn btn-primary btn-sm" /> 
+                        </form>
+                    </div>
+                </div>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Datedebut)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Datefin)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.IsCurrent)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.IsClosed)
+                    </td>
+                    <td class="text-end">
+                        @Html.DisplayFor(modelItem => item.Nbdivision)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.CopyDataFromPrevious)
+                </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Bureau.BureauId)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item./*Frequence.*/FrequenceId)
+                </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PreviousYear.AnneeId)
+                    </td>
+                    <td>
+                        @*<a asp-action="Details" asp-route-id="@item.AnneeId" onclick="return DisplayForm('@ViewBag.TitleObj.DetailsTitle',null,event);">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.AnneeId" onclick="return DisplayForm('@ViewBag.TitleObj.DeleteTitle', null,event);">Delete</a>
+                        |
+                        <a asp-action="Setdefault" asp-route-id="@item.AnneeId">Set Default</a>|
+                        <form asp-formhelper="true" asp-action="SetDefault">
+                            <input type="hidden" asp-for="@item.AnneeId" />
+                            <input type="submit" value="Set Default" class="btn btn-primary btn-sm" /> |
+                        </form>*@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<partial name="_SharedModalForms" />

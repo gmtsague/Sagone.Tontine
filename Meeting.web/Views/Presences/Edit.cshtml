@@ -1,0 +1,105 @@
+﻿@model Meeting.Web.Dto.PresenceDto
+
+@{
+    ViewData["Title"] = "Edit";
+    int ligne = 0;
+}
+
+@*<h1>Edit</h1>*@
+
+@*<h4>PresenceDto</h4>
+<hr />*@
+<div class="row">
+    <div class="card-body">
+        <form asp-formhelper="true" asp-action="Edit" onsubmit="/*handleSubmit(event);*/">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PresenceId" />
+            <div class="form-group m-1 p-1">
+                <label asp-for="SeanceId" class="control-label"></label>
+                <select asp-for="SeanceId" class="form-control" asp-items="ViewBag.SeanceId"></select>
+                <span asp-validation-for="SeanceId" class="text-danger"></span>
+            </div>
+            <div class="form-group m-1 p-1">
+                <label asp-for="Idinscrit" class="control-label"></label>
+                <input asp-for="Idinscrit" class="form-control" />
+                <span asp-validation-for="Idinscrit" class="text-danger"></span>
+            </div>
+            <div class="form-group m-1 p-1">
+                <label asp-for="Dateop" class="control-label"></label>
+                <input asp-for="Dateop" class="form-control" size="10" type="date" />
+                <span asp-validation-for="Dateop" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check m-2">
+                <label class="form-check-label">
+                    @Html.DisplayNameFor(model => model.IsAbsent)
+                    <input class="form-check-input" asp-for="IsAbsent" />
+                </label>
+            </div>
+            <div class="form-group m-1 p-1">
+                <label asp-for="VerseCash" class="control-label"></label>
+                <input asp-for="VerseCash" class="form-control" size="10" />
+                <span asp-validation-for="VerseCash" class="text-danger"></span>
+            </div>
+            <div class="form-group m-1 p-1">
+                <label asp-for="VerseTransfert" class="control-label"></label>
+                <input asp-for="VerseTransfert" class="form-control" size="10" />
+                <span asp-validation-for="VerseTransfert" class="text-danger"></span>
+            </div>
+            <div class="form-group m-1 p-1">
+                <label asp-for="NumBordero" class="control-label"></label>
+                <input asp-for="NumBordero" class="form-control" />
+                <span asp-validation-for="NumBordero" class="text-danger"></span>
+            </div>
+            <div class="form-group m-1 p-1">
+                <table class="table table-sm border-top">
+                    <caption class="caption-top text-center text-nowrap">Engagements non soldés</caption>
+                    <thead>
+                        <tr>
+                            <th>N#</th>
+                            <th>Engagements</th>
+                            <th>A verser</th>
+                            <th>Solde</th>
+                        </tr>
+                    </thead>
+                    @if (Model.EntreeCaisses != null)
+                    {
+                        @foreach (var item in Model.EntreeCaisses)
+                        {
+                            <tr class="text-nowrap">
+                                <td>@(ligne + 1)
+                                    <input type="hidden" name="EntreeCaisses[@ligne].EngagementId" value="@item.EngagementId" class="form-control" />
+                                    <input type="hidden" name="EntreeCaisses[@ligne].PresenceId" value="@item.PresenceId" class="form-control" />
+                                </td>
+                                <td>
+                                    @Html.HiddenFor(m => item.EngagementId, new {name="EntreeCaisses[@ligne].Engagementid"})
+                                    <label for="Montantverse-@ligne" class="control-label">@item.Engagement.Rubrique.Libelle</label>
+                                </td>
+                                <td>
+                                    @*<label asp-for="@item.Montantverse" class="control-label">@item.Engagement.Rubrique.Libelle</label>
+                            @Html.TextBoxFor(m=>item.Montantverse, new {name="EntreeCaisses[@ligne++].Montantverse"})*@
+                                    <input id="Montantverse-@ligne" type="number" name="EntreeCaisses[@ligne].Montantverse" value="@item.Montantverse" max="@(item.Engagement.Solde*(-1))" size="5" class="form-control form-control-sm" />
+                                    <span asp-validation-for="Montantverse-@ligne" class="text-danger"></span>
+                                </td>
+                                <td class="text-end @(item.Engagement.Solde < 0 ? "text-danger":"text-secondary")">
+                                    @Html.DisplayFor(m=>item.Engagement.Solde)
+                                </td>
+                            </tr>
+                            ligne++;
+                        }
+                    }
+                </table>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

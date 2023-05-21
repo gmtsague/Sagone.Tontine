@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Meeting.Web.Dto.ConfigvisaDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h5 class="mb-4">@ViewBag.TitleObj.ListTitle</h5>
+<div class="d-flex justify-content-between">
+    <a asp-action="Create" onclick="return DisplayForm('@ViewBag.TitleObj.CreateTitle', null, event);"
+     data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal" class="btn btn-sm btn-secondary">Create New</a>
+
+    <a asp-action="Index"><i class="fas fa-rotate-right fa-lg" title="Refresh"></i>Refresh</a>
+</div>
+<div class="table-responsive table-responsive-sm table-responsive-md mt-2 pb-2">
+    <table class="table table-hover ">
+    <thead class="table-primary">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Annee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Poste)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Typerub)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Numordre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SignByOrdre)
+            </th>
+            <th></th>
+        </tr>
+    </thead class="table-primary">
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <div class="dropdown dropend">
+                    <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                        @Html.DisplayFor(modelItem => item.Annee.Libelle)
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.ConfigvisaId" onclick="return DisplayForm('@ViewBag.TitleObj.EditTitle', null, event);"
+                             data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Edit </a>
+                        <a class="dropdown-item" asp-action="Details" asp-route-id="@item.ConfigvisaId" onclick="return DisplayForm('@ViewBag.TitleObj.DetailsTitle', null, event);"
+                             data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Details</a>
+                        <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.ConfigvisaId" onclick="return DisplayForm('@ViewBag.TitleObj.DeleteTitle', null, event);"
+                             data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Delete</a>
+                    </div>
+                </div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Poste.Libelle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Typerub.Libelle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Numordre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SignByOrdre)
+            </td>
+            <td>
+               @* <a asp-action="Details" asp-route-id="@item.ConfigvisaId" onclick="return DisplayForm('@ViewBag.TitleObj.DetailsTitle', null, event);">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ConfigvisaId" onclick="return DisplayForm('@ViewBag.TitleObj.DeleteTitle', null, event);">Delete</a>
+                *@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+<partial name="_SharedModalForms" />

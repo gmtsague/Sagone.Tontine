@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Meeting.Web.Dto.OrdrePassageDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h5 class="mb-4">@ViewBag.TitleObj.ListTitle</h5>
+
+<div class="d-flex justify-content-between m-2">
+    <a asp-action="Create" onclick="return DisplayForm('@ViewBag.TitleObj.CreateTitle', null, event);"
+       data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal" class="btn btn-sm btn-secondary">Create New</a>
+    <div class="clearfix d-flex float-end">
+        <form asp-formhelper="true" asp-action="PassagesByAntenne" method="GET">
+
+            <label for="AntenneFilter" class="control-label m0-2" title="Antenne Filter">
+                <select for="AntenneFilter" id="AntenneFilterPassage" name="id" class="form-control form-select form-select-sm m0-2" asp-items="ViewBag.AntennesData" onchange="/*$('#btnAntenneSubmit').click();*/">
+                    <option value="0"> All regions </option>
+                </select>
+            </label>
+            <input type="submit" id="btnAntenneSubmit" hidden value="submit" />
+        </form>
+    </div>
+    <a asp-action="Index"><i class="fas fa-rotate-right fa-lg" title="Refresh"></i>Refresh</a>
+</div>
+
+<div id="PassagesContainer">
+    <partial name="_PartialGridViewPassages" model="@Model" />
+</div>
+
+<partial name="_SharedModalForms" />
+
+@section Scripts{
+    <script>
+        $(function () {
+            $("#AntenneFilterPassage").change(function () {
+                $.ajax({
+                    type: "Get",
+                    url: "/Ordrepassages/PassagesByAntenne?id=" + $(this).val(),  //remember change the controller to your owns.
+                    success: function (data) {
+                        $("#PassagesContainer").html("");
+                        $("#PassagesContainer").html(data);
+                    },
+                    error: function (response) {
+                        console.log(response.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+}

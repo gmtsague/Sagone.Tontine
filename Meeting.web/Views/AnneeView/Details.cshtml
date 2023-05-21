@@ -1,0 +1,97 @@
+﻿@page
+@model Meeting.web.Controllers.Settings.DetailsModel
+
+<div>
+    <h4>CoreAnnee</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.CoreAnnee.CreateUid)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.CoreAnnee.CreateUid)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.CoreAnnee.UpdateUid)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.CoreAnnee.UpdateUid)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.CoreAnnee.CreateAt)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.CoreAnnee.CreateAt)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.CoreAnnee.UpdateAt)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.CoreAnnee.UpdateAt)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.CoreAnnee.Libelle)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.CoreAnnee.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.CoreAnnee.Datedebut)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.CoreAnnee.Datedebut)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.CoreAnnee.Datefin)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.CoreAnnee.Datefin)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.CoreAnnee.IsCurrent)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.CoreAnnee.IsCurrent)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.CoreAnnee.IsClosed)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.CoreAnnee.IsClosed)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.CoreAnnee.Nbdivision)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.CoreAnnee.Nbdivision)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.CoreAnnee.CopyDataFromPrevious)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.CoreAnnee.CopyDataFromPrevious)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.CoreAnnee.Bureau)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.CoreAnnee.Bureau.BureauId)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.CoreAnnee.Frequence)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.CoreAnnee.Frequence.FrequenceId)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.CoreAnnee.PreviousYear)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.CoreAnnee.PreviousYear.AnneeId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.CoreAnnee?.AnneeId">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

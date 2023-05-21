@@ -1,0 +1,67 @@
+﻿@model Meeting.Web.Dto.PreferenceDto
+@*@model Meeting.Web.Dto.Preference*@
+@{
+    ViewData["Title"] = "Create";
+}
+
+@*<h1>Create</h1>*@
+
+<h4>MeetPreference</h4>
+<hr />
+<div class="row justify-content-center">
+    <div class="card-body">
+        <form asp-formhelper="true" asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group  p-2">
+                <label asp-for="SettingId" class="control-label"></label>
+                <select asp-for="SettingId" class ="form-control form-select" asp-items="ViewBag.SettingId"><option value=""> Choose an item </option></select>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="TauxInteretMensuel" class="control-label"></label>
+                <input asp-for="TauxInteretMensuel" class="form-control" />
+                <span asp-validation-for="TauxInteretMensuel" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="TauxInteretPenalite" class="control-label"></label>
+                <input asp-for="TauxInteretPenalite" class="form-control" />
+                <span asp-validation-for="TauxInteretPenalite" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="TauxPenaliteCotisation" class="control-label"></label>
+                <input asp-for="TauxPenaliteCotisation" class="form-control" />
+                <span asp-validation-for="TauxPenaliteCotisation" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check m-2">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="EnableSigningOutcome" /> @Html.DisplayNameFor(model => model.EnableSigningOutcome)
+                </label>
+            </div>
+            <div class="form-group form-check m-2">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="EnableFixedAmountFees" /> @Html.DisplayNameFor(model => model.EnableFixedAmountFees)
+                </label>
+            </div>
+            <div class="form-group form-check m-2">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="EnableSecoursInsurance" /> @Html.DisplayNameFor(model => model.EnableSecoursInsurance)
+                </label>
+            </div>
+            <div class="form-group form-check m-2">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="EnableFixedFeesByAnten" /> @Html.DisplayNameFor(model => model.EnableFixedFeesByAnten)
+                </label>
+            </div>
+            <div class="form-group  p-2">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

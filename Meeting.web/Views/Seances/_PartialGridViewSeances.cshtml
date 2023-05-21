@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Meeting.Web.Dto.SeanceDto>
+
+@{
+}
+<div class="table-responsive table-responsive-sm table-responsive-md mt-2 pb-2">
+    <table class="table table-hover ">
+        <thead class="table-primary">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Subdivision)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Antenne)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Opendate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Closedate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalEntrees)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalSorties)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Depensecollation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Compterendu)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th></th>
+            </tr>
+        </thead class="table-primary">
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <div class="dropdown dropend">
+                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" role="menu">
+                                @Html.DisplayFor(modelItem => item.Subdivision.Libelle)
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.SeanceId"  data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal"
+                                    onclick="return DisplayForm('@ViewBag.TitleObj.EditTitle', null, event);">Edit</a>
+
+                                @*<a class="dropdown-item" asp-action="Details" asp-route-id="@item.SeanceId" data-bs-toggle="modal" data-bs-target="#SeancePresencesModalForm"
+                                   onclick="DisplayForm('@ViewBag.TitleObj.DetailsTitle', null, event);">Details</a>*@
+
+                                <a class="dropdown-item" asp-action="DetailsPresences" asp-route-seanceid="@item.SeanceId" data-bs-dismiss00="modal" data-bs-toggle="modal" data-bs-target="#SeancePresencesModalForm"  role="button"
+                                   onclick="return DisplaySeanceDetailsModalForm('@ViewBag.TitleObj.DetailsTitle', null, event);" role="button">Details seance</a>
+
+                                <a class="dropdown-item" asp-action="Close" asp-route-id="@item.SeanceId"  data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal"
+                                    onclick="return confirm('Do you want to close this meeting session ?'); /*DisplayForm('@ViewBag.TitleObj.DeleteTitle', null, event);*/">Close</a>
+
+                                <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.SeanceId"  data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal"
+                                    onclick="return DisplayForm('@ViewBag.TitleObj.DeleteTitle', null, event);">Delete</a>
+
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Antenne.Libelle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Opendate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Closedate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalEntrees)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalSorties)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Depensecollation)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Compterendu)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        <!--
+                        <a asp-action="Edit" asp-route-id="@item.SeanceId" onclick="return DisplayForm('@ViewBag.TitleObj.EditTitle', null, event);">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.SeanceId" data-bs-toggle="modal" data-bs-target="#SeancePresencesModalForm"
+                           onclick="DisplayForm('@ViewBag.TitleObj.DetailsTitle', null, event);">Details</a> |
+                        <a asp-action="DetailsPresences" asp-route-seanceid="@item.SeanceId" data-bs00-toggle="modal" data-bs00-target="#SeancePresencesModalForm"
+                           onclick="return DisplaySeanceDetailsModalForm('@ViewBag.TitleObj.DetailsTitle', null, event);" class="btn btn-sm" role="button">Details seance</a> |
+                        <a asp-action="Delete" asp-route-id="@item.SeanceId" onclick="return DisplayForm('@ViewBag.TitleObj.DeleteTitle', null, event);">Delete</a>
+                        -->
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@*<partial name="_SharedModalForms" />*@

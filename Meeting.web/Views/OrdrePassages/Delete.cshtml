@@ -1,0 +1,52 @@
+﻿@model Meeting.Web.Dto.OrdrePassageDto
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+@*<h1>Delete</h1>*@
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    @*<h4>MeetOrdrePassage</h4>
+    <hr />*@
+    <dl class="row">
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Subdivision)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Subdivision.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Inscription)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Inscription.Person.FullName)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Montantpercu)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Montantpercu)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Heuredebut)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Heuredebut)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Commentaire)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Commentaire)
+        </dd>
+
+    </dl>
+    
+    <form asp-formhelper="true" asp-action="Delete" class="visually-hidden">
+        <input type="hidden" asp-for="PassageId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

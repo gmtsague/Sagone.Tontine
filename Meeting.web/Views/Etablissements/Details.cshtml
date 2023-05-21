@@ -1,0 +1,66 @@
+﻿@model Meeting.Web.Dto.EtablissementDto
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@*<h1>Details</h1>*@
+
+<div>
+    @*<h4>CoreEtablissement</h4>
+    <hr />*@
+    <dl class="row">
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Libelle)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Adresse)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Adresse)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Creationdate)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Creationdate)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.DeployedUrl)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.DeployedUrl)
+        </dd>
+       @* <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.DatabaseName)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.DatabaseName)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.ConnString)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.ConnString)
+        </dd>*@
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.EnableMultiAntenne)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.EnableMultiAntenne)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Country.Libelle)
+        </dd>
+    </dl>
+</div>
+<div class="visually-hidden">
+    <a asp-action="Edit" asp-route-id="@Model?.EtabId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

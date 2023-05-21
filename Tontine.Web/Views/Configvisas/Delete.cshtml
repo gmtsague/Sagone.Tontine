@@ -1,0 +1,45 @@
+﻿@model Tontine.Entities.Models.Configvisa
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Configvisa</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Numordre)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Numordre)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.IdanneeNavigation)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.IdanneeNavigation.Libelle)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.IdposteNavigation)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.IdposteNavigation.Libelle)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.IdtypeNavigation)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.IdtypeNavigation.Libelle)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Idconfigvisa" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

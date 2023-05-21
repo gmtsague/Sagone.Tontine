@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Meeting.Web.Dto.SeanceDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h5 class="mb-4">@ViewBag.TitleObj.ListTitle</h5>
+
+<div class="d-flex justify-content-between m-2">
+    <a asp-action="Create" onclick="return DisplayForm('@ViewBag.TitleObj.CreateTitle', null, event);"
+       data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal" class="btn btn-sm btn-secondary">Open New Seance</a>
+   @*
+    <a asp-action="Create" asp-controller="Sortiecaisses" onclick="return DisplayForm('@ViewBag.TitleObj.CreateTitle', null, event);"
+    data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Faire une sortie de caisse</a>
+    <a asp-action="PayerEngagement" asp-controller="Engagements" onclick="return DisplayForm('@ViewBag.TitleObj.CreateTitle', null, event);"
+    data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Payer des engagements</a>
+    *@
+    <div class="clearfix d-flex float-end">
+        <form asp-formhelper="true" asp-action="SeancesByAntenne" method="GET">
+
+            <label for="AntenneFilterSeance" class="control-label" title="Antenne Filter">
+                <select for="AntenneFilterSeance" id="AntenneFilterSeance" name="id" class="form-control form-select form-select-sm" asp-items="ViewBag.AntennesData" onchange="/*$('#btnAntenneSubmit').click();*/">
+                    <option value="0"> All regions </option>
+                </select>
+            </label>
+            <input type="submit" id="btnAntenneSubmit" hidden value="submit" />
+        </form>
+    </div>
+    <a asp-action="Index"><i class="fas fa-rotate-right fa-lg" title="Refresh"></i>Refresh</a>
+</div>
+
+<div id="SeancesContainer">
+    <partial name="_PartialGridViewSeances" model="@Model" />
+</div>
+
+<partial name="_SharedModalForms" />
+
+@section Scripts{
+    <script>
+        $(function () {
+            $("#AntenneFilterSeance").change(function () {
+                $.ajax({
+                    type: "Get",
+                    url: "/Seances/SeancesByAntenne?id=" + $(this).val(),  //remember change the controller to your owns.
+                    success: function (data) {
+                        $("#SeancesContainer").html("");
+                        $("#SeancesContainer").html(data);
+                    },
+                    error: function (response) {
+                        console.log(response.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+}

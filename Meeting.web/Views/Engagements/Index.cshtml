@@ -1,0 +1,155 @@
+﻿@model IEnumerable<Meeting.Web.Dto.EngagementDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h5 class="mb-4">@ViewBag.TitleObj.ListTitle</h5>
+
+<div class="d-flex justify-content-between">
+    
+    <a  asp-action="Create" onclick="return DisplayForm('@ViewBag.TitleObj.CreateTitle', null, event);"
+         data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal" class="btn btn-sm btn-secondary">Create New</a>
+     
+    <form id="RefreshEngagementForm" asp-formhelper="true" asp-action="SyncEngagements" asp-controller="Engagements" method="POST" asp-antiforgery="true">
+        <input type="hidden" name="yearid" value="@(Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0))"/>
+        <a  asp-action="SyncEngagements" onclick="/*$('#RefreshEngagementForm').submit();*/$('#btnEngageSubmit').click(); return false;" class="btn btn-secondary btn-sm" role="button" >Sync. Engagements</a>
+        <input type="submit" id="btnEngageSubmit" hidden value="submit" />
+     </form>
+
+    <a asp-action="Index"><i class="fas fa-rotate-right fa-lg" title="Refresh"></i>Refresh</a>
+</div>
+<div class="d-sm-inline-block d-sm-grid gap-2 pb-md-2 pt-2">
+    <form asp-action="FindEngagements" asp-controller="Engagements" method="GET" asp-antiforgery="true">
+
+        <label for="AntenneFilter" class="control-label" title="Antenne Filter">
+            <select for="AntenneFilter" id="AntenneFilterInsc" name="antenneId" class="form-control form-select form-select-sm m-2" asp-items="ViewBag.AntennesData" onchange="/*$('#btnAntenneSubmit').click();*/">
+                <option value="0"> All regions </option>
+            </select>
+        </label>
+
+        <label for="RubriqueFilter" class="control-label" title="Rubrique Filter">
+            <select for="RubriqueFilter" id="RubriqueFilter" name="rubriqueId" class="form-control form-select form-select-sm m-2" asp-items="ViewBag.RubriqueData" onchange="/*$('#btnAntenneSubmit').click();*/">
+                <option value="0"> All engagements </option>
+            </select>
+        </label>
+
+        <label for="PeopleFilter" class="control-label" title="People Filter">
+            <select for="PeopleFilter" id="PeopleFilter" name="peopleId" class="form-control form-select form-select-sm m-2" asp-items="ViewBag.PeopleData" onchange="/*$('#btnAntenneSubmit').click();*/">
+                <option value="0"> All people </option>
+            </select>
+        </label>
+
+        <label for="RubriqueStatusFilter" class="control-label" title="Rubrique Status Filter">
+            <select for="RubriqueStatusFilter" id="RubriqueStatusFilter" name="paiementstatus" class="form-control form-select form-select-sm m-2" onchange="/*$('#btnAntenneSubmit').click();*/">
+                <option value="0"> All status </option>
+                <option value="1"> Soldé </option>
+                <option value="2"> Non soldé </option>
+            </select>
+        </label>
+
+        <input type="submit" id="btnFilterEngageSubmit" class="m-2" value="Search"  />
+    </form>
+</div>
+
+<div class="table-responsive table-responsive-sm mt-2 pb-2">
+<table class="table table-hover">
+    <thead class="table-primary">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Person)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rubrique)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rubrique.Annee.Libelle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ToPay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cumulverse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Solde)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsOutcome)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.IsClosed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EngagementDate)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.IsDeduction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsExempt)
+            </th>
+            <th></th>
+        </tr>
+    </thead class="table-primary">
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td class="text-nowrap">
+                @Html.DisplayFor(modelItem => item.Person.FullName)
+            </td>
+            <td class="text-nowrap">
+                
+                <div class="dropdown dropend">
+                    <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                        @Html.DisplayFor(modelItem => item.Rubrique.Libelle)
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.EngagementId"  data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal"
+                            onclick="return DisplayForm('@ViewBag.TitleObj.EditTitle', null, event);"> Edit  </a>
+                        <a class="dropdown-item" asp-action="Details" asp-route-id="@item.EngagementId" 
+                            onclick="return DisplayForm('@ViewBag.TitleObj.DetailsTitle', null, event);"  data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Details</a> 
+                        <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.EngagementId" 
+                            onclick="return DisplayForm('@ViewBag.TitleObj.DeleteTitle', null, event);"  data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Delete</a>
+                    </div>
+                </div>
+            </td>
+            <td class="text-nowrap">
+                @Html.DisplayFor(modelItem => item.Rubrique.Annee.Libelle)
+            </td>
+            <td class="text-end">
+                @Html.DisplayFor(modelItem => item.ToPay)
+            </td>
+            <td class="text-end @(item.Solde < 0 ? "text-warning":"text-secondary")">
+                @Html.DisplayFor(modelItem => item.Cumulverse)
+            </td>
+            <td class="text-end @(item.Solde < 0 ? "text-danger":"text-secondary")">
+                @Html.DisplayFor(modelItem => item.Solde)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.IsOutcome)
+            </td>
+            @*<td class="text-center">
+                @Html.DisplayFor(modelItem => item.IsClosed)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.EngagementDate)
+            </td>*@
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.IsDeduction)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.IsExempt)
+            </td>
+            <td class="text-nowrap">
+               @* <a asp-action="Edit" asp-route-id="@item.EngagementId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.EngagementId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.EngagementId">Delete</a>
+                *@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+<partial name="_SharedModalForms" />

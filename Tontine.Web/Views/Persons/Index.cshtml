@@ -1,0 +1,109 @@
+﻿@model IEnumerable<Tontine.Entities.Models.CorePerson>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create" onclick="DisplayForm(null, event); return false;">Create New</a>
+</p>
+<div class="table-responsive table-responsive-sm table-responsive-md" style00="overflow-x:auto;">
+    <table id="personsDatatable" class="table table-hover table-striped table-responsive ">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prenom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Datenais)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lieunais)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sexe)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Adresse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Dateadhesion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Anneepromo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nocni)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Isvisible)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pays)
+            </th>
+            <th class="text-center">
+                <a asp-action="Index"><i class="fas fa-rotate-right fa-lg" title="Refresh"></i></a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.Idperson" onclick="DisplayForm(null, event); return false;">| @Html.DisplayFor(modelItem => item.Nom)</a>
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.Idperson" onclick="DisplayForm(null, event); return false;"> | @Html.DisplayFor(modelItem => item.Prenom)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Datenais)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lieunais)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sexe)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Adresse)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dateadhesion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Anneepromo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nocni)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Isvisible)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pays.Libelle)
+            </td>
+            <td>
+                    <a asp-action="Details" asp-route-id="@item.Idperson" onclick="DisplayForm(null, event); return false;">
+                        <i class="far fa-eye fa-lg" title="Details"></i>
+                    </a> |
+                    <a asp-action="Delete" asp-route-id="@item.Idperson" onclick="DisplayForm(null, event); return false;">
+                        <i class="far fa-trash-can fa-lg" title="Delete"></i>
+                    </a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+<partial name="_SharedModalForms" />

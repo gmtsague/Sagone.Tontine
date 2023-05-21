@@ -1,0 +1,49 @@
+﻿@model Meeting.Web.Dto.OrdrePassageDto
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@*<h1>Details</h1>*@
+
+<div>
+   @* <h4>MeetOrdrePassage</h4>
+    <hr />*@
+    <dl class="row">
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Subdivision)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Subdivision.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Inscription)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Inscription.Person.FullName)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Montantpercu)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Montantpercu)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Heuredebut)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Heuredebut)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Commentaire)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Commentaire)
+        </dd>
+
+    </dl>
+</div>
+<div class="visually-hidden">
+    <a asp-action="Edit" asp-route-id="@Model?.PassageId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

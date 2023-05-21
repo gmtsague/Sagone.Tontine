@@ -1,0 +1,107 @@
+﻿@model IEnumerable<Meeting.Web.Dto.EtablissementDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h5 class="mb-4">@ViewBag.TitleObj.ListTitle</h5>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<div class="table-responsive pb-5">
+
+<table class="table table-hover">
+    <thead class="table-primary">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Libelle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Adresse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Creationdate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeployedUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DatabaseName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ConnString)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnableMultiAntenne)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
+            <th></th>
+        </tr>
+    </thead class="table-primary">
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <div class="dropdown dropend">
+                    <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                        @Html.DisplayFor(modelItem => item.Libelle)
+                    </a>
+                    <div class="dropdown-menu">
+                        @*<a class="dropdown-item" asp-action="Edit" asp-route-id="@item.EtabId" onclick="return DisplayForm('@ViewBag.TitleObj.EditTitle', null, event);">
+                            Edit
+                        </a>
+                        <a class="dropdown-item" asp-action="Details" asp-route-id="@item.EtabId" onclick="return DisplayForm('@ViewBag.TitleObj.DetailsTitle', null, event);">Details</a>
+                        <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.EtabId" onclick="return DisplayForm('@ViewBag.TitleObj.DeleteTitle', null, event);">Delete</a>
+                        *@
+                        <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.EtabId"> Edit </a>
+                        <a class="dropdown-item" asp-action="Details" asp-route-id="@item.EtabId">Details</a>
+                        <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.EtabId">Delete</a>
+
+                        <form asp-formhelper="true" asp-action="SetDefault" asp-route-id="@item.EtabId">
+                            <input type="hidden" asp-for="@item.EtabId" />
+                            <input type="submit" value="Set Default" class="btn btn-primary btn-sm" />
+                        </form>
+                       <a class="dropdown-item" asp asp-action="SetDefault" asp-route-id="@item.EtabId">Set Default</a>
+                    </div>
+                </div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Adresse)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Creationdate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeployedUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DatabaseName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ConnString)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnableMultiAntenne)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country.Libelle)
+            </td>
+            <td>
+                @*
+                <a asp-action="Details" asp-route-id="@item.EtabId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.EtabId">Delete</a> |
+                    <form asp-formhelper="true" asp-action="SetDefault" asp-route-id="@item.EtabId">
+                        <input type="hidden" asp-for="@item.EtabId" />
+                        <input type="submit" value="Set Default" class="btn btn-primary btn-sm" /> |
+                </form>
+                <a asp asp-action="SetDefault" asp-route-id="@item.EtabId">Set Default</a>
+                *@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>

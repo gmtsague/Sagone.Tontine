@@ -1,0 +1,144 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div id="partialModal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1" aria-hidden="true" aria-labelledby="partialModalLabel1">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="partialModalLabel1">Custom Title</h6>
+                <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close">
+                    <!--span aria-hidden="true">&times;</span-->
+                </button>
+            </div>
+            <div id="partialModal-body" class="modal-body overflow-scroll00" style="max-height:500px">
+                @* @if (SignInManager.IsSignedIn(User))
+                {
+
+                }
+                else
+                {
+
+                }*@
+            </div>
+            <div class="modal-footer justify-content-between">
+                @*<partial name="_FormSubmitEditBtnPartial" class="d-flex justify-content-around" />*@
+                    <div>
+                        @*<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>*@
+                       <a asp-action="Index">Back to List</a>
+                    </div>
+                <input id0="partialSubmitBtn" type="button" value="Save" class="btn btn-primary partialSubmitBtn" />
+                @*<button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Launch 2nd Modal</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+<!--
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Modal 2</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Hide this modal and show the first with the button below.
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-bs-target="#partialModal" data-bs-toggle="modal">Back to first</button>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+<div class="modal fade" id="SeancePresencesModalForm" data-bs-backdrop="static" data-bs-keyboard="true" aria-hidden="true" aria-labelledby="SeancePresencesModalFormLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-fullscreen-sm-down modal-lg float-end">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title fs-5" id="SeancePresencesModalFormLabel2">Modal 2</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="SeancePresencesModalForm-body" class="modal-body" style00="max-height:75vh; overflow-y:auto">
+                Hide this modal and show the first with the button below.
+
+            </div>
+            <div class="modal-footer">
+                @*
+                    <button class="btn btn-primary" data-bs-target="#partialModal" data-bs-toggle="modal">Back to first</button>
+                   
+                <a class="btn btn-primary" data-bs-toggle="modal" href="#" data-bs-target="#partialModal" role="button">Open second modal</a>
+                *@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="presenceModalForm" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1" aria-hidden="true" aria-labelledby="presenceModalFormLabel1">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="presenceModalFormLabel1">Custom Title</h6>
+                <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" data-bs-target="#SeancePresencesModalForm" data-bs-toggle="modal" aria-label="Close">
+                    <!--span aria-hidden="true">&times;</span-->
+                </button>
+            </div>
+            <div id="presenceModalForm-body" class="modal-body overflow-scroll00" style="max-height:500px">
+                @* @if (SignInManager.IsSignedIn(User))
+                {
+
+                }
+                else
+                {
+
+                }*@
+            </div>
+            <div class="modal-footer justify-content-between">
+                <div>
+                    @*<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>*@
+                    <a asp-action="Index" data-bs-dismiss="modal" data-bs-target="#SeancePresencesModalForm" data-bs-toggle="modal">Back to List</a>
+                </div>
+                <input id0="partialSubmitBtn" type="button" value="Save" class="btn btn-primary partialSubmitBtn" data-bs-dismiss="modal" data-bs-target="#SeancePresencesModalForm" data-bs-toggle="modal" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Modal 1</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Show a second modal and hide this one with the button below.
+            </div>
+            <div class="modal-footer">
+@* <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Open second modal</button>*@
+                <a class="btn btn-primary" data-bs-toggle="modal" href="#" data-bs-target="#exampleModalToggle2" role="button">Open second modal</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Modal 2</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Hide this modal and show the first with the button below.
+            </div>
+            <div class="modal-footer">
+@*<button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Back to first</button>*@
+                <a class="btn btn-primary" data-bs-toggle="modal" href="#" data-bs-target="#exampleModalToggle" role="button">Back to first</a>
+            </div>
+        </div>
+    </div>
+</div>
+<a class="btn btn-primary" data-bs-toggle="modal" href="#" data-bs-target="#exampleModalToggle" role="button">Open first modal</a>
+-->

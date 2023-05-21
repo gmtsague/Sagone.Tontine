@@ -1,0 +1,145 @@
+﻿@model IEnumerable<Meeting.Web.Dto.InscriptionDto>
+
+<div class="table-responsive table-responsive-sm table-responsive-md mt-2 pb-2">
+    <table class="table table-sm table-hover table-bordered">
+        <thead class="table-primary">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Person)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dateinscrit)
+                </th>
+                @*<th>
+                @Html.DisplayNameFor(model => model.Datesuspension)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Tauxcotisation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Endette)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReportNouveau)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nocni)
+                </th>
+                @*<th>
+                @Html.DisplayNameFor(model => model.EtabId)
+                </th>
+                *@
+                <th>
+                    @Html.DisplayNameFor(model => model.Antenne)
+                </th>
+                <th class="text-nowrap">
+                    @Html.DisplayNameFor(model => model.Annee)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Soldedebut)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Soldefin)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalVerse)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cumuldettes)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cumulpenalites)
+                </th>
+                <th></th>
+            </tr>
+        </thead class="table-primary">
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <div class="dropdown dropend">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                            @Html.DisplayFor(modelItem => item.Person.FullName)
+                        </a>
+                        <div class="dropdown-menu">
+                        <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Idinscrit"  data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal"
+                            onclick="return DisplayForm('@ViewBag.TitleObj.EditTitle', null, event);"> Edit  </a>
+                        <a class="dropdown-item" asp-action="Details" asp-route-id="@item.Idinscrit"  data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal"
+                            onclick="return DisplayForm('@ViewBag.TitleObj.DetailsTitle', null, event);">Details</a> 
+                        <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.Idinscrit"  data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal"
+                            onclick="return DisplayForm('@ViewBag.TitleObj.DeleteTitle', null, event);">Delete</a>
+                        
+                        <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item @(item.IsActive?"":"disabled")" asp-action="ChangeStatus" asp-route-id="@item.Idinscrit" asp-route-newstatus="suspendre"  data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal"
+                            onclick="return DisplayForm('Suspendre un membre', null, event);">Suspendre</a>
+
+                        <a class="dropdown-item @(item.IsActive?"disabled":"")" asp-action="ChangeStatus" asp-route-id="@item.Idinscrit"  asp-route-newstatus="retablir" data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal"
+                            onclick="return DisplayForm('Rétablir un membre', null, event);">Retablir</a>
+
+                        <a class="dropdown-item  @(item.IsActive?"":"disabled")" asp-action="SetInitialData" asp-route-id="@item.Idinscrit"  data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal"
+                            onclick="return DisplayForm('Saisir données initiales', null, event);">Saisir données initiales</a>
+
+                        </div>
+                        </div>
+                    </td>
+                    <td>
+                        @((item.Dateinscrit.ToShortDateString()=="01/01/0001")? string.Empty : @Html.DisplayFor(modelItem => item.Dateinscrit))
+                    </td>
+                    @*<td>
+                        @((item.Datesuspension.ToShortDateString()=="01/01/0001")? string.Empty : @Html.DisplayFor(modelItem => item.Datesuspension))
+                </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tauxcotisation)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Endette)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReportNouveau)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsActive)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nocni)
+                    </td>
+                    @*<td>
+                @Html.DisplayFor(modelItem => item.EtabId)
+                </td>
+                *@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Antenne.Libelle)
+                    </td>
+                    <td class="text-nowrap">
+                        @Html.DisplayFor(modelItem => item.Annee.Libelle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Soldedebut)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Soldefin)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalVerse)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cumuldettes)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cumulpenalites)
+                    </td>
+                    <td>
+                       @* <a asp-action="Details" asp-route-id="@item.Idinscrit" onclick="return DisplayForm('@ViewBag.TitleObj.DetailsTitle', null, event);">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Idinscrit" onclick="return DisplayForm('@ViewBag.TitleObj.DeleteTitle', null, event);">Delete</a>
+                        *@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

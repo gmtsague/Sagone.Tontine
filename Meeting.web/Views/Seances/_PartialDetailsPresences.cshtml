@@ -1,0 +1,118 @@
+﻿@using System.Collections.Generic;
+@model IEnumerable<Meeting.Web.Dto.PresenceDto>
+@{
+    Dictionary<string, string>   MyTitles = new Dictionary<string, string>()
+        {
+    {"CreateEngagement", "Payer les engagements"},
+    {"CancelEngagement", "Annuler les paiements"},
+    {"DetailsEngagement", "Voir engagements payés"},
+    {"CreateSortiecaisse", "Bénéficier une sortie de caisse"},
+    {"EditSortiecaisse", "Modifier une sortie de caisse"},
+    {"DeleteSortiecaisse", "Supprimer une sortie de caisse"}
+        }; 
+}
+<p class="visually-hidden">
+    <a asp-action="Create">Create New</a>
+
+    <a asp-action="Create" asp-controller="Sortiecaisses"  data-bs-toggle="modal" data-bs-target="#partialModal" class="btn btn-sm btn-secondary" data-bs-dismiss00="modal" role="button"
+        onclick="return DisplayForm('@ViewBag.TitleObj.CreateTitle', null, event);">Faire une sortie de caisse</a>
+    <a asp-action="PayerEngagement" asp-controller="Engagements"  data-bs-dismiss00="modal"  data-bs-toggle="modal" data-bs-target="#partialModal"
+        onclick="return DisplayForm('@ViewBag.TitleObj.CreateTitle', null, event);" >Payer des engagements</a>
+
+</p>
+<div class="table-responsive">
+    <table id="detailseancesTable" class="table table-bordered table-hover">
+        <thead class="table-primary">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Idinscrit)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dateop)
+                </th>
+                <th class="text-center text-nowrap">
+                    @Html.DisplayNameFor(model => model.IsAbsent)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VerseCash)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VerseTransfert)
+                </th>
+                <th class="small">
+                    @Html.DisplayNameFor(model => model.NumBordero)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Globalverse)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Seance)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-nowrap">
+                        <div class="dropdown dropend">
+                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                            @Html.DisplayFor(modelItem => item.Inscription.Person.FullName)
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-action="Edit" asp-controller="Presences" asp-route-id="@item.PresenceId" asp-route-repartitionAuto="false"
+                                           data-bs-toggle="modal" data-bs-target="#presenceModalForm" data-bs-dismiss="modal" onclick="return DisplayPresenceModalForm('@MyTitles["CreateEngagement"]', event);">Payer les engagements</a>
+
+                               <a class="dropdown-item" asp-action="UndoPaiement" asp-controller="Presences" asp-route-id="@item.PresenceId" 
+                                    data-bs-toggle00="modal" data-bs-target00="#presenceModalForm" data-bs-dismiss00="modal"  onclick="return OnUndoPaiement(event, @item.PresenceId);" >Annuler les paiements</a>
+
+                               <a class="dropdown-item" asp-action="Details" asp-controller="Presences" asp-route-id="@item.PresenceId"
+                                   data-bs-toggle="modal" data-bs-target="#presenceModalForm" data-bs-dismiss="modal" onclick="return DisplayPresenceModalForm('@MyTitles["DetailsEngagement"] [Details]', event);">Voir engagements payés</a>
+                                
+                               <div class="dropdown-divider"></div>
+                           
+                               <a class="dropdown-item" asp-action="Create" asp-controller="Sortiecaisses" asp-route-id="@item.PresenceId"
+               data-bs-toggle="modal" data-bs-target="#presenceModalForm" data-bs-dismiss="modal" onclick="return DisplayPresenceModalForm('@MyTitles["CreateSortiecaisse"] [Create]', event);">Bénéficier d'une sortie de caisse</a>
+
+                                <a class="dropdown-item" asp-action="Edit" asp-controller="Sortiecaisses" asp-route-id="@item.PresenceId"
+               data-bs-toggle="modal" data-bs-target="#presenceModalForm" data-bs-dismiss="modal" onclick="return DisplayPresenceModalForm('@MyTitles["EditSortiecaisse"] [Edit]', event);">Modifier une sortie de caisse</a>
+
+                                <a class="dropdown-item" asp-action="Delete" asp-controller="Sortiecaisses" asp-route-id="@item.PresenceId"
+               data-bs-toggle="modal" data-bs-target="#presenceModalForm" data-bs-dismiss="modal" onclick="return DisplayPresenceModalForm('@MyTitles["DeleteSortiecaisse"]', event);">Supprimer une sortie de caisse</a>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        @((item.Dateop.ToShortDateString()=="01/01/0001")? string.Empty : @Html.DisplayFor(modelItem => item.Dateop))
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.IsAbsent)
+                    </td>
+                    <td class="text-end">
+                        @Html.DisplayFor(modelItem => item.VerseCash)
+                    </td>
+                    <td class="text-end">
+                        @Html.DisplayFor(modelItem => item.VerseTransfert)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NumBordero)
+                    </td>
+                    <td class="text-end">
+                        @Html.DisplayFor(modelItem => item.Globalverse)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Seance.Subdivision.Libelle)
+                    </td>
+                    <td>
+                        @* <a asp-action="Edit" asp-route-id="@item.PresenceId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.PresenceId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.PresenceId">Delete</a>
+                        *@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@*<partial name="_SharedModalForms" />*@

@@ -1,0 +1,72 @@
+﻿@model Meeting.Web.Dto.SeanceDto
+@{
+    ViewData["Title"] = "Details";
+}
+
+@*<h1>Details</h1>*@
+
+<div>
+    <h4>MeetSeance</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Subdivision)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Subdivision.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Antenne)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Antenne.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Opendate)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Opendate)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Closedate)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Closedate)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.TotalEntrees)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.TotalEntrees)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.TotalSorties)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.TotalSorties)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Depensecollation)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Depensecollation)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Compterendu)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Compterendu)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+    </dl>
+</div>
+<div class="visually-hidden">
+    <a asp-action="Edit" asp-route-id="@Model?.SeanceId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

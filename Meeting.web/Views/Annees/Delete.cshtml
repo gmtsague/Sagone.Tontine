@@ -1,0 +1,81 @@
+﻿@model Meeting.Web.Dto.AnneeDto
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+@*<h1>Delete</h1>*@
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    @*<h4>CoreAnnee</h4>*@
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-4 col-md-4">
+            @Html.DisplayNameFor(model => model.Libelle)
+        </dt>
+        <dd class = "col-sm-8 col-md-8">
+            @Html.DisplayFor(model => model.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Datedebut)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Datedebut)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Datefin)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Datefin)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.IsCurrent)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.IsCurrent)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.IsClosed)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.IsClosed)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Nbdivision)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Nbdivision)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.CopyDataFromPrevious)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.CopyDataFromPrevious)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Bureau)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Bureau.Libelle)
+        </dd>
+        @*<dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Frequence)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Frequence.FrequenceId)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.PreviousYear)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.PreviousYear.AnneeId)
+        </dd>*@
+    </dl>
+    
+    <form asp-formhelper="true" asp-action="Delete" class="visually-hidden">
+        <input type="hidden" asp-for="AnneeId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

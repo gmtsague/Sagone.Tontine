@@ -1,0 +1,37 @@
+﻿@model Meeting.Web.Dto.PosteDto
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@*<h1>Create</h1>
+
+<h4>PosteDto</h4>
+<hr />*@
+<div class="row justify-content-center">
+    <div class="card-body">
+        <form asp-formhelper ="true" asp-action="Create" enctype="multipart/form-data"  asp-AddDOMContentLoaded="false">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Libelle" class="control-label"></label>
+                <input asp-for="Libelle" class="form-control" required />
+                <span asp-validation-for="Libelle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Code" class="control-label"></label>
+                <input asp-for="Code" class="form-control" required />
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+            <div class="form-group d-flex justify-content-around border-1 border-secondary border-top p-2 visually-hidden">
+                <div>
+                    <a asp-action="Index">Back to List</a>
+                </div>
+                <input id="regularSubmitBtn" type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

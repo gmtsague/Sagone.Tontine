@@ -1,0 +1,54 @@
+﻿@model Tontine.Entities.Models.CoreBank
+
+@{
+   // ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>CoreBank</h4>
+<hr />
+<div class="row justify-content-center">
+    <div @*class="col-md-4"*@>
+        <form asp-action="Edit" asp-route-id="@Model.Idbank">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Idbank" />
+            <div class="form-group">
+                <label asp-for="PaysId" class="control-label"></label>
+                <select asp-for="PaysId" class="form-control" asp-items="ViewBag.PaysId"></select>
+                <span asp-validation-for="PaysId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Libelle" class="control-label"></label>
+                <input asp-for="Libelle" class="form-control" />
+                <span asp-validation-for="Libelle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Adresse" class="control-label"></label>
+                <input asp-for="Adresse" class="form-control" />
+                <span asp-validation-for="Adresse" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Coderib" class="control-label"></label>
+                <input asp-for="Coderib" class="form-control" />
+                <span asp-validation-for="Coderib" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

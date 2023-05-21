@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Meeting.Web.Dto.AntenneDto>
+
+<h5 class="mb-4">@ViewBag.TitleObj.ListTitle</h5>
+
+<div class="d-flex justify-content-between">
+    <a asp-action="CreateView" onclick="return DisplayForm('@ViewBag.TitleObj.CreateTitle', null, event);"
+        data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal" class="btn btn-sm btn-secondary" role="button" >Create New</a>
+
+    <a asp-action="Index"><i class="fas fa-rotate-right fa-lg" title="Refresh"></i>Refresh</a>
+</div>
+<div class="table-responsive table-responsive-sm table-responsive-md mt-2 pb-2">
+    <table class="table table-hover ">
+         @*<caption class="caption-top text-center text-nowrap">Liste des regions</caption>*@
+    <thead class="table-primary">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Libelle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Creationdate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Etab)
+            </th>
+            <th></th>
+        </tr>
+    </thead class="table-primary">
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>  
+                <div class="dropdown dropend">
+                    <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                        @Html.DisplayFor(modelItem => item.Libelle)
+                    </a>
+                    <div class="dropdown-menu">
+                    <a class="dropdown-item" href="@Url.Action("EditView", "Antennes", new { IdEtab = item.EtabId, IdAntenne = item.AntenneId})" onclick="return DisplayForm('@ViewBag.TitleObj.EditTitle', null, event);"
+                         data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal"> Edit </a> 
+                <a class="dropdown-item" href="@Url.Action("DeleteView", "Antennes", new { IdEtab = item.EtabId, IdAntenne = item.AntenneId})" onclick="return DisplayForm('@ViewBag.TitleObj.DeleteTitle', null, event);"
+                         data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal"> Delete </a>                    
+                    </div>  
+                    </div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Creationdate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Etab.Libelle)
+            </td>
+            <td>
+               @* <a href="@Url.Action("Details", "Antennes", new { IdEtab = item.EtabId, IdAntenne = item.AntenneId})" onclick="return DisplayForm('@ViewBag.TitleObj.DetailsTitle', null, event);">
+                            Details
+                    </a> | *@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+
+<partial name="_SharedModalForms" />

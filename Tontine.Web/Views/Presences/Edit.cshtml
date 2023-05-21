@@ -1,0 +1,94 @@
+﻿@model Tontine.Entities.Models.Presence
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Presence</h4>
+<hr />
+<div class="row justify-content-center">
+    <div class="card-body">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Idpresence" />
+            <div class="form-group">
+                <label asp-for="Idannee" class="control-label"></label>
+                <select asp-for="Idannee" class="form-control" asp-items="ViewBag.Idannee"></select>
+                <span asp-validation-for="Idannee" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Iddivision" class="control-label"></label>
+                <select asp-for="Iddivision" class="form-control" asp-items="ViewBag.Iddivision"></select>
+                <span asp-validation-for="Iddivision" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Idinscrit" class="control-label"></label>
+                <select asp-for="Idinscrit" class="form-control" asp-items="ViewBag.Idinscrit"></select>
+                <span asp-validation-for="Idinscrit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Idcompte" class="control-label"></label>
+                <select asp-for="Idcompte" class="form-control" asp-items="ViewBag.Idcompte"></select>
+                <span asp-validation-for="Idcompte" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Idmode" class="control-label"></label>
+                <select asp-for="Idmode" class="form-control" asp-items="ViewBag.Idmode"></select>
+                <span asp-validation-for="Idmode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Dateop" class="control-label"></label>
+                <input asp-for="Dateop" class="form-control" />
+                <span asp-validation-for="Dateop" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Isabsent" class="control-label"></label>
+                <input asp-for="Isabsent" class="form-control" />
+                <span asp-validation-for="Isabsent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Globalverse" class="control-label"></label>
+                <input asp-for="Globalverse" class="form-control" />
+                <span asp-validation-for="Globalverse" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Soldedebut" class="control-label"></label>
+                <input asp-for="Soldedebut" class="form-control" />
+                <span asp-validation-for="Soldedebut" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Soldefin" class="control-label"></label>
+                <input asp-for="Soldefin" class="form-control" />
+                <span asp-validation-for="Soldefin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cumuldetteapres" class="control-label"></label>
+                <input asp-for="Cumuldetteapres" class="form-control" />
+                <span asp-validation-for="Cumuldetteapres" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Codeop" class="control-label"></label>
+                <input asp-for="Codeop" class="form-control" />
+                <span asp-validation-for="Codeop" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Numbordero" class="control-label"></label>
+                <input asp-for="Numbordero" class="form-control" />
+                <span asp-validation-for="Numbordero" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,60 @@
+﻿@model Tontine.Entities.Models.Poste
+
+@{
+  //  ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Poste</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Libelle)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Libelle)
+        </dd>
+     @* <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ispresident)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ispresident)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Istresorier)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Istresorier)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Issg)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Issg)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Issga)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Issga)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Iscc)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Iscc)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ismembre)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ismembre)
+        </dd>*@
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Idposte">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

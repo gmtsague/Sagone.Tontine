@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Tontine.Entities.Models.Bureau>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create" onclick="DisplayForm(null,event); return false;">Create New</a>
+</p>
+<div style="overflow-x:auto;">
+<table id="bureauxDatatable" class="table table-hover table-striped table-responsive ">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Libelle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Debut)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nbperson)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nbvotes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nbabstention)
+            </th>
+            <th class="text-center">
+                <a asp-action="Index"><i class="fas fa-rotate-right fa-lg" title="Refresh"></i></a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Idbureau" onclick="DisplayForm(null, event); return false;"> @Html.DisplayFor(modelItem => item.Libelle)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Debut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nbperson)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nbvotes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nbabstention)
+            </td>
+            <td>                
+                    <a asp-action="Details" asp-route-id="@item.Idbureau" onclick="DisplayForm(null, event); return false;">
+                        <i class="far fa-eye fa-lg" title="Details"></i>
+                    </a> |
+                    <a asp-action="Delete" asp-route-id="@item.Idbureau"  onclick="DisplayForm(null, event); return false;">
+                        <i class="far fa-trash-can fa-lg" title="Delete"></i>
+                    </a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+<partial name="_SharedModalForms" />

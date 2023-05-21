@@ -1,0 +1,139 @@
+﻿@model IEnumerable<Meeting.Web.Dto.PersonDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h5 class="mb-4">@ViewBag.TitleObj.ListTitle</h5>
+
+<div class="d-flex justify-content-between">
+    <a asp-action="Create" onclick="return DisplayForm('@ViewBag.TitleObj.CreateTitle', null, event);"
+        data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal" class="btn btn-sm btn-secondary">Create New</a>
+
+    <a asp-action="Index"><i class="fas fa-rotate-right fa-lg" title="Refresh"></i>Refresh</a>
+</div>
+<div class="table-responsive table-responsive-sm table-responsive-md mt-2 pb-2">
+    <table class="table table-hover ">
+    <thead class="table-primary">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prenom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Datenais)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lieunais)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sexe)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Adresse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AdhesionDate)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Nocni)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CniExpireDate)
+                </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.IsVisible)
+                </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.AnneePromo)
+            </th>
+          @*<th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Etab)
+                </th>
+                *@
+            <th></th>
+        </tr>
+    </thead class="table-primary">
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <div class="dropdown dropend">
+                    <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                        @Html.DisplayFor(modelItem => item.Nom)
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.PersonId" onclick="return DisplayForm('@ViewBag.TitleObj.EditTitle', null, event);"
+                             data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal"> Edit </a>
+                        <a class="dropdown-item" asp-action="Details" asp-route-id="@item.PersonId" onclick="return DisplayForm('@ViewBag.TitleObj.DetailsTitle', null, event);"
+                             data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Details</a>
+                        <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.PersonId" onclick="return DisplayForm('@ViewBag.TitleObj.DeleteTitle', null, event);"
+                             data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Delete</a>
+                    </div>
+                </div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prenom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Datenais)
+                @((item.Datenais.ToString()=="01/01/0001")? string.Empty : @Html.DisplayFor(modelItem => item.Datenais))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lieunais)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sexe)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Adresse)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AdhesionDate)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Nocni)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CniExpireDate)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.IsVisible)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.AnneePromo)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Country.CountryId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Etab.EtabId)
+                </td>*@
+            <td>
+               @* <a asp-action="Details" asp-route-id="@item.PersonId" onclick="return DisplayForm('@ViewBag.TitleObj.DetailsTitle', null, event);">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.PersonId" onclick="return DisplayForm('@ViewBag.TitleObj.DeleteTitle', null, event);">Delete</a>
+                *@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+<partial name="_SharedModalForms" />

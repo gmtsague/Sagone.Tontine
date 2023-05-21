@@ -1,0 +1,48 @@
+﻿@model Meeting.Web.Dto.BankDto
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@*<h1>Details</h1>*@
+
+<div>
+    @*<h4>CoreBank</h4>
+    <hr />*@
+    <dl class="row">
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Libelle)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Adresse)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Adresse)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Coderib)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Coderib)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Country.Libelle)
+        </dd>
+    </dl>
+</div>
+<div class="visually-hidden">
+    <a asp-action="Edit" asp-route-id="@Model?.BankId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

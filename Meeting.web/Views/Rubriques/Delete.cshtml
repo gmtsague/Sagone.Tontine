@@ -1,0 +1,69 @@
+﻿@model Meeting.Web.Dto.RubriqueDto
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+@*<h1>Delete</h1>*@
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    @*<h4>MeetRubrique</h4>
+    <hr />*@
+    <dl class="row">
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Libelle)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Nbmandataire)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Nbmandataire)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Montantroute)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Montantroute)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.MontantPerson)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.MontantPerson)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.IsOutcome)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.IsOutcome)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Commentaire)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Commentaire)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Annee)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Annee.Libelle)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Typerub)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Typerub.Libelle)
+        </dd>
+    </dl>
+    
+    <form asp-formhelper="true" asp-action="Delete" class="visually-hidden">
+        <input type="hidden" asp-for="RubriqueId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

@@ -1,0 +1,108 @@
+﻿@model Tontine.Entities.Models.Inscription
+
+@{
+   // ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Inscription</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.IdanneeNavigation)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.IdanneeNavigation.Libelle)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.IdantenneNavigation)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.IdantenneNavigation.Libelle)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.IdpersonNavigation)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.IdpersonNavigation.Nom)  @Html.DisplayFor(model => model.IdpersonNavigation.Prenom)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.IdposteNavigation)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.IdposteNavigation.Libelle)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Dateinscrit)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Dateinscrit)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Datesuspension)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Datesuspension)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Isactive)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Isactive)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Nocni)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Nocni)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Soldedebut)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Soldedebut)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Soldefin)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Soldefin)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Tauxcotisation)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Tauxcotisation)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Totalverse)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Totalverse)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Cumuldettes)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Cumuldettes)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Cumulpenalites)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Cumulpenalites)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Endette)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Endette)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Idinscrit">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

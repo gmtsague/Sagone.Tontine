@@ -1,0 +1,54 @@
+﻿@model Tontine.Entities.Models.Aide
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Aide</h4>
+<hr />
+<div class="row justify-content-center">
+    <div class="card-body">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Idevts" />
+            <div class="form-group">
+                <label asp-for="Libelle" class="control-label"></label>
+                <input asp-for="Libelle" class="form-control" />
+                <span asp-validation-for="Libelle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lieu" class="control-label"></label>
+                <input asp-for="Lieu" class="form-control" />
+                <span asp-validation-for="Lieu" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Montanttotalevt" class="control-label"></label>
+                <input asp-for="Montanttotalevt" class="form-control" />
+                <span asp-validation-for="Montanttotalevt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Montantroute" class="control-label"></label>
+                <input asp-for="Montantroute" class="form-control" />
+                <span asp-validation-for="Montantroute" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Listemandataires" class="control-label"></label>
+                <input asp-for="Listemandataires" class="form-control" />
+                <span asp-validation-for="Listemandataires" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

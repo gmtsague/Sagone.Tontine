@@ -1,0 +1,42 @@
+﻿@model Tontine.Entities.Models.Configvisa
+
+@{
+   // ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Configvisa</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Numordre)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Numordre)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.IdanneeNavigation)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.IdanneeNavigation.Libelle)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.IdposteNavigation)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.IdposteNavigation.Libelle)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.IdtypeNavigation)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.IdtypeNavigation.Libelle)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Idconfigvisa">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,68 @@
+﻿@model Tontine.Entities.Models.Presence
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Presence</h4>
+<hr />
+<div class="row justify-content-center">
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Idannee" class="control-label"></label>
+                <select asp-for="Idannee" class ="form-control" asp-items="ViewBag.Idannee"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Iddivision" class="control-label"></label>
+                <select asp-for="Iddivision" class ="form-control" asp-items="ViewBag.Iddivision"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Idinscrit" class="control-label"></label>
+                <select asp-for="Idinscrit" class ="form-control" asp-items="ViewBag.Idinscrit"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Idcompte" class="control-label"></label>
+                <select asp-for="Idcompte" class ="form-control" asp-items="ViewBag.Idcompte"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Idmode" class="control-label"></label>
+                <select asp-for="Idmode" class ="form-control" asp-items="ViewBag.Idmode"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Dateop" class="control-label"></label>
+                <input asp-for="Dateop" class="form-control" />
+                <span asp-validation-for="Dateop" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Isabsent" class="control-label"></label>
+                <input asp-for="Isabsent" class="form-control" />
+                <span asp-validation-for="Isabsent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Codeop" class="control-label"></label>
+                <input asp-for="Codeop" class="form-control" />
+                <span asp-validation-for="Codeop" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Numbordero" class="control-label"></label>
+                <input asp-for="Numbordero" class="form-control" />
+                <span asp-validation-for="Numbordero" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

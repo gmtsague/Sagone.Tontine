@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Meeting.Web.Dto.OrdrePassageDto>
+@{
+}
+<div class="table-responsive table-responsive-sm table-responsive-md mt-2 pb-2">
+    <table class="table table-hover ">
+        <thead class="table-primary">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Subdivision)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Inscription)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Montantpercu)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Heuredebut)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Commentaire)
+                </th>
+                <th></th>
+            </tr>
+        </thead class="table-primary">
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @*<a asp-action="Edit" asp-route-id="@item.PassageId" onclick="return DisplayForm('@ViewBag.TitleObj.EditTitle', null, event);">
+                            @Html.DisplayFor(modelItem => item.Subdivision.Libelle)
+                        </a>*@
+                        <div class="dropdown dropend">
+                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                                @Html.DisplayFor(modelItem => item.Subdivision.Libelle)
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.PassageId" onclick="return DisplayForm('@ViewBag.TitleObj.EditTitle', null, event);"
+                                     data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Edit </a>
+                                <a class="dropdown-item" asp-action="Details" asp-route-id="@item.PassageId" onclick="return DisplayForm('@ViewBag.TitleObj.DetailsTitle', null, event);"
+                                     data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Details</a>
+                                <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.PassageId" onclick="return DisplayForm('@ViewBag.TitleObj.DeleteTitle', null, event);"
+                                     data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.PassageId" onclick="return DisplayForm('@ViewBag.TitleObj.EditTitle', null, event);"
+                             data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">
+                            @Html.DisplayFor(modelItem => item.Inscription.Person.FullName)
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Montantpercu)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Heuredebut)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Commentaire)
+                    </td>
+                    <td>
+                        @*<a asp-action="Details" asp-route-id="@item.PassageId" onclick="return DisplayForm('@ViewBag.TitleObj.DetailsTitle', null, event);">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.PassageId" onclick="return DisplayForm('@ViewBag.TitleObj.DeleteTitle', null, event);">Delete</a>
+                        *@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

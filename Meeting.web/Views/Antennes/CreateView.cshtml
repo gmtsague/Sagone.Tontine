@@ -1,0 +1,42 @@
+﻿@model Meeting.Web.Dto.AntenneDto
+
+@*<h4>AntenneDto</h4>
+<hr />*@
+<div class="row justify-content-center">
+    @*<div class="card-body">*@
+        <div class="card-body">
+        <form asp-formhelper="true" asp-action="Create" enctype="multipart/form-data" asp-AddDOMContentLoaded="false">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @*<input type="hidden" asp-for="AntenneId" />*@
+            <div class="form-group  p-2">
+                <label asp-for="EtabId" class="control-label"></label>
+                <select asp-for="EtabId" class ="form-control form-select" asp-items="ViewBag.EtabId"><option value=""> Choose an item </option></select>
+            </div>
+            @*<div class="form-group  p-2">
+                <label asp-for="AntenneId" class="control-label"></label>
+                <input asp-for="AntenneId" class="form-control" />
+                <span asp-validation-for="AntenneId" class="text-danger"></span>
+            </div>*@
+            <div class="form-group  p-2">
+                <label asp-for="Libelle" class="control-label"></label>
+                <input asp-for="Libelle" class="form-control" required />
+                <span asp-validation-for="Libelle" class="text-danger"></span>
+            </div>
+            <div class="form-group  p-2">
+                <label asp-for="Creationdate" class="control-label"></label>
+                <input asp-for="Creationdate" class="form-control" />
+                <span asp-validation-for="Creationdate" class="text-danger"></span>
+            </div>
+            <div class="form-group d-flex justify-content-around border-1 border-secondary border-top p-2 visually-hidden">
+                <div>
+                    <a asp-action="Index">Back to List</a>
+                </div>
+                <input id="regularSubmitBtn" type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,85 @@
+﻿@model Meeting.Web.Dto.PreferenceDto
+@*@model Meeting.Web.Dto.Preference*@
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+@*<h1>Delete</h1>*@
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    @*<h4>MeetPreference</h4>
+    <hr />*@
+    <dl class="row">
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.TauxInteretMensuel)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.TauxInteretMensuel)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.TauxInteretPenalite)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.TauxInteretPenalite)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.TauxPenaliteCotisation)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.TauxPenaliteCotisation)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.EnableAutoGenPresence)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.EnableAutoGenPresence)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.EnableSigningOutcome)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.EnableSigningOutcome)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.EnableMaxDelayPenalites)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.EnableMaxDelayPenalites)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.EnableAutoDispatchIncome)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.EnableAutoDispatchIncome)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.EnableFixedAmountFees)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.EnableFixedAmountFees)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.EnableSecoursInsurance)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.EnableSecoursInsurance)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.EnableFixedFeesByAnten)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.EnableFixedFeesByAnten)
+        </dd>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.SettingId)
+        </dd>
+    </dl>
+    
+    <form asp-formhelper="true" asp-action="Delete" class="visually-hidden">
+        <input type="hidden" asp-for="SettingId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
