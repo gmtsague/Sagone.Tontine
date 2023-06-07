@@ -8,17 +8,17 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="EtabId" />
             <input type="hidden" asp-for="AntenneId" />
-            <div class="form-group  p-2">
+            <div class="form-group m-3">
                 <label asp-for="Libelle" class="control-label"></label>
                 <input asp-for="Libelle" class="form-control" required />
                 <span asp-validation-for="Libelle" class="text-danger"></span>
             </div>
-            <div class="form-group  p-2">
+            <div class="form-group m-3">
                 <label asp-for="Creationdate" class="control-label"></label>
                 <input asp-for="Creationdate" class="form-control" />
                 <span asp-validation-for="Creationdate" class="text-danger"></span>
             </div>
-            <div class="form-group d-flex justify-content-around border-1 border-secondary border-top p-2 visually-hidden">
+            <div class="form-group d-flex justify-content-around border-1 border-secondary border-top m-3 visually-hidden">
                 <div>
                     <a asp-action="Index">Back to List</a>
                 </div>
