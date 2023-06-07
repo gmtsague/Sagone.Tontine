@@ -21,13 +21,13 @@
             @Html.DisplayNameFor(model => model.Idinscrit)
         </dt>
         <dd class="col-sm-7">
-            @Html.DisplayFor(model => model.Inscription.FullName)
+            @Html.DisplayFor(model => model.Inscription.Person.FullName)
         </dd>
         <dt class="col-sm-5">
             @Html.DisplayNameFor(model => model.Dateop)
         </dt>
         <dd class="col-sm-7">
-            @Html.DisplayFor(model => model.Dateop)
+            @((@Model.Dateop.ToShortDateString() == "01/01/0001") ? string.Empty : @Html.DisplayFor(model => model.Dateop))
         </dd>
         <dt class="col-sm-5">
             @Html.DisplayNameFor(model => model.IsAbsent)
