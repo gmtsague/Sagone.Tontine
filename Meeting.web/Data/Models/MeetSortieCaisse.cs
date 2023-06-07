@@ -11,10 +11,11 @@ namespace MeetingEntities.Models;
 /// </summary>
 [Table("meet_sortie_caisse", Schema = "tontine_v14")]
 [Index("SeanceId", Name = "association_11_fk3")]
-[Index("EngagementId", Name = "association_12_fk")]
+//[Index("EngagementId", Name = "association_12_fk")]
+[Index("RubriqueId", Name = "association_12_fk")]
 [Index("Idinscrit", Name = "association_19_fk2")]
 [Index("SortiecaisseId", Name = "meet_sortie_caisse_pk", IsUnique = true)]
-[Index("Idinscrit", "SeanceId", "EngagementId", Name = "uniq_sortie_caisse", IsUnique = true)]
+[Index("Idinscrit", "SeanceId", "RubriqueId", Name = "uniq_sortie_caisse", IsUnique = true)]
 public partial class MeetSortieCaisse
 {
     /// <summary>
@@ -60,11 +61,17 @@ public partial class MeetSortieCaisse
     [Column("seance_id")]
     public int SeanceId { get; set; }
 
+    ///// <summary>
+    ///// Engagement_id
+    ///// </summary>
+    //[Column("engagement_id")]
+    //public int EngagementId { get; set; }
+
     /// <summary>
-    /// Engagement_id
+    /// Rubrique_id
     /// </summary>
-    [Column("engagement_id")]
-    public int EngagementId { get; set; }
+    [Column("rubrique_id")]
+    public int RubriqueId { get; set; }
 
     /// <summary>
     /// No de Reference permettant d''identifier le document
@@ -110,9 +117,13 @@ public partial class MeetSortieCaisse
     [Column("visarestants")]
     public int Visarestants { get; set; }
 
-    [ForeignKey("EngagementId")]
+    [ForeignKey("RubriqueId")]
     [InverseProperty("MeetSortieCaisses")]
-    public virtual MeetEngagement Engagement { get; set; } = null!;
+    public virtual MeetRubrique Rubrique { get; set; } = null!;
+
+    //[ForeignKey("EngagementId")]
+    //[InverseProperty("MeetSortieCaisses")]
+    //public virtual MeetEngagement Engagement { get; set; } = null!;
 
     [ForeignKey("Idinscrit")]
     [InverseProperty("MeetSortieCaisses")]

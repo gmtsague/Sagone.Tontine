@@ -120,6 +120,9 @@ public partial class MeetRubrique
     [InverseProperty("Rubrique")]
     public virtual ICollection<MeetEngagement> MeetEngagements { get; set; } = new List<MeetEngagement>();
 
+    [InverseProperty("Rubrique")]
+    public virtual ICollection<MeetSortieCaisse> MeetSortieCaisses { get; set; } = new List<MeetSortieCaisse>();
+
     [ForeignKey("TyperubId")]
     [InverseProperty("MeetRubriques")]
     public virtual MeetTypeRubrique Typerub { get; set; } = null!;
