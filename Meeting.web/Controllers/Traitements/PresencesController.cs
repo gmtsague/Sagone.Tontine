@@ -29,7 +29,7 @@ namespace Meeting.Web.Controllers.Traitements
         // GET: Presences
         public async Task<IActionResult> Index()
         {
-            var labosContext = _context.PresenceDto.Include(p => p.Seance);
+            var labosContext = _context.MeetPresences.Include(p => p.Seance).AsNoTracking().ProjectToType<PresenceDto>();
             return View(await labosContext.ToListAsync());
         }
 
@@ -43,8 +43,13 @@ namespace Meeting.Web.Controllers.Traitements
             }
 
             var presence = await _context.MeetPresences
-                .Include(p => p.Seance)
-                .Include(p=> p.MeetEntreeCaisses).ThenInclude(p=>p.Engagement).ThenInclude(p=>p.Rubrique)
+                .Include(p => p.Seance.CoreSubdivision)
+                .Include(m => m.IdinscritNavigation.Person)
+                .Include(m => m.IdinscritNavigation.MeetAntenne)
+                //.ThenInclude(m => m.Person)
+                .Include(p=> p.MeetEntreeCaisses)
+                .ThenInclude(p=>p.Engagement)
+                .ThenInclude(p=>p.Rubrique)
                 .FirstOrDefaultAsync(m => m.PresenceId == id);
             if (presence == null)
             {
@@ -84,6 +89,108 @@ namespace Meeting.Web.Controllers.Traitements
             return View(presenceDto);
         }
 
+        /// <summary>
+        /// Affiche le formulaire permettant de payer les engagements d'un membre au cours d'une séance.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="repartitionAuto"></param>
+        /// <returns></returns>
+        // GET: Presences/PayerEngagements/5
+        public async Task<IActionResult> PayerEngagements(int? id, bool repartitionAuto = true)
+        {
+            if (id == null || _context.MeetPresences == null)
+            {
+                //  return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
+            }
+
+            var presence = await _context.MeetPresences
+                                         .Include(m => m.Seance.CoreSubdivision)
+                                         .Include(m => m.IdinscritNavigation.MeetAntenne)
+                                         .Include(m => m.IdinscritNavigation.Person)
+                                         .FirstAsync(m => m.PresenceId == id);
+            if (presence == null)
+            {
+                //return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
+            }
+
+            var details = from eng in _context.MeetEngagements.Include(m => m.Rubrique).Include(m => m.Person)
+                          join ins in _context.MeetInscriptions on eng.PersonId equals ins.PersonId
+                          join pers in _context.CorePeople on eng.PersonId equals pers.PersonId
+                          //join rub in _context.MeetRubriques on eng.RubriqueId equals rub.RubriqueId
+                          where ins.Idinscrit == presence.Idinscrit && (eng.ToPay - eng.Cumulverse) > 0
+                          orderby eng.Rubrique.Libelle
+                          select new { eng/*, pers, rub*/ };
+
+            //var details = _context.MeetEngagements.Include(m => m.Rubrique)
+            //                                .Include(m => m.Person)
+            //                                .ThenInclude(m => m.MeetInscriptions.Where(p => p.Idinscrit == presenceDto.Idinscrit))
+            //                                //.Where(m => (m.PersonId == PeopleId || PeopleId <= 0))
+            //                                //.Where(m => (m.RubriqueId == RubriqueId || RubriqueId <= 0))
+            //                                .Where(m => (m.ToPay - m.Cumulverse) > 0).AsNoTracking();
+            //var d1 =  _context.MeetEngagements.Join(_context.MeetInscriptions, e=>e.PersonId, i=>i.PersonId, (e,i)=> new )
+
+            //           IQueryable <MeetEngagement> details = _context.Database
+            //                                                        .SqlQuery<MeetEngagement>($@"SELECT e.* FROM meet_engagement e 
+            //JOIN meet_inscription i ON (e.person_id = i.person_id AND i.idinscrit = {{presenceDto.Idinscrit}}) 
+            //JOIN core_person p ON (p.person_id = i.person_id) 
+            //JOIN meet_rubrique R ON (R.rubrique_id = e.rubrique_id) WHERE (e.to_pay - e.cumulverse) > 0 ");
+
+            if (details != null)
+            {
+                //presenceDto.PayableAmount = details.Sum(m => (m.eng.ToPay - m.eng.Cumulverse));
+
+                //if(!repartitionAuto && details.Count() > 0)
+                //{
+                //    foreach(var dette in details.ToList())
+                //    {
+                //        presenceDto.EntreeCaisses.Add(new EntreeCaisseDto()
+                //        {
+                //            EngagementId = dette.eng.EngagementId,
+                //            Engagement = dette.eng.Adapt<EngagementDto>(),
+                //            IsOutcome = dette.eng.IsOutcome,
+                //            Montantverse = 0,
+                //            PresenceId = presenceDto.PresenceId
+                //            //, OperationId = 0
+                //        });
+                //    }
+
+                //}
+
+
+                if (!repartitionAuto && details.Count() > 0)
+                {
+                    foreach (var dette in details.ToList())
+                    {
+                        presence.MeetEntreeCaisses.Add(new MeetEntreeCaisse()
+                        {
+                            EngagementId = dette.eng.EngagementId,
+                            Engagement = dette.eng,
+                            IsOutcome = dette.eng.IsOutcome,
+                            Montantverse = 0,
+                            PresenceId = presence.PresenceId
+                            //, OperationId = 0
+                        });
+                    }
+                }
+            }
+            PresenceDto presenceDto = presence.Adapt<PresenceDto>();
+            presenceDto.EntreeCaisses = presence.MeetEntreeCaisses.Adapt<List<EntreeCaisseDto>>();
+
+            presenceDto.PayableAmount = (details == null || details?.Count() == 0) ? 0 : details.Sum(m => (m.eng.ToPay - m.eng.Cumulverse));
+
+           // ViewData["SeanceId"] = UtilityController.GetSelectListOfSeances(_context, Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0), Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), presenceDto.SeanceId);
+            return PartialView("PayerEngagements", presenceDto);
+        }
+
+
+        /// <summary>
+        /// Affiche le formulaire permettant de payer les engagements d'un membre au cours d'une séance.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="repartitionAuto"></param>
+        /// <returns></returns>
         // GET: Presences/Edit/5
         public async Task<IActionResult> Edit(int? id, bool repartitionAuto = true)
         {
@@ -94,9 +201,9 @@ namespace Meeting.Web.Controllers.Traitements
             }
 
             var presence = await _context.MeetPresences
-                                         .Include(m=>m.Seance)
-                                         .Include(m=>m.IdinscritNavigation)
-                                         .ThenInclude(m=>m.Person)
+                                         .Include(m=>m.Seance.CoreSubdivision)
+                                         .Include(m=>m.IdinscritNavigation.MeetAntenne)
+                                         .Include(m=>m.IdinscritNavigation.Person)
                                          .FirstAsync(m=>m.PresenceId == id);
             if (presence == null)
             {
@@ -173,6 +280,12 @@ namespace Meeting.Web.Controllers.Traitements
             return PartialView("Edit", presenceDto);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="presenceDto"></param>
+        /// <returns></returns>
         // POST: Presences/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -233,14 +346,17 @@ namespace Meeting.Web.Controllers.Traitements
         // GET: Presences/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.PresenceDto == null)
+            if (id == null || _context.MeetPresences == null)
             {
                 // return NotFound();
                 return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
 
-            var presenceDto = await _context.PresenceDto
-                .Include(p => p.Seance)
+            var presenceDto = await _context.MeetPresences
+                .Include(m => m.Seance.CoreSubdivision)
+                .Include(m => m.IdinscritNavigation.MeetAntenne)
+                .Include(m => m.IdinscritNavigation.Person)
+                //.ThenInclude(m => m.Person)
                 .FirstOrDefaultAsync(m => m.PresenceId == id);
             if (presenceDto == null)
             {
