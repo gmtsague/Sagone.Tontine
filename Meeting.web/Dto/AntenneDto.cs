@@ -28,7 +28,7 @@ public partial class AntenneDto : BaseDto<AntenneDto, MeetAntenne>
     /// </summary>
     [Display(Name = "Nom")]
     [StringLength(128)]
-    public string Libelle { get; set; } = null!;
+    public string Libelle { get; set; } 
 
     /// <summary>
     /// Date de creation de l&apos;antenne
@@ -37,11 +37,11 @@ public partial class AntenneDto : BaseDto<AntenneDto, MeetAntenne>
     public DateOnly? Creationdate { get; set; }
 
     [Display(Name = "EtabId")]
-    public virtual EtablissementDto? Etab { get; set; } = null!;
+    public virtual EtablissementDto? Etab { get; set; } 
 
     [Display(Name = "Membres inscrits")]
-    public virtual ICollection<InscriptionDto> Inscriptions { get; set; } = new List<InscriptionDto>();
+    public virtual ICollection<InscriptionDto> Inscriptions { get; set; } 
 
     //[Display(Name = "Liste séances")]
-    //public virtual ICollection<SeanceDto> Seances { get; set; } = new List<SeanceDto>();
+    //public virtual ICollection<SeanceDto> Seances { get; set; } 
 }
