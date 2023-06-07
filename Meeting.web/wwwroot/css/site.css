@@ -44,3 +44,15 @@ body {
 .dropdown-item {
     font-size: 10.5pt !important;
 }
+
+.max-vh-75 {
+   max-height: 50vh !important;
+}
+
+div .table {
+   /* min-height:60vh !important;*/
+}
+
+ div .table-responsive {
+    min-height: 35vh !important;
+}
