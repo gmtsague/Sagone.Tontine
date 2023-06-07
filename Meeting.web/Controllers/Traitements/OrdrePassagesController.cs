@@ -33,8 +33,10 @@ namespace Meeting.web.Controllers.Traitements
 
             var labosContext = _context.MeetOrdrePassages
                                         .Include(m => m.CoreSubdivision)
-                                        .Include(m => m.IdinscritNavigation)
-                                        .ThenInclude(m=>m.Person)
+                                        .Include(m => m.IdinscritNavigation.MeetAntenne)
+                                        //.ThenInclude(m=>m.Person)
+                                        .Include(p => p.IdinscritNavigation.Person)
+                                        .Where(m => m.IdinscritNavigation.EtabId == Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0))
                                         .Where(m => m.AnneeId == Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0));
             return View(await labosContext.OrderBy(m=>m.CoreSubdivision.MonthDate).ProjectToType<OrdrePassageDto>().ToListAsync());
         }
@@ -47,8 +49,10 @@ namespace Meeting.web.Controllers.Traitements
             //iewData["AntennesData"] = UtilityController.GetSelectListOfAntennes(_context, Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0) /*UtilityController.GetGlobalSelectedAssociation()*/);
 
             var labosContext = _context.MeetOrdrePassages.Include(m => m.CoreSubdivision)
-                                                         .Include(m => m.IdinscritNavigation)
-                                                         .ThenInclude(m => m.Person)
+                                                         .Include(m => m.IdinscritNavigation.MeetAntenne)
+                                                         //.ThenInclude(m=>m.MeetAntenne)
+                                                         .Include(p => p.IdinscritNavigation.Person)
+                                                         .Where(m => m.IdinscritNavigation.EtabId == Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0))
                                                          .Where(m => (Id <= 0 || m.IdinscritNavigation.AntenneId == Id) && m.AnneeId == Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0));
             return PartialView("_PartialGridViewPassages", await labosContext.OrderBy(m => m.CoreSubdivision.MonthDate).AsNoTracking().ProjectToType<OrdrePassageDto>().ToListAsync());
         }
