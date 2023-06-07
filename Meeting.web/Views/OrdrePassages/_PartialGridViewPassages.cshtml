@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Meeting.Web.Dto.OrdrePassageDto>
 @{
 }
-<div class="table-responsive table-responsive-sm table-responsive-md mt-2 pb-2">
+<div class="table-responsive table-responsive-sm table-responsive-md mt-3">
     <table class="table table-hover ">
         <thead class="table-primary">
             <tr>
@@ -20,6 +20,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Commentaire)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Inscription.Antenne)
+                </th>
                 <th></th>
             </tr>
         </thead class="table-primary">
@@ -27,7 +30,7 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
+                    <td class="text-nowrap">
                         @*<a asp-action="Edit" asp-route-id="@item.PassageId" onclick="return DisplayForm('@ViewBag.TitleObj.EditTitle', null, event);">
                             @Html.DisplayFor(modelItem => item.Subdivision.Libelle)
                         </a>*@
@@ -45,11 +48,10 @@
                             </div>
                         </div>
                     </td>
-                    <td>
+                    <td class="text-nowrap">
                         <a asp-action="Edit" asp-route-id="@item.PassageId" onclick="return DisplayForm('@ViewBag.TitleObj.EditTitle', null, event);"
                              data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">
-                            @Html.DisplayFor(modelItem => item.Inscription.Person.FullName)
-                        </a>
+                         </a>@Html.DisplayFor(modelItem => item.Inscription.Person.FullName)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Montantpercu)
@@ -57,8 +59,11 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Heuredebut)
                     </td>
-                    <td>
+                    <td class="text-nowrap">
                         @Html.DisplayFor(modelItem => item.Commentaire)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Inscription.Antenne.Libelle)
                     </td>
                     <td>
                         @*<a asp-action="Details" asp-route-id="@item.PassageId" onclick="return DisplayForm('@ViewBag.TitleObj.DetailsTitle', null, event);">Details</a> |

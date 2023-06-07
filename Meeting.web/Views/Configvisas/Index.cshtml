@@ -11,7 +11,7 @@
 
     <a asp-action="Index"><i class="fas fa-rotate-right fa-lg" title="Refresh"></i>Refresh</a>
 </div>
-<div class="table-responsive table-responsive-sm table-responsive-md mt-2 pb-2">
+<div class="table-responsive table-responsive-sm table-responsive-md mt-3">
     <table class="table table-hover ">
     <thead class="table-primary">
         <tr>
@@ -36,7 +36,7 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            <td class="text-nowrap">
                 <div class="dropdown dropend">
                     <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
                         @Html.DisplayFor(modelItem => item.Annee.Libelle)
@@ -51,10 +51,10 @@
                     </div>
                 </div>
             </td>
-            <td>
+            <td class="text-nowrap">
                 @Html.DisplayFor(modelItem => item.Poste.Libelle)
             </td>
-            <td>
+            <td class="text-nowrap">
                 @Html.DisplayFor(modelItem => item.Typerub.Libelle)
             </td>
             <td>
