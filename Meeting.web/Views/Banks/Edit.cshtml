@@ -13,32 +13,32 @@
         <form asp-formhelper="true" asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="BankId" />
-            <div class="form-group  p-2">
+            <div class="form-group m-3">
                 <label asp-for="CountryId" class="control-label"></label>
                 <select asp-for="CountryId" class="form-control form-select" asp-items="ViewBag.CountryId"><option value=""> Choose an item </option></select>
                 <span asp-validation-for="CountryId" class="text-danger"></span>
             </div>
-            <div class="form-group  p-2">
+            <div class="form-group m-3">
                 <label asp-for="Libelle" class="control-label"></label>
                 <input asp-for="Libelle" class="form-control" />
                 <span asp-validation-for="Libelle" class="text-danger"></span>
             </div>
-            <div class="form-group  p-2">
+            <div class="form-group m-3">
                 <label asp-for="Adresse" class="control-label"></label>
                 <input asp-for="Adresse" class="form-control" />
                 <span asp-validation-for="Adresse" class="text-danger"></span>
             </div>
-            <div class="form-group  p-2">
+            <div class="form-group m-3">
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group  p-2">
+            <div class="form-group m-3">
                 <label asp-for="Coderib" class="control-label"></label>
                 <input asp-for="Coderib" class="form-control" />
                 <span asp-validation-for="Coderib" class="text-danger"></span>
             </div>
-            <div class="form-group d-flex justify-content-around border-1 border-secondary border-top p-2 visually-hidden">
+            <div class="form-group d-flex justify-content-around border-1 border-secondary border-top m-3 visually-hidden">
                 <div>
                     <a asp-action="Index">Back to List</a>
                 </div>
