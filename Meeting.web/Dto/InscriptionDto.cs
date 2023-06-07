@@ -117,7 +117,7 @@ namespace Meeting.Web.Dto
         [Display(Name = "AnneeId")]
         public virtual AnneeDto? Annee { get; set; } 
 
-        [Display(Name = "EtabId, AntenneId")]
+        [Display(Name = "Antenne")]
         public virtual AntenneDto? Antenne { get; set; } 
 
         //[Display( Name="IdinscritNavigation")]
@@ -148,7 +148,7 @@ namespace Meeting.Web.Dto
 
             SetCustomMappingsInverse()
                 .Map(dest => dest.FullName, src => (src.Person==null)? $"Member's Name" : $"{src.Person.Nom} {src.Person.Prenom}")
-                .Map(dest => dest.Antenne, src => src.MeetAntenne.Adapt<AntenneDto>())
+                .Map(dest => dest.Antenne, src => AntenneDto.FromEntity(src.MeetAntenne))
                 .Map(dest => dest.Person, src => src.Person.Adapt<PersonDto>());
         }
     }
