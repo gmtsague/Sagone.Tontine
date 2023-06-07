@@ -36,8 +36,14 @@ namespace Meeting.Web.Controllers.Traitements
 
             TypeAdapterConfig<MeetInscription, InscriptionDto>.NewConfig().MaxDepth(3);
 
-            var labosContext = _context.MeetInscriptions.Include(m => m.Annee).Include(m => m.MeetAntenne).Include(m => m.Person);
-            return View(await labosContext.AsNoTracking().ProjectToType<InscriptionDto>().ToListAsync());
+            var labosContext = _context.MeetInscriptions
+                                        .Include(m => m.MeetAntenne)
+                                        .Include(m => m.Annee)                                        
+                                        .Include(m => m.Person)
+                                        .Where(m => m.MeetAntenne.EtabId == Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0))
+                                        .Where(m => m.AnneeId == Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0))
+                                        .AsNoTracking();
+            return View(await labosContext.ProjectToType<InscriptionDto>().ToListAsync());
         }
 
         // GET: InscriptionsByAntenne
@@ -49,10 +55,12 @@ namespace Meeting.Web.Controllers.Traitements
 
             TypeAdapterConfig<MeetInscription, InscriptionDto>.NewConfig().MaxDepth(3);
 
-            var labosContext = _context.MeetInscriptions.Include(m => m.Annee)
-                                                        .Include(m => m.MeetAntenne)
+            var labosContext = _context.MeetInscriptions.Include(m => m.MeetAntenne)
+                                                        .Include(m => m.Annee)                                                        
                                                         .Include(m => m.Person)
-                                                        .Where(m=> (Id > 0) ? m.AntenneId == Id : true).AsNoTracking();
+                                                        .Where(m=> m.MeetAntenne.EtabId == Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0))
+                                                        .Where(m=> (Id <= 0 || m.AntenneId == Id)&& m.AnneeId == Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0))
+                                                        .AsNoTracking();
             return PartialView("_PartialGridViewInscriptions", await labosContext.ProjectToType<InscriptionDto>().ToListAsync());
         }
 
