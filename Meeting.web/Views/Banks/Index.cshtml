@@ -12,7 +12,7 @@
 
     <a asp-action="Index"><i class="fas fa-rotate-right fa-lg" title="Refresh"></i>Refresh</a>
 </div>
-<div class="table-responsive table-responsive-sm table-responsive-md mt-2 pb-2">
+<div class="table-responsive table-responsive-sm table-responsive-md mt-3">
     <table class="table table-hover ">
         <thead class="table-primary">
             <tr>
@@ -38,31 +38,31 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>                      
-                <div class="dropdown dropend">
-                    <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
-                        @Html.DisplayFor(modelItem => item.Libelle)
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.BankId" onclick="return DisplayForm('@ViewBag.TitleObj.EditTitle', null, event);"
-                             data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal"> Edit </a>
-                        <a class="dropdown-item" asp-action="Details" asp-route-id="@item.BankId" onclick="return DisplayForm('@ViewBag.TitleObj.DetailsTitle', null, event);"
-                             data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Details</a>
-                        <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.BankId" onclick="return DisplayForm('@ViewBag.TitleObj.DeleteTitle', null, event);"
-                             data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Delete</a>
-                    </div>
-                </div>
+                    <td class="text-nowrap">                      
+                        <div class="dropdown dropend">
+                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                                @Html.DisplayFor(modelItem => item.Libelle)
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.BankId" onclick="return DisplayForm('@ViewBag.TitleObj.EditTitle', null, event);"
+                                     data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal"> Edit </a>
+                                <a class="dropdown-item" asp-action="Details" asp-route-id="@item.BankId" onclick="return DisplayForm('@ViewBag.TitleObj.DetailsTitle', null, event);"
+                                     data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Details</a>
+                                <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.BankId" onclick="return DisplayForm('@ViewBag.TitleObj.DeleteTitle', null, event);"
+                                     data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Delete</a>
+                            </div>
+                        </div>
                     </td>
-                    <td>
+                    <td class="text-nowrap">
                         @Html.DisplayFor(modelItem => item.Adresse)
                     </td>
-                    <td>
+                    <td class="text-nowrap">
                         @Html.DisplayFor(modelItem => item.Email)
                     </td>
-                    <td>
+                    <td class="text-nowrap">
                         @Html.DisplayFor(modelItem => item.Coderib)
                     </td>
-                    <td>
+                    <td class="text-nowrap">
                         @Html.DisplayFor(modelItem => item.Country.Libelle)
                     </td>
                     <td>
