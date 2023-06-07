@@ -10,46 +10,54 @@
 <hr />*@
 <div class="row justify-content-center">
     <div class="card-body">
-        <form asp-action="Edit">
+        <form asp-formhelper="true" asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="SortiecaisseId" />
-             <div class="form-group  p-2">
+             <div class="form-group m-3">
                 <label asp-for="Idinscrit" class="control-label"></label>
                 <select asp-for="Idinscrit" class="form-control form-select" asp-items="ViewBag.Idinscrit"><option value=""> Choose an item </option></select>
                 <span asp-validation-for="Idinscrit" class="text-danger"></span>
             </div>
-            <div class="form-group  p-2">
+            <div class="form-group m-3">
                 <label asp-for="SeanceId" class="control-label"></label>
-                <select asp-for="SeanceId" class="form-control form-select" asp-items="ViewBag.SeanceId"><option value=""> Choose an item </option></select>
-                <span asp-validation-for="SeanceId" class="text-danger"></span>
+                @if (ViewBag.ConstraintSeance > 0)
+                {
+                    <input asp-for="SeanceId" type="hidden" />
+                    <select class="form-control form-select" disabled asp-items="ViewBag.SeanceId"><option value=""> Choose an item </option></select>
+                }
+                else
+                {
+                    <select asp-for="SeanceId" class="form-control form-select" asp-items="ViewBag.SeanceId"><option value=""> Choose an item </option></select>
+                    <span asp-validation-for="SeanceId" class="text-danger"></span>
+                }
             </div>
-            <div class="form-group  p-2">
-                <label asp-for="EngagementId" class="control-label"></label>
-                <select asp-for="EngagementId" class="form-control form-select" asp-items="ViewBag.EngagementId"><option value=""> Choose an item </option></select>
-                <span asp-validation-for="EngagementId" class="text-danger"></span>
+            <div class="form-group m-3">
+                <label asp-for="RubriqueId" class="control-label"></label>
+                <select asp-for="RubriqueId" class="form-control form-select" asp-items="ViewBag.RubriqueId"><option value=""> Choose an item </option></select>
+                <span asp-validation-for="RubriqueId" class="text-danger"></span>
             </div>
-            <div class="form-group  p-2">
+            <div class="form-group m-3">
                 <label asp-for="RefNo" class="control-label"></label>
-                <input asp-for="RefNo" class="form-control" />
+                <input asp-for="RefNo" class="form-control" readonly />
                 <span asp-validation-for="RefNo" class="text-danger"></span>
             </div>
-            <div class="form-group  p-2">
+            <div class="form-group m-3">
                 <label asp-for="BenefPrincipal" class="form-check-label">
                     @Html.DisplayNameFor(model => model.BenefPrincipal)
                     <input class="form-check-input" asp-for="BenefPrincipal" />
                 </label>
             </div>
-            <div class="form-group  p-2">
+            <div class="form-group m-3">
                 <label asp-for="Dateevts" class="control-label"></label>
                 <input asp-for="Dateevts" class="form-control" />
                 <span asp-validation-for="Dateevts" class="text-danger"></span>
             </div>
-            <div class="form-group  p-2">
+            <div class="form-group m-3">
                 <label asp-for="Montantpercu" class="control-label"></label>
                 <input asp-for="Montantpercu" class="form-control" type="number" />
                 <span asp-validation-for="Montantpercu" class="text-danger"></span>
             </div>
-            <div class="form-group  p-2">
+            <div class="form-group m-3">
                 <label asp-for="Note" class="control-label"></label>
                 <textarea asp-for="Note" class="form-control" rows="4"></textarea>
                 <span asp-validation-for="Note" class="text-danger"></span>
@@ -59,12 +67,12 @@
                     <input class="form-check-input" asp-for="IsClosed" /> @Html.DisplayNameFor(model => model.IsClosed)
                 </label>
             </div>
-            <div class="form-group  p-2">
+            <div class="form-group m-3">
                 <label asp-for="Visarestants" class="control-label"></label>
                 <input asp-for="Visarestants" class="form-control" />
                 <span asp-validation-for="Visarestants" class="text-danger"></span>
             </div>*@
-            <div class="form-group  p-2 visually-hidden">
+            <div class="form-group  m-3 visually-hidden">
                 <div>
                     <a asp-action="Index">Back to List</a>
                 </div>
