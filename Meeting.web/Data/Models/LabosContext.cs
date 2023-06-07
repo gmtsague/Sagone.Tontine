@@ -1049,7 +1049,8 @@ public partial class LabosContext : DbContext
                 .HasComment("Create_at");
             entity.Property(e => e.CreateUid).HasComment("create_uid");
             entity.Property(e => e.Dateevts).HasComment("Date effective a laquelle a lieu l'evenement");
-            entity.Property(e => e.EngagementId).HasComment("Engagement_id");
+            //entity.Property(e => e.EngagementId).HasComment("Engagement_id");
+            entity.Property(e => e.RubriqueId).HasComment("Rubrique_id");
             entity.Property(e => e.Idinscrit).HasComment("Identifiant de l'inscription");
             entity.Property(e => e.IsClosed).HasComment("Indique que l'evenement a ete cloture (pret solde, ou toutes les participations atteintes pour un evenement)");
             entity.Property(e => e.RefNo).HasComment("No de Reference permettant d''identifier le document");
@@ -1063,7 +1064,11 @@ public partial class LabosContext : DbContext
             entity.Property(e => e.UpdateUid).HasComment("update_uid");
             entity.Property(e => e.Visarestants).HasComment("Nombre de signatures restantes avant cloture du document ou de la seance de cotisation.");
 
-            entity.HasOne(d => d.Engagement).WithMany(p => p.MeetSortieCaisses)
+            //entity.HasOne(d => d.Engagement).WithMany(p => p.MeetSortieCaisses)
+            //    .OnDelete(DeleteBehavior.Restrict)
+            //    .HasConstraintName("fk_meet_sor_associati_meet_eng");
+
+            entity.HasOne(d => d.Rubrique).WithMany(p => p.MeetSortieCaisses)
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("fk_meet_sor_associati_meet_eng");
 
