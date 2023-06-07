@@ -9,6 +9,7 @@ using MeetingEntities.Models;
 using Mapster;
 using Meeting.Web.Dto;
 using FormHelper;
+using Microsoft.AspNetCore.Routing;
 
 namespace Meeting.web.Controllers.Traitements
 {
@@ -24,6 +25,10 @@ namespace Meeting.web.Controllers.Traitements
             _context = context;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         // GET: SortieCaisses
         public async Task<IActionResult> Index()
         {
@@ -32,12 +37,40 @@ namespace Meeting.web.Controllers.Traitements
             TypeAdapterConfig<MeetSortieCaisse,SortieCaisseDto>.NewConfig().MaxDepth(3);
 
             var labosContext = _context.MeetSortieCaisses
-                                       .Include(m => m.Engagement)
-                                       .Include(m => m.Seance)
+                                       .Include(m => m.Rubrique)
+                                       .Include(m => m.Seance.CoreSubdivision)
                                        .Include(m => m.IdinscritNavigation)
                                        .ThenInclude(m=>m.Person)
+                                       //.Where(m => m.MeetAntenne.EtabId == Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0))
+                                       .Where(m => m.IdinscritNavigation.AnneeId == m.Rubrique.AnneeId)
+                                       .Where(m => m.IdinscritNavigation.AnneeId == Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0))
                                        .AsNoTracking().ProjectToType<SortieCaisseDto>();
             return View(await labosContext.ToListAsync());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="seanceId"></param>
+        /// <returns></returns>
+        // GET: SortieCaisses/GetDataBySeance
+        public async Task<IActionResult> GetDataBySeance(int seanceId)
+        {
+            ViewData["TitleObj"] = new FormTitle("Sortie de caisse");
+            ViewData["SeanceId"] = seanceId;
+
+            TypeAdapterConfig<MeetSortieCaisse, SortieCaisseDto>.NewConfig().MaxDepth(3);
+
+            var labosContext = _context.MeetSortieCaisses
+                                       .Include(m => m.Rubrique)
+                                       .Include(m => m.Seance.CoreSubdivision)
+                                       .Include(m => m.IdinscritNavigation)
+                                       .ThenInclude(m => m.Person)
+                                       //.Where(m => m.MeetAntenne.EtabId == Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0))
+                                       .Where(m => (m.IdinscritNavigation == null || m.IdinscritNavigation.AnneeId == m.Rubrique.AnneeId) && m.SeanceId == seanceId)
+                                       .Where(m => m.Rubrique.AnneeId == Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0))
+                                       .AsNoTracking().ProjectToType<SortieCaisseDto>();
+            return PartialView("_PartialOutcomeGridViewBySeance", await labosContext.ToListAsync());
         }
 
         // GET: SortieCaisses/Details/5
@@ -50,9 +83,10 @@ namespace Meeting.web.Controllers.Traitements
             }
 
             var meetSortieCaisse = await _context.MeetSortieCaisses
-                .Include(m => m.Engagement)
-                .Include(m => m.IdinscritNavigation)
-                .Include(m => m.Seance)
+                .Include(m => m.Rubrique)
+                .Include(m => m.IdinscritNavigation.Person)
+                .Include(m => m.IdinscritNavigation.MeetAntenne)
+                .Include(m => m.Seance.CoreSubdivision)
                 .FirstOrDefaultAsync(m => m.SortiecaisseId == id);
             if (meetSortieCaisse == null)
             {
@@ -64,12 +98,20 @@ namespace Meeting.web.Controllers.Traitements
         }
 
         // GET: SortieCaisses/Create
-        public IActionResult Create()
+        public IActionResult Create([FromQuery]int? InscritId, [FromQuery]int? IdSeance)
         {
-            ViewData["EngagementId"] = new SelectList(_context.MeetEngagements, "EngagementId", "EngagementId");
-            ViewData["Idinscrit"] = UtilityController.GetSelectListOfInscriptions(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0));
-            ViewData["SeanceId"] = UtilityController.GetSelectListOfSeances(_context, Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0), Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0));
-            return PartialView("Create");
+            ViewData["RubriqueId"] = UtilityController.GetSelectListOfRubriques(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0));
+            ViewData["Idinscrit"] = UtilityController.GetSelectListOfInscriptions(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), InscritId ?? 0);
+            ViewData["SeanceId"] = UtilityController.GetSelectListOfSeances(_context, Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0), Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), IdSeance ?? 0);
+           
+            SortieCaisseDto valueDto = new SortieCaisseDto();
+            if (InscritId.HasValue)
+                valueDto.Idinscrit = InscritId.Value;
+            
+            if (IdSeance.HasValue)
+                valueDto.SeanceId = IdSeance.Value;
+
+            return PartialView("Create", valueDto);
         }
 
         // POST: SortieCaisses/Create
@@ -77,24 +119,26 @@ namespace Meeting.web.Controllers.Traitements
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SortiecaisseId,Idinscrit,SeanceId,EngagementId,MontantRoute,ListeMandataires,Dateevts,Montantpercu,Note,IsClosed,Visarestants")] SortieCaisseDto valueDto)
+        public async Task<IActionResult> Create(/*[Bind("SortiecaisseId,Idinscrit,SeanceId,RubriqueId,MontantRoute,ListeMandataires,Dateevts,Montantpercu,Note,IsClosed,Visarestants")]*/ SortieCaisseDto valueDto)
         {
             if (ModelState.IsValid)
             {
                 var meetSortieCaisse = valueDto.Adapt<MeetSortieCaisse>();
+                meetSortieCaisse.RefNo = Guid.NewGuid().ToString().Substring(0, 13);
                 _context.Add(meetSortieCaisse);
                 await _context.SaveChangesAsync();
                 //return RedirectToAction(nameof(Index));
                 return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
             }
-            ViewData["EngagementId"] = new SelectList(_context.MeetEngagements, "EngagementId", "EngagementId", valueDto.EngagementId);
+            //ViewData["EngagementId"] = new SelectList(_context.MeetEngagements, "EngagementId", "EngagementId", valueDto.EngagementId);
+            ViewData["RubriqueId"] = UtilityController.GetSelectListOfRubriques(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), valueDto.RubriqueId);
             ViewData["Idinscrit"] = UtilityController.GetSelectListOfInscriptions(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), (long)valueDto.Idinscrit);
             ViewData["SeanceId"] = UtilityController.GetSelectListOfSeances(_context, Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0), Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), valueDto.SeanceId);
             return View("Create",valueDto);
         }
 
         // GET: SortieCaisses/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, int? Idseance)
         {
             if (id == null || _context.MeetSortieCaisses == null)
             {
@@ -108,7 +152,8 @@ namespace Meeting.web.Controllers.Traitements
                 //return NotFound();
                 return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
-            ViewData["EngagementId"] = new SelectList(_context.MeetEngagements, "EngagementId", "EngagementId", meetSortieCaisse.EngagementId);
+            ViewData["ConstraintSeance"] = Idseance ?? 0;
+            ViewData["RubriqueId"] = UtilityController.GetSelectListOfRubriques(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), meetSortieCaisse.RubriqueId);
             ViewData["Idinscrit"] = UtilityController.GetSelectListOfInscriptions(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), (long)meetSortieCaisse.Idinscrit);
             ViewData["SeanceId"] = UtilityController.GetSelectListOfSeances(_context, Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0), Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), meetSortieCaisse.SeanceId);
             return PartialView("Edit", meetSortieCaisse.Adapt<SortieCaisseDto>());
@@ -119,7 +164,7 @@ namespace Meeting.web.Controllers.Traitements
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SortiecaisseId,Idinscrit,SeanceId,EngagementId,MontantRoute,ListeMandataires,Dateevts,Montantpercu,Note,IsClosed,Visarestants")] SortieCaisseDto valueDto)
+        public async Task<IActionResult> Edit(int id, /*[Bind("SortiecaisseId,Idinscrit,SeanceId,RubriqueId,MontantRoute,ListeMandataires,Dateevts,Montantpercu,Note,IsClosed,Visarestants")]*/ SortieCaisseDto valueDto)
         {
             if (id != valueDto.SortiecaisseId)
             {
@@ -150,7 +195,7 @@ namespace Meeting.web.Controllers.Traitements
                 //return RedirectToAction(nameof(Index));
                 return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
             }
-            ViewData["EngagementId"] = new SelectList(_context.MeetEngagements, "EngagementId", "EngagementId", valueDto.EngagementId);
+            ViewData["RubriqueId"] = UtilityController.GetSelectListOfRubriques(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), valueDto.RubriqueId);
             ViewData["Idinscrit"] = UtilityController.GetSelectListOfInscriptions(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), (long) valueDto.Idinscrit);
             ViewData["SeanceId"] = UtilityController.GetSelectListOfSeances(_context, Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0), Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), (long)valueDto.SeanceId);
             return PartialView("Edit", valueDto);
@@ -165,9 +210,10 @@ namespace Meeting.web.Controllers.Traitements
             }
 
             var meetSortieCaisse = await _context.MeetSortieCaisses
-                .Include(m => m.Engagement)
-                .Include(m => m.IdinscritNavigation)
-                .Include(m => m.Seance)
+                .Include(m => m.Rubrique)
+                .Include(m => m.IdinscritNavigation.Person)
+                .Include(m => m.IdinscritNavigation.MeetAntenne)
+                .Include(m => m.Seance.CoreSubdivision)
                 .FirstOrDefaultAsync(m => m.SortiecaisseId == id);
             if (meetSortieCaisse == null)
             {
