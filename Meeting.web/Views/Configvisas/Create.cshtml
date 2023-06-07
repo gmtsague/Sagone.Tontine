@@ -12,19 +12,19 @@
     <div class="card-body">
         <form asp-formhelper="true" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group  p-2">
+            <div class="form-group m-3">
                 <label asp-for="PosteId" class="control-label"></label>
                 <select asp-for="PosteId" class ="form-control form-select" asp-items="ViewBag.PosteId"><option value=""> Choose an item </option></select>
             </div>
-            <div class="form-group  p-2">
+            <div class="form-group m-3">
                 <label asp-for="AnneeId" class="control-label"></label>
                 <select asp-for="AnneeId" class ="form-control form-select" asp-items="ViewBag.AnneeId"><option value=""> Choose an item </option></select>
             </div>
-            <div class="form-group  p-2">
+            <div class="form-group m-3">
                 <label asp-for="TyperubId" class="control-label"></label>
                 <select asp-for="TyperubId" class ="form-control form-select" asp-items="ViewBag.TyperubId"><option value=""> Choose an item </option></select>
             </div>
-            <div class="form-group  p-2">
+            <div class="form-group m-3">
                 <label asp-for="Numordre" class="control-label"></label>
                 <input asp-for="Numordre" class="form-control" type="number" />
                 <span asp-validation-for="Numordre" class="text-danger"></span>
@@ -34,7 +34,7 @@
                     <input class="form-check-input" asp-for="SignByOrdre" /> @Html.DisplayNameFor(model => model.SignByOrdre)
                 </label>
             </div>
-            <div class="form-group d-flex justify-content-around border-1 border-secondary border-top p-2 visually-hidden">
+            <div class="form-group d-flex justify-content-around border-1 border-secondary border-top m-3 visually-hidden">
                 <div>
                     <a asp-action="Index">Back to List</a>
                 </div>
