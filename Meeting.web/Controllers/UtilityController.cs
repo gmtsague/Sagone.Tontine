@@ -5,6 +5,8 @@ using MeetingEntities.Models;
 using Meeting.Web.Dto;
 using Mapster;
 using System.Diagnostics;
+using Meeting.Web.Repository;
+using Arch.EntityFrameworkCore.UnitOfWork;
 //using static Meeting.Web.Dto.AppPageViewModel<TEntity>;
 
 namespace Meeting.web.Controllers
@@ -16,6 +18,7 @@ namespace Meeting.web.Controllers
         public static string SuccessOperation { get; } = "Opération réalisée avec succès.";
         public static string RequestedEntityNotFound { get; } = "Requested Entity Not Found.";
         public static string DeleteOperationFailed { get; } = "Delete operation failed: Requested Entity Not Found.";
+        public static string SetAsDefaultOperationFailed { get; } = "Operation failed";
 
         // public static AnneeDto GlobalSelectedYear { get; set; }
         // public static EtablissementDto GlobalSelectedEtab { get; set; }
@@ -34,6 +37,230 @@ namespace Meeting.web.Controllers
             return View();
         }
 
+
+        //------BEGIN-----
+
+        public static SelectList GetSelectListOfBureaux(IUnitOfWork unitOfWork, long selectedValue = 0, long excludedValue = 0)
+        {
+            var ItemsList = RepositoryHelpers.GetBureauxForSelectListBox(unitOfWork, excludedValue).Result.AsQueryable().ProjectToType<BureauDto>().ToList();
+            return new SelectList(ItemsList, "BureauId", "Libelle", selectedValue);
+        }
+
+        public static SelectList GetSelectListOfFrequenceDivisions(IUnitOfWork unitOfWork, long selectedValue = 0, long excludedValue = 0)
+        {
+            var ItemsList = RepositoryHelpers.GetFrequenceDivisionsForSelectListBox(unitOfWork, excludedValue).Result.AsQueryable().ProjectToType<FrequenceDivisionDto>().ToList();
+            return new SelectList(ItemsList, "FrequenceId", "Libelle", selectedValue);
+        }
+
+        public static SelectList GetSelectListOfAnnees(IUnitOfWork unitOfWork, long selectedValue = 0, long excludedValue = 0)
+        {
+            TypeAdapterConfig<CoreAnnee, AnneeDto>.NewConfig().MaxDepth(3);
+
+            var ItemsList = RepositoryHelpers.GetAnneesForSelectListBox(unitOfWork, excludedValue).Result.AsQueryable().ProjectToType<AnneeDto>().ToList();
+            return new SelectList(ItemsList, "AnneeId", "Libelle", selectedValue);
+        }
+
+
+        public static SelectList GetSelectListOfYearSubdivisions(IUnitOfWork unitOfWork, long YearId, long selectedValue = 0, long excludedValue = 0)
+        {
+
+            TypeAdapterConfig<CoreSubdivision, SubdivisionDto>.NewConfig().MaxDepth(3);
+            //List<SubdivisionDto>? ItemsList = null;
+
+            //if (context == null || context.CoreSubdivisions == null)
+            //    ItemsList = new List<SubdivisionDto>();
+            //else
+            //    ItemsList = context.CoreSubdivisions.Where(m => m.AnneeId == YearId).OrderByDescending(m => m.MonthDate).AsNoTracking().ProjectToType<SubdivisionDto>().ToList();
+
+            var ItemsList = RepositoryHelpers.GetYearSubdivisionsForSelectListBox(unitOfWork, excludedValue).Result.AsQueryable().ProjectToType<SubdivisionDto>().ToList();
+            return new SelectList(ItemsList, "DivisionId", "Libelle", selectedValue);
+        }
+
+        public static SelectList GetSelectListOfCountries(IUnitOfWork unitOfWork, long selectedValue = 0, long excludedValue = 0)
+        {
+            //List<CountryDto>? ItemsList = null;
+
+            //if (context == null || context.CoreCountries == null)
+            //    ItemsList = new List<CountryDto>();
+            //else
+            //    ItemsList = context.CoreCountries.OrderBy(m => m.Libelle).AsNoTracking().ProjectToType<CountryDto>().ToList();
+
+            var ItemsList = RepositoryHelpers.GetCountriesForSelectListBox(unitOfWork, excludedValue).Result.AsQueryable().ProjectToType<CountryDto>().ToList();
+            return new SelectList(ItemsList, "CountryId", "Libelle", selectedValue);
+        }
+
+        public static SelectList GetSelectListOfTypeRubriques(IUnitOfWork unitOfWork, long selectedValue = 0, long excludedValue = 0)
+        {
+            TypeAdapterConfig<MeetTypeRubrique, TypeRubriqueDto>.NewConfig().MaxDepth(3);
+            //List<TypeRubriqueDto>? ItemsList = null;
+
+            //if (context == null || context.MeetTypeRubriques == null)
+            //    ItemsList = new List<TypeRubriqueDto>();
+            //else
+            //    ItemsList = context.MeetTypeRubriques.Where(m => m.IsActive == true).OrderBy(m => m.Libelle).AsNoTracking().ProjectToType<TypeRubriqueDto>().ToList();
+
+            var ItemsList = RepositoryHelpers.GetTypeRubriquesForSelectListBox(unitOfWork, excludedValue).Result.AsQueryable().ProjectToType<TypeRubriqueDto>().ToList();
+
+            return new SelectList(ItemsList, "TyperubId", "Libelle", selectedValue);
+        }
+
+        public static SelectList GetSelectListOfRubriques(IUnitOfWork unitOfWork, long YearId, long selectedValue = 0, long excludedValue = 0)
+        {
+
+            TypeAdapterConfig<MeetRubrique, RubriqueDto>.NewConfig().MaxDepth(3);
+
+            //List<RubriqueDto>? ItemsList = null;
+            //if (context == null || context.MeetRubriques == null)
+            //    ItemsList = new List<RubriqueDto>();
+            //else
+            //    ItemsList = context.MeetRubriques.OrderBy(m => m.Libelle).Where(m => YearId <= 0 || m.AnneeId == YearId).AsNoTracking().ProjectToType<RubriqueDto>().ToList();
+
+            var ItemsList = RepositoryHelpers.GetRubriquesForSelectListBox(unitOfWork, excludedValue).Result.AsQueryable().ProjectToType<RubriqueDto>().ToList();
+
+            return new SelectList(ItemsList, "RubriqueId", "Libelle", selectedValue);
+        }
+
+        public static SelectList GetSelectListOfPostes(IUnitOfWork unitOfWork, long selectedValue = 0, long excludedValue = 0)
+        {
+
+            TypeAdapterConfig<MeetPoste, PosteDto>.NewConfig().MaxDepth(3);
+            //List<PosteDto>? ItemsList = null;
+
+            //if (context == null || context.MeetPostes == null)
+            //    ItemsList = new List<PosteDto>();
+            //else
+            //    ItemsList = context.MeetPostes.OrderBy(m => m.Libelle).AsNoTracking().ProjectToType<PosteDto>().ToList();
+
+            var ItemsList = RepositoryHelpers.GetPostesForSelectListBox(unitOfWork, excludedValue).Result.AsQueryable().ProjectToType<PosteDto>().ToList();
+
+            return new SelectList(ItemsList, "PosteId", "Libelle", selectedValue);
+        }
+
+        public static SelectList GetSelectListOfEtablissements(IUnitOfWork unitOfWork, long selectedValue = 0, long excludedValue = 0)
+        {
+            //List<EtablissementDto>? ItemsList = null;
+
+            //if (context == null || context.CoreEtablissements == null)
+            //    ItemsList = new List<EtablissementDto>();
+            //else
+            //    ItemsList = context.CoreEtablissements.OrderBy(m => m.Libelle).AsNoTracking().ProjectToType<EtablissementDto>().ToList();
+
+            var ItemsList = RepositoryHelpers.GetEtablissementsForSelectListBox(unitOfWork, excludedValue).Result.AsQueryable().ProjectToType<EtablissementDto>().ToList();
+
+            return new SelectList(ItemsList, "EtabId", "Libelle", selectedValue);
+        }
+
+        public static SelectList GetSelectListOfPeople(IUnitOfWork unitOfWork, long selectedValue = 0, long excludedValue = 0)
+        {
+            //List<PersonDto>? ItemsList = null;
+
+            //if (context == null || context.CorePeople == null)
+            //    ItemsList = new List<PersonDto>();
+            //else
+            //    ItemsList = context.CorePeople.OrderBy(m => m.Nom).ThenBy(m => m.Prenom).AsNoTracking().ProjectToType<PersonDto>().ToList();
+
+            var ItemsList = RepositoryHelpers.GetPeopleForSelectListBox(unitOfWork, excludedValue).Result.AsQueryable().ProjectToType<PersonDto>().ToList();
+
+            return new SelectList(ItemsList, "PersonId", "FullName", selectedValue);
+        }
+
+        public static SelectList GetSelectListOfRegisteredPeople(IUnitOfWork unitOfWork, long YearId, long selectedValue = 0, long excludedValue = 0)
+        {
+            //List<PersonDto>? ItemsList = null;
+
+            //if (context == null || context.MeetInscriptions == null)
+            //    ItemsList = new List<PersonDto>();
+            //else
+            //    ItemsList = context.MeetInscriptions
+            //           .Include(m => m.Person)
+            //           .Where(m => m.IsActive == true && (m.AnneeId == YearId || YearId <= 0))
+            //           .OrderBy(m => m.Person.Nom).ThenBy(m => m.Person.Prenom)
+            //           .Select(r => new PersonDto()
+            //           {
+            //               PersonId = r.PersonId,
+            //               FullName = $"{r.Person.Nom} {r.Person.Prenom}"
+            //           })
+            //           .ToList();
+            /////ItemsList = context.CorePeople.AsQueryable().Join(_context.MeetInscription, p=>p.PersonId, reg =>reg.PersonId, (p,reg)=>).OrderBy(m => m.Nom).ThenBy(m => m.Prenom).AsNoTracking().ProjectToType<PersonDto>().ToList();
+
+            var ItemsList = RepositoryHelpers.GetRegisteredPeopleForSelectListBox(unitOfWork, excludedValue).Result.AsQueryable().ProjectToType<PersonDto>().ToList();
+
+            return new SelectList(ItemsList, "PersonId", "FullName", selectedValue);
+        }
+
+
+        public static SelectList GetSelectListOfInscriptions(IUnitOfWork unitOfWork, long YearId, long selectedValue = 0, long excludedValue = 0)
+        {
+            //List<GenericResult>? ItemsList = null;
+
+            //if (context == null || context.MeetInscriptions == null)
+            //    ItemsList = new List<GenericResult>();
+            //else
+            //    ItemsList = context.MeetInscriptions
+            //           .Include(m => m.Person)
+            //           .Where(m => m.IsActive == true && (m.AnneeId == YearId || YearId <= 0))
+            //           .OrderBy(m => m.Person.Nom).ThenBy(m => m.Person.Prenom)
+            //           .Select(r => new GenericResult(r.Idinscrit, $"{r.Person.Nom} {r.Person.Prenom}"))
+            //           .ToList();
+            /////ItemsList = context.CorePeople.AsQueryable().Join(_context.MeetInscription, p=>p.PersonId, reg =>reg.PersonId, (p,reg)=>).OrderBy(m => m.Nom).ThenBy(m => m.Prenom).AsNoTracking().ProjectToType<PersonDto>().ToList();
+
+            var ItemsList = RepositoryHelpers.GetInscriptionsForSelectListBox(unitOfWork, YearId, excludedValue).Result.AsQueryable().ProjectToType<GenericResult>().ToList();
+            return new SelectList(ItemsList, "Id", "FullName", selectedValue);
+        }
+
+        public static SelectList GetSelectListOfAntennes(IUnitOfWork unitOfWork, long MasterId, long selectedValue = 0, long excludedValue = 0)
+        {
+            //List<AntenneDto>? ItemsList = null;
+
+            //if (context == null || context.MeetAntennes == null)
+            //    ItemsList = new List<AntenneDto>();
+            //else
+            //    ItemsList = context.MeetAntennes.Where(m => m.EtabId == MasterId).OrderBy(m => m.Libelle).AsNoTracking().ProjectToType<AntenneDto>().ToList();
+
+            var ItemsList = RepositoryHelpers.GetAntennesForSelectListBox(unitOfWork, MasterId, excludedValue).Result.AsQueryable().ProjectToType<AntenneDto>().ToList();
+            return new SelectList(ItemsList, "AntenneId", "Libelle", selectedValue);
+        }
+
+        public static SelectList GetSelectListOfSeances(IUnitOfWork unitOfWork, long MasterEtabId, long YearId, long selectedValue = 0, long excludedValue = 0)
+        {
+            //List<SeanceDto>? ItemsList = null;
+
+            //if (context == null || context.MeetAntennes == null)
+            //    ItemsList = new List<SeanceDto>();
+            //else
+            //    ItemsList = context.MeetSeances.Include(m => m.CoreSubdivision)
+            //                           .Include(m => m.MeetAntenne)
+            //                           .Where(m => m.MeetAntenne.EtabId == MasterEtabId && m.AnneeId == YearId)
+            //                           .AsNoTracking().ProjectToType<SeanceDto>().ToList();
+
+            var ItemsList = RepositoryHelpers.GetSeancesForSelectListBox(unitOfWork, YearId, excludedValue).Result.AsQueryable().ProjectToType<SeanceDto>().ToList();
+            return new SelectList(ItemsList, "SeanceId", "Libelle", selectedValue);
+        }
+
+        public static SelectList GetSelectListOfEngagementsNonPayes(IUnitOfWork unitOfWork, long PeopleId, long YearId, long selectedValue = 0, long excludedValue = 0)
+        {
+
+            TypeAdapterConfig<MeetEngagement, EngagementDto>.NewConfig().MaxDepth(3);
+
+            //List</*EngagementDto*/ GenericResult>? ItemsList = null;
+            //if (context == null || context.MeetAntennes == null)
+            //    ItemsList = new List</*EngagementDto*/ GenericResult>();
+            //else
+            //    ItemsList = context.MeetEngagements
+            //                       .Include(m => m.Rubrique)
+            //                        .Include(m => m.Person)
+            //                        //.ThenInclude(m => m.MeetInscriptions.Where(p => p.AntenneId == AntenneId || AntenneId <= 0))
+            //                        .Where(m => (m.PersonId == PeopleId || PeopleId <= 0))
+            //                        .Where(m => (m.IsClosed == false && m.IsOutcome == true && (m.Rubrique.AnneeId == YearId || YearId <= 0)))
+            //                        //.Where(m => (m.RubriqueId == RubriqueId || RubriqueId <= 0))
+            //                        .AsNoTracking().ProjectToType<EngagementDto>()
+            //                        .Select(r => new GenericResult(r.EngagementId, r.Libelle)).ToList();
+
+            var ItemsList = RepositoryHelpers.GetEngagementsNonPayesForSelectListBox(unitOfWork, PeopleId, YearId, excludedValue).Result.AsQueryable().ProjectToType<EngagementDto>().ToList();
+
+            return new SelectList(ItemsList, "Id", "FullName", selectedValue);
+        }
+        //------END-------
         public static SelectList GetSelectListOfBureaux(LabosContext context, long selectedValue = 0)
         {
             List<BureauDto>? ItemsList = null;
@@ -176,6 +403,7 @@ namespace Meeting.web.Controllers
                 ItemsList = context.MeetInscriptions
                        .Include(m=>m.Person)
                        .Where(m=>m.IsActive == true && (m.AnneeId == YearId || YearId <= 0))
+                       .OrderBy(m => m.Person.Nom).ThenBy(m => m.Person.Prenom)
                        .Select(r=> new PersonDto() {
                            PersonId = r.PersonId, 
                            FullName = $"{r.Person.Nom} {r.Person.Prenom}"})
@@ -196,6 +424,7 @@ namespace Meeting.web.Controllers
                 ItemsList = context.MeetInscriptions
                        .Include(m => m.Person)
                        .Where(m => m.IsActive == true && (m.AnneeId == YearId || YearId <= 0))
+                       .OrderBy(m => m.Person.Nom).ThenBy(m => m.Person.Prenom)
                        .Select(r => new GenericResult( r.Idinscrit, $"{r.Person.Nom} {r.Person.Prenom}"))
                        .ToList();
             ///ItemsList = context.CorePeople.AsQueryable().Join(_context.MeetInscription, p=>p.PersonId, reg =>reg.PersonId, (p,reg)=>).OrderBy(m => m.Nom).ThenBy(m => m.Prenom).AsNoTracking().ProjectToType<PersonDto>().ToList();
@@ -234,17 +463,20 @@ namespace Meeting.web.Controllers
         {
             List</*EngagementDto*/ GenericResult>? ItemsList = null;
 
+            TypeAdapterConfig<MeetEngagement, EngagementDto>.NewConfig().MaxDepth(3);
+
             if (context == null || context.MeetAntennes == null)
                 ItemsList = new List</*EngagementDto*/ GenericResult>();
             else
-                ItemsList = context.MeetEngagements.Include(m => m.Rubrique)
-                                                       .Include(m => m.Person)
-                                                       //.ThenInclude(m => m.MeetInscriptions.Where(p => p.AntenneId == AntenneId || AntenneId <= 0))
-                                                       .Where(m => (m.PersonId == PeopleId || PeopleId <= 0))
-                                                       .Where(m => (m.IsClosed == false && m.IsOutcome == true && (m.Rubrique.AnneeId  == YearId || YearId <= 0)))
-                                                       //.Where(m => (m.RubriqueId == RubriqueId || RubriqueId <= 0))
-                                                       .AsNoTracking().ProjectToType<EngagementDto>()
-                                                       .Select(r => new GenericResult(r.EngagementId, r.Libelle)).ToList();
+                ItemsList = context.MeetEngagements
+                                   .Include(m => m.Rubrique)
+                                    .Include(m => m.Person)
+                                    //.ThenInclude(m => m.MeetInscriptions.Where(p => p.AntenneId == AntenneId || AntenneId <= 0))
+                                    .Where(m => (m.PersonId == PeopleId || PeopleId <= 0))
+                                    .Where(m => (m.IsClosed == false && m.IsOutcome == true && (m.Rubrique.AnneeId  == YearId || YearId <= 0)))
+                                    //.Where(m => (m.RubriqueId == RubriqueId || RubriqueId <= 0))
+                                    .AsNoTracking().ProjectToType<EngagementDto>()
+                                    .Select(r => new GenericResult(r.EngagementId, r.Libelle)).ToList();
 
             return new SelectList(ItemsList, "Id", "FullName", selectedValue);
         }
@@ -266,39 +498,6 @@ namespace Meeting.web.Controllers
                 return SessionEntities.GlobalSelectedYear.AnneeId;
         }
     }
-    //public record FormTitle(string CreateTitle, string EditTitle, string DetailsTitle, string DeleteTitle);
-    public class FormTitle
-    {
-        public FormTitle(string ObjName)
-        {
-            CreateTitle = $"New >>> {ObjName}";
-            EditTitle = $"Edit >>> {ObjName}";
-            DetailsTitle = $"Details >>> {ObjName}";
-            DeleteTitle = $"Confirm Delete >>> {ObjName}";
-            ListTitle = $">>> List of {ObjName}s";
-        }
-
-        public string GetTitleFromOperation(int op)
-        {
-            string title = string.Empty;
-            switch (op)
-            {
-                case (int)AvailableOperation.CREATE: title = this.CreateTitle; break;
-                case (int)AvailableOperation.EDIT: title = this.EditTitle; break;
-                case (int)AvailableOperation.DETAILS: title = this.DetailsTitle; break;
-                case (int)AvailableOperation.DELETE: title = this.DeleteTitle; break;
-                default: title = this.ListTitle; break;
-            }
-            return title;
-        }
-
-        public string CreateTitle { get; set; }
-        public string EditTitle { get; set; }
-        public string DetailsTitle { get; set; }
-        public string DeleteTitle { get; set; }
-        public string ListTitle { get; set; }
-    }
-
 
     public record GenericResult(int Id, string FullName);
 
