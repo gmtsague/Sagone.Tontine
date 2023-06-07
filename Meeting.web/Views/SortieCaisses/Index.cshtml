@@ -12,12 +12,15 @@
 
     <a asp-action="Index"><i class="fas fa-rotate-right fa-lg" title="Refresh"></i>Refresh</a>
 </div>
-<div class="table-responsive table-responsive-sm table-responsive-md mt-2 pb-2">
+<div class="table-responsive table-responsive-sm table-responsive-md mt-3">
     <table class="table table-hover ">
     <thead class="table-primary">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.RefNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rubrique)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Dateevts)
@@ -26,16 +29,7 @@
                 @Html.DisplayNameFor(model => model.Montantpercu)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Note)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.IsClosed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Visarestants)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Engagement)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IdinscritNavigation)
@@ -46,46 +40,59 @@
             <th>
                 @Html.DisplayNameFor(model => model.Seance)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Visarestants)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Note)
+            </th>
             <th></th>
         </tr>
     </thead class="table-primary">
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RefNo)
+            <td class="text-nowrap">
+                
+                <div class="dropdown dropend">
+                    <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                    @Html.DisplayFor(modelItem => item.RefNo)
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.SortiecaisseId" onclick="return DisplayForm('@ViewBag.TitleObj.EditTitle', null, event);"  data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Edit</a> 
+                        <a class="dropdown-item" asp-action="Details" asp-route-id="@item.SortiecaisseId" onclick="return DisplayForm('@ViewBag.TitleObj.DetailsTitle', null, event);"  data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Details</a> 
+                        <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.SortiecaisseId" onclick="return DisplayForm('@ViewBag.TitleObj.DeleteTitle', null, event);"  data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Delete</a>
+                    </div>
+                </div>
+            </td>
+            <td class="text-nowrap">
+                @Html.DisplayFor(modelItem => item.Rubrique.Libelle)
             </td>
             <td>
                  @((item.Dateevts.ToShortDateString()=="01/01/0001")? string.Empty : @Html.DisplayFor(modelItem => item.Dateevts))
             </td>
-            <td>
+            <td class="text-end">
                 @Html.DisplayFor(modelItem => item.Montantpercu)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.IsClosed)
+            </td>
+            <td class="text-nowrap">
+                @Html.DisplayFor(modelItem => item.IdinscritNavigation.Person.FullName)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.BenefPrincipal)
+            </td>
+            <td class="text-nowrap">
+                @Html.DisplayFor(modelItem => item.Seance.Libelle)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Visarestants)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Note)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsClosed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Visarestants)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Engagement.EngagementId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdinscritNavigation.Person.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BenefPrincipal)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Seance.SeanceId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.SortiecaisseId"  data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.SortiecaisseId"  data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.SortiecaisseId"  data-bs-toggle="modal" data-bs-target="#partialModal" data-bs-dismiss="modal">Delete</a>
+            <td class="text-nowrap">
             </td>
         </tr>
 }
