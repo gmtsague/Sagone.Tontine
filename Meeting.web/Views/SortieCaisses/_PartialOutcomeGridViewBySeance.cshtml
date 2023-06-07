@@ -1,0 +1,103 @@
+﻿@model IEnumerable<Meeting.Web.Dto.SortieCaisseDto>
+
+@{
+   // ViewData["Title"] = "Index";
+}
+
+@*<h5 class="mb-4">@ViewBag.TitleObj.ListTitle</h5>*@
+
+<div class="d-flex justify-content-between">
+    <a asp-action="Create" asp-route-idseance="@ViewBag.SeanceId" onclick="return DisplayPresenceModalForm('@ViewBag.TitleObj.CreateTitle', event);"
+         data-bs-toggle="modal" data-bs-target="#presenceModalForm" class="btn btn-sm btn-secondary">Create New</a>
+
+    <a asp-action="GetDataBySeance" asp-route-seanceid="@ViewBag.SeanceId"  data-bs-target="#SeancePresencesModalForm"
+     onclick="return DisplaySeanceDetailsModalForm('@ViewBag.TitleObj.DetailsTitle', null, event);" ><i class="fas fa-rotate-right fa-lg" title="Refresh"></i>Refresh</a>
+</div>
+<div class="table-responsive table-responsive-sm table-responsive-md mt-3">
+    <table class="table table-hover ">
+    <thead class="table-primary">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RefNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rubrique)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Dateevts)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Montantpercu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsClosed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdinscritNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BenefPrincipal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Seance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Visarestants)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Note)
+            </th>
+            <th></th>
+        </tr>
+    </thead class="table-primary">
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td class="text-nowrap">
+                <div class="dropdown dropend">
+                    <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                    @Html.DisplayFor(modelItem => item.RefNo)
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.SortiecaisseId" asp-route-idseance="@ViewBag.SeanceId"  onclick="return DisplayPresenceModalForm('@ViewBag.TitleObj.EditTitle', event);"  data-bs-toggle="modal" data-bs-target="#presenceModalForm" data-bs-dismiss="modal">Edit</a> 
+                        <a class="dropdown-item" asp-action="Details" asp-route-id="@item.SortiecaisseId" onclick="return DisplayPresenceModalForm('@ViewBag.TitleObj.DetailsTitle', event);"  data-bs-toggle="modal" data-bs-target="#presenceModalForm" data-bs-dismiss="modal">Details</a> 
+                        <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.SortiecaisseId" onclick="return DisplayPresenceModalForm('@ViewBag.TitleObj.DeleteTitle', event);"  data-bs-toggle="modal" data-bs-target="#presenceModalForm" data-bs-dismiss="modal">Delete</a>
+
+                    </div>
+                </div>
+            </td>
+            <td class="text-nowrap">
+                @Html.DisplayFor(modelItem => item.Rubrique.Libelle)
+            </td>
+            <td>
+                 @((item.Dateevts.ToShortDateString()=="01/01/0001")? string.Empty : @Html.DisplayFor(modelItem => item.Dateevts))
+            </td>
+            <td class="text-end">
+                @Html.DisplayFor(modelItem => item.Montantpercu)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.IsClosed)
+            </td>
+            <td class="text-nowrap">
+                @Html.DisplayFor(modelItem => item.IdinscritNavigation.Person.FullName)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.BenefPrincipal)
+            </td>
+            <td class="text-nowrap">
+                @Html.DisplayFor(modelItem => item.Seance.Libelle)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Visarestants)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Note)
+            </td>
+            <td class="text-nowrap">
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+@*<partial name="_SharedModalForms" />*@
