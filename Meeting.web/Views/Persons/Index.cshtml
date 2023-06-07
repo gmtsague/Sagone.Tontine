@@ -12,16 +12,16 @@
 
     <a asp-action="Index"><i class="fas fa-rotate-right fa-lg" title="Refresh"></i>Refresh</a>
 </div>
-<div class="table-responsive table-responsive-sm table-responsive-md mt-2 pb-2">
+<div class="table-responsive table-responsive-sm table-responsive-md mt-3">
     <table class="table table-hover ">
     <thead class="table-primary">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Nom)
+                @Html.DisplayNameFor(model => model.FullName)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.Prenom)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Datenais)
             </th>
@@ -71,7 +71,7 @@
             <td>
                 <div class="dropdown dropend">
                     <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
-                        @Html.DisplayFor(modelItem => item.Nom)
+                        @Html.DisplayFor(modelItem => item.FullName)
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.PersonId" onclick="return DisplayForm('@ViewBag.TitleObj.EditTitle', null, event);"
@@ -83,11 +83,11 @@
                     </div>
                 </div>
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Prenom)
             </td>
+            *@
             <td>
-                @Html.DisplayFor(modelItem => item.Datenais)
                 @((item.Datenais.ToString()=="01/01/0001")? string.Empty : @Html.DisplayFor(modelItem => item.Datenais))
             </td>
             <td>
@@ -125,7 +125,8 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Etab.EtabId)
-                </td>*@
+                </td>
+            *@
             <td>
                @* <a asp-action="Details" asp-route-id="@item.PersonId" onclick="return DisplayForm('@ViewBag.TitleObj.DetailsTitle', null, event);">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.PersonId" onclick="return DisplayForm('@ViewBag.TitleObj.DeleteTitle', null, event);">Delete</a>
