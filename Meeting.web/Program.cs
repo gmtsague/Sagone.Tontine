@@ -3,6 +3,9 @@ using MeetingEntities.Models;
 //using Mapster;
 using Meeting.Web.Mapsterconfig;
 using FormHelper;
+using Meeting.Web.Repository;
+using Arch.EntityFrameworkCore.UnitOfWork;
+
 //using System.Globalization;
 //using Microsoft.AspNetCore.Localization;
 
@@ -16,6 +19,9 @@ builder.Services.AddDbContext<LabosContext>(options => options.UseNpgsql(connect
 
 //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 //    .AddEntityFrameworkStores<LabosContext>();
+
+builder.Services.AddUnitOfWork<LabosContext>();
+builder.Services.AddScoped<IAnneeRepository, AnneeRepository>();
 
 builder.Services.AddMapster();
 
