@@ -85,11 +85,14 @@ public partial class RubriqueDto : BaseDto<RubriqueDto, MeetRubrique>
     public bool AllowCustomAmount { get; set; }
 
     [Display(Name = "Année")]
-    public virtual AnneeDto? Annee { get; set; } = null!;
+    public virtual AnneeDto? Annee { get; set; }
 
     //[Display(Name = "Liste Rubriques")]
-    //public virtual ICollection<EngagementDto> Engagements { get; set; } = new List<EngagementDto>();
+    //public virtual ICollection<EngagementDto> Engagements { get; set; }
+
+    //[Display(Name = "Liste Sorties caisse")]
+    //public virtual ICollection<SortieCaisseDto> Sortiecaisses { get; set; }
 
     [Display(Name = "Catégorie")]
-    public virtual TypeRubriqueDto? Typerub { get; set; } = null!;
+    public virtual TypeRubriqueDto? Typerub { get; set; } 
 }
