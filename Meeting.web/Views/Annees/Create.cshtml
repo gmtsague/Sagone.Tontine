@@ -12,30 +12,30 @@
     <div class="card-body">
         <form id="modalForm" asp-formhelper="true" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group p-2">
+            <div class="form-group  m-3">
                 <label asp-for="FrequenceId" class="control-label"></label>
                 <select asp-for="FrequenceId" class ="form-control form-select" asp-items="ViewBag.FrequenceId"><option value=""> Choose an item </option></select>
             </div>
-            <div class="form-group p-2">
+            <div class="form-group  m-3">
                 <label asp-for="BureauId" class="control-label"></label>
                 <select asp-for="BureauId" class ="form-control form-select" asp-items="ViewBag.BureauId"><option value=""> Choose an item </option></select>
             </div>
-            <div class="form-group p-2">
+            <div class="form-group  m-3">
                 <label asp-for="Libelle" class="control-label"></label>
                 <input asp-for="Libelle" class="form-control" required />
                 <span asp-validation-for="Libelle" class="text-danger"></span>
             </div>
-            <div class="form-group p-2">
+            <div class="form-group  m-3">
                 <label asp-for="Datedebut" class="control-label"></label>
                 <input asp-for="Datedebut" class="form-control" type="date" required />
                 <span asp-validation-for="Datedebut" class="text-danger"></span>
             </div>
-            <div class="form-group p-2">
+            <div class="form-group  m-3">
                 <label asp-for="Datefin" class="control-label"></label>
                 <input asp-for="Datefin" class="form-control" type="date" required />
                 <span asp-validation-for="Datefin" class="text-danger"></span>
             </div>
-            <div class="form-group p-2">
+            <div class="form-group  m-3">
                 <label asp-for="Nbdivision" class="control-label"></label>
                 <input asp-for="Nbdivision" class="form-control" />
                 <span asp-validation-for="Nbdivision" class="text-danger"></span>
@@ -55,11 +55,11 @@
                     <input class="form-check-input" asp-for="CopyDataFromPrevious" /> @Html.DisplayNameFor(model => model.CopyDataFromPrevious)
                 </label>
             </div>
-            <div class="form-group p-2">
+            <div class="form-group  m-3">
                 <label asp-for="PreviousYearId" class="control-label"></label>
                 <select asp-for="PreviousYearId" class="form-control form-select" asp-items="ViewBag.PreviousYearId"><option value=""> Choose an item </option></select>
             </div>
-            <div class="form-group p-2">
+            <div class="form-group  m-3">
                 <input id="regularSubmitBtn" type="submit" value="Create" class="btn btn-primary visually-hidden" />
             </div>
             @{
