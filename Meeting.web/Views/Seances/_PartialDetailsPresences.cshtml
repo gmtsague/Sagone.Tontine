@@ -61,7 +61,7 @@
                             @Html.DisplayFor(modelItem => item.Inscription.Person.FullName)
                             </a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" asp-action="Edit" asp-controller="Presences" asp-route-id="@item.PresenceId" asp-route-repartitionAuto="false"
+                                <a class="dropdown-item" asp-action="PayerEngagements" asp-controller="Presences" asp-route-id="@item.PresenceId" asp-route-repartitionAuto="false"
                                            data-bs-toggle="modal" data-bs-target="#presenceModalForm" data-bs-dismiss="modal" onclick="return DisplayPresenceModalForm('@MyTitles["CreateEngagement"]', event);">Payer les engagements</a>
 
                                <a class="dropdown-item" asp-action="UndoPaiement" asp-controller="Presences" asp-route-id="@item.PresenceId" 
@@ -71,14 +71,14 @@
                                    data-bs-toggle="modal" data-bs-target="#presenceModalForm" data-bs-dismiss="modal" onclick="return DisplayPresenceModalForm('@MyTitles["DetailsEngagement"] [Details]', event);">Voir engagements payés</a>
                                 
                                <div class="dropdown-divider"></div>
-                           
-                               <a class="dropdown-item" asp-action="Create" asp-controller="Sortiecaisses" asp-route-id="@item.PresenceId"
+
+                                <a class="dropdown-item" asp-action="Create" asp-controller="Sortiecaisses" asp-route-inscritid="@item.Idinscrit" asp-route-idseance="@item.SeanceId"
                data-bs-toggle="modal" data-bs-target="#presenceModalForm" data-bs-dismiss="modal" onclick="return DisplayPresenceModalForm('@MyTitles["CreateSortiecaisse"] [Create]', event);">Bénéficier d'une sortie de caisse</a>
 
-                                <a class="dropdown-item" asp-action="Edit" asp-controller="Sortiecaisses" asp-route-id="@item.PresenceId"
+                                <a class="dropdown-item visually-hidden" asp-action="Edit" asp-controller="Sortiecaisses" asp-route-id="@item.PresenceId"
                data-bs-toggle="modal" data-bs-target="#presenceModalForm" data-bs-dismiss="modal" onclick="return DisplayPresenceModalForm('@MyTitles["EditSortiecaisse"] [Edit]', event);">Modifier une sortie de caisse</a>
 
-                                <a class="dropdown-item" asp-action="Delete" asp-controller="Sortiecaisses" asp-route-id="@item.PresenceId"
+                                <a class="dropdown-item visually-hidden" asp-action="Delete" asp-controller="Sortiecaisses" asp-route-id="@item.PresenceId"
                data-bs-toggle="modal" data-bs-target="#presenceModalForm" data-bs-dismiss="modal" onclick="return DisplayPresenceModalForm('@MyTitles["DeleteSortiecaisse"]', event);">Supprimer une sortie de caisse</a>
                             </div>
                         </div>
