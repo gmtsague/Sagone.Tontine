@@ -13,7 +13,7 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ModepaieId" />
-             <div class="form-group  p-2">
+             <div class="form-group m-3">
                 <label asp-for="Libelle" class="control-label"></label>
                 <input asp-for="Libelle" class="form-control" />
                 <span asp-validation-for="Libelle" class="text-danger"></span>
@@ -23,7 +23,7 @@
                     <input class="form-check-input" asp-for="IsCash" /> @Html.DisplayNameFor(model => model.IsCash)
                 </label>
             </div>
-            <div class="form-group d-flex justify-content-around border-1 border-secondary border-top p-2 visually-hidden">
+            <div class="form-group d-flex justify-content-around border-1 border-secondary border-top m-3 visually-hidden">
                 <div>
                     <a asp-action="Index">Back to List</a>
                 </div>
