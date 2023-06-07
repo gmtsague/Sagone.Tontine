@@ -12,17 +12,17 @@
     <div class="card-body">
         <form asp-formhelper ="true" asp-action="Create" enctype="multipart/form-data"  asp-AddDOMContentLoaded="false">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Libelle" class="control-label"></label>
+            <div class="form-floating m-3">                
                 <input asp-for="Libelle" class="form-control" required />
+                <label asp-for="Libelle" class="control-label"></label>
                 <span asp-validation-for="Libelle" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group m-3">
                 <label asp-for="Code" class="control-label"></label>
                 <input asp-for="Code" class="form-control" required />
                 <span asp-validation-for="Code" class="text-danger"></span>
             </div>
-            <div class="form-group d-flex justify-content-around border-1 border-secondary border-top p-2 visually-hidden">
+            <div class="form-group d-flex justify-content-around border-1 border-secondary border-top m-3 visually-hidden">
                 <div>
                     <a asp-action="Index">Back to List</a>
                 </div>
