@@ -103,8 +103,8 @@ public partial class MeetEngagement
     [InverseProperty("Engagement")]
     public virtual ICollection<MeetEntreeCaisse> MeetEntreeCaisses { get; set; } = new List<MeetEntreeCaisse>();
 
-    [InverseProperty("Engagement")]
-    public virtual ICollection<MeetSortieCaisse> MeetSortieCaisses { get; set; } = new List<MeetSortieCaisse>();
+    //[InverseProperty("Engagement")]
+    //public virtual ICollection<MeetSortieCaisse> MeetSortieCaisses { get; set; } = new List<MeetSortieCaisse>();
 
     [ForeignKey("PersonId")]
     [InverseProperty("MeetEngagements")]
