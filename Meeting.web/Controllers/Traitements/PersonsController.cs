@@ -9,19 +9,23 @@ using MeetingEntities.Models;
 using Mapster;
 using Meeting.Web.Dto;
 using FormHelper;
+using Meeting.Web.Repository;
 
 namespace Meeting.web.Controllers.Traitements
 {
     public class PersonsController : Controller
     {
-        private readonly LabosContext _context;
+       // private readonly LabosContext _context; 
+        
+        private readonly IPersonRepository _repository;
 
         private readonly ILogger<PersonsController> _logger;
 
-        public PersonsController(ILogger<PersonsController> logger, LabosContext context)
+        public PersonsController(ILogger<PersonsController> logger, IPersonRepository repository)
         {
             _logger = logger;
-            _context = context;
+            //_context = context;
+            _repository = repository;
         }
 
         // GET: Persons
@@ -29,35 +33,33 @@ namespace Meeting.web.Controllers.Traitements
         {
             ViewData["TitleObj"] = new FormTitle("Personne");
 
-            var labosContext = _context.CorePeople.Include(c => c.Country).Include(c => c.Etab);
-            return View(await labosContext.AsQueryable().ProjectToType<PersonDto>().ToListAsync());
+            var resultItems = await _repository.GetAll();
+            return View(resultItems.Items.AsQueryable().ProjectToType<PersonDto>().ToList());
+        }
+
+        private void SetViewDataElements(PersonDto? valueDto)
+        {
+            ViewData["CountryId"] = UtilityController.GetSelectListOfCountries(_repository.GetUnitOfWork(), valueDto?.CountryId ?? 0);
+            ViewData["EtabId"] = UtilityController.GetSelectListOfEtablissements(_repository.GetUnitOfWork(), valueDto?.EtabId ?? 0);
         }
 
         // GET: Persons/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.CorePeople == null)
+            var findObj = await _repository.GetDetails(id);
+            if (findObj == null)
             {
-                return NotFound();
+                //return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
 
-            var corePerson = await _context.CorePeople
-                .Include(c => c.Country)
-                .Include(c => c.Etab)
-                .FirstOrDefaultAsync(m => m.PersonId == id);
-            if (corePerson == null)
-            {
-                return NotFound();
-            }
-
-            return PartialView("Details", corePerson.Adapt<PersonDto>());
+            return PartialView("Details", findObj.Adapt<PersonDto>());
         }
 
         // GET: Persons/Create
         public IActionResult Create()
         {
-            ViewData["CountryId"] = UtilityController.GetSelectListOfCountries(_context);
-            ViewData["EtabId"] = UtilityController.GetSelectListOfEtablissements(_context);
+            SetViewDataElements(null);
             return PartialView("Create");
         }
 
@@ -67,37 +69,35 @@ namespace Meeting.web.Controllers.Traitements
         [HttpPost]
         [ValidateAntiForgeryToken]
         [FormValidator]
-        public async Task<IActionResult> Create([Bind("PersonId,CountryId,EtabId,Nom,Prenom,Datenais,Lieunais,Sexe,Email,Adresse,AdhesionDate,Nocni,CniExpireDate,IsActive,IsVisible,AnneePromo")] PersonDto valueDto)
+        public async Task<IActionResult> Create(/*[Bind("PersonId,CountryId,EtabId,Nom,Prenom,Datenais,Lieunais,Sexe,Email,Adresse,AdhesionDate,Nocni,CniExpireDate,IsActive,IsVisible,AnneePromo")]*/ PersonDto valueDto)
         {
             if (ModelState.IsValid)
             {
-                var corePerson = valueDto.ToEntity();
-                _context.Add(corePerson);
-                await _context.SaveChangesAsync();
-                // return RedirectToAction(nameof(Index));
-                return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                var Person = valueDto.ToEntity();
+                int SavedElts = await _repository.Add(Person);
+
+                if (SavedElts > 0)
+                    // return RedirectToAction(nameof(Index));
+                    return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                else
+                    return FormResult.CreateErrorResult("Echec on saved entity.");
             }
-            ViewData["CountryId"] = UtilityController.GetSelectListOfCountries(_context, valueDto.CountryId ?? 0);
-            ViewData["EtabId"] = UtilityController.GetSelectListOfEtablissements(_context, valueDto.EtabId ?? 0);
+            SetViewDataElements(valueDto);
             return PartialView("Create", valueDto);
         }
 
         // GET: Persons/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.CorePeople == null)
+            var findObj = await _repository.GetDetails(id);
+            if (findObj == null)
             {
-                return NotFound();
+                //return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
-
-            var corePerson = await _context.CorePeople.FindAsync(id);
-            if (corePerson == null)
-            {
-                return NotFound();
-            }
-            ViewData["CountryId"] = UtilityController.GetSelectListOfCountries(_context, corePerson.CountryId ?? 0);
-            ViewData["EtabId"] = UtilityController.GetSelectListOfEtablissements(_context, corePerson.EtabId ?? 0);
-            return PartialView("Edit", corePerson.Adapt<PersonDto>());
+            var valueDto = findObj.Adapt<PersonDto>();
+            SetViewDataElements(valueDto);
+            return PartialView("Edit", valueDto);
         }
 
         // POST: Persons/Edit/5
@@ -106,7 +106,7 @@ namespace Meeting.web.Controllers.Traitements
         [HttpPost]
         [ValidateAntiForgeryToken]
         [FormValidator]
-        public async Task<IActionResult> Edit(int id, [Bind("PersonId,CountryId,EtabId,Nom,Prenom,Datenais,Lieunais,Sexe,Email,Adresse,AdhesionDate,Nocni,CniExpireDate,IsActive,IsVisible,AnneePromo")] PersonDto valueDto)
+        public async Task<IActionResult> Edit(int id, /*[Bind("PersonId,CountryId,EtabId,Nom,Prenom,Datenais,Lieunais,Sexe,Email,Adresse,AdhesionDate,Nocni,CniExpireDate,IsActive,IsVisible,AnneePromo")]*/ PersonDto valueDto)
         {
             if (id != valueDto.PersonId)
             {
@@ -115,49 +115,29 @@ namespace Meeting.web.Controllers.Traitements
 
             if (ModelState.IsValid)
             {
-                var corePerson = valueDto.ToEntity();
-                try
-                {
-                    _context.Update(corePerson);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CorePersonExists(corePerson.PersonId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                // return RedirectToAction(nameof(Index));
-                return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                var Person = valueDto.ToEntity();
+                int SavedElts = await _repository.Update(id, Person);
+                if (SavedElts > 0)
+                    //return RedirectToAction(nameof(Index));
+                    return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                else
+                    return FormResult.CreateErrorResult("Echec on saved entity.");
             }
-            ViewData["CountryId"] = UtilityController.GetSelectListOfCountries(_context, valueDto.CountryId ?? 0);
-            ViewData["EtabId"] = UtilityController.GetSelectListOfEtablissements(_context, valueDto.EtabId ?? 0);
+            SetViewDataElements(valueDto);
             return PartialView("Edit", valueDto);
         }
 
         // GET: Persons/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.CorePeople == null)
+            var findObj = await _repository.GetDetails(id);
+            if (findObj == null)
             {
-                return NotFound();
+                //return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
 
-            var corePerson = await _context.CorePeople
-                .Include(c => c.Country)
-                .Include(c => c.Etab)
-                .FirstOrDefaultAsync(m => m.PersonId == id);
-            if (corePerson == null)
-            {
-                return NotFound();
-            }
-
-            return PartialView("Delete", corePerson.Adapt<PersonDto>());
+            return PartialView("Delete", findObj.Adapt<PersonDto>());
         }
 
         // POST: Persons/Delete/5
@@ -166,25 +146,24 @@ namespace Meeting.web.Controllers.Traitements
         [FormValidator]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.CorePeople == null)
+            var findObj = await _repository.GetDetails(id);
+            if (findObj == null)
             {
-                //return Problem("Entity set 'LabosContext.CorePeople'  is null.");
+                //return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
+            }
+
+            int SavedElts = await _repository.Delete(id);
+            if (SavedElts > 0)
+                //return RedirectToAction(nameof(Index));
+                return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+            else
                 return FormResult.CreateErrorResult(UtilityController.DeleteOperationFailed);
-            }
-            var corePerson = await _context.CorePeople.FindAsync(id);
-            if (corePerson != null)
-            {
-                _context.CorePeople.Remove(corePerson);
-            }
-            
-            await _context.SaveChangesAsync();
-            //return RedirectToAction(nameof(Index));
-            return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
         }
 
-        private bool CorePersonExists(int id)
-        {
-          return (_context.CorePeople?.Any(e => e.PersonId == id)).GetValueOrDefault();
-        }
+        //private bool CorePersonExists(int id)
+        //{
+        //  return (_context.CorePeople?.Any(e => e.PersonId == id)).GetValueOrDefault();
+        //}
     }
 }
