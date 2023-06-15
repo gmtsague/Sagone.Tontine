@@ -11,19 +11,23 @@ using Mapster;
 using Meeting.web.Controllers;
 using FormHelper;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Meeting.Web.Repository;
 
 namespace Meeting.Web.Controllers.Settings
 {
     public class PostesController : Controller
     {
-        private readonly LabosContext _context;
+        //private readonly LabosContext _context;
+
+        private readonly IPosteRepository _repository;
 
         private readonly ILogger<PostesController> _logger;
 
-        public PostesController(ILogger<PostesController> logger, LabosContext context)
+        public PostesController(ILogger<PostesController> logger, IPosteRepository repository)
         {
             _logger = logger;
-            _context = context;
+            //_context = context;
+            _repository = repository;
         }
 
         // GET: Postes
@@ -32,29 +36,21 @@ namespace Meeting.Web.Controllers.Settings
             ViewData["TitleObj"] = new FormTitle("Poste du bureau");
 
             var ViewModel = new AppPageViewModel<PosteDto>();
-            ViewModel.DataRecords = await _context.MeetPostes.AsQueryable().ProjectToType<PosteDto>().ToListAsync();
-            
-            return _context.MeetPostes != null ? 
-                          View(/*await _context.MeetPostes.AsQueryable().ProjectToType<PosteDto>().ToListAsync()*/ViewModel) :
-                           FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);/*Problem("Entity set 'LabosContext.PosteDto'  is null."*/;
+
+            var resultItems = await _repository.GetAll();
+            ViewModel.DataRecords = resultItems.Items.AsQueryable().ProjectToType<PosteDto>().ToList();
+            return View(ViewModel);
         }
 
         // GET: Postes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.MeetPostes == null)
+            var findObj = await _repository.GetDetails(id);
+            if (findObj == null)
             {
-                return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
-
-            var poste = await _context.MeetPostes
-                .FirstOrDefaultAsync(m => m.PosteId == id);
-            if (poste == null)
-            {
-                return NotFound(); 
-            }
-
-            return PartialView("Details", poste.Adapt<PosteDto>());
+            return PartialView("Details", findObj.Adapt<PosteDto>());
         }
 
         // GET: Postes/Create
@@ -69,34 +65,32 @@ namespace Meeting.Web.Controllers.Settings
         [HttpPost]
         [ValidateAntiForgeryToken]
         [FormValidator]
-        public async Task<IActionResult> Create([Bind("PosteId,Libelle,Code")] PosteDto posteDto)
+        public async Task<IActionResult> Create(/*[Bind("PosteId,Libelle,Code")]*/ PosteDto valueDto)
         {
             if (ModelState.IsValid)
             {
-                var meetPoste = posteDto.ToEntity();
-                _context.Add(meetPoste);
-                await _context.SaveChangesAsync();
-                // var localizedString = _localizer["Hello"];
-                //return RedirectToAction(nameof(Index));
-                return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                var Poste = valueDto.ToEntity();
+
+                int SavedElts = await _repository.Add(Poste);
+
+                if (SavedElts > 0)
+                    // return RedirectToAction(nameof(Index));
+                    return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                else
+                    return FormResult.CreateErrorResult("Echec on saved entity.");
             }
-            return PartialView("Create", posteDto);
+            return PartialView("Create", valueDto);
         }
 
         // GET: Postes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.MeetPostes == null)
+            var findObj = await _repository.GetDetails(id);
+            if (findObj == null)
             {
-                return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
-
-            var poste = await _context.MeetPostes.FindAsync(id);
-            if (poste == null)
-            {
-                return NotFound();
-            }
-            return PartialView("Edit", poste.Adapt<PosteDto>());
+            return PartialView("Edit", findObj.Adapt<PosteDto>());
         }
 
         // POST: Postes/Edit/5
@@ -105,58 +99,36 @@ namespace Meeting.Web.Controllers.Settings
         [HttpPost]
         [ValidateAntiForgeryToken]
         [FormValidator]
-        public async Task<IActionResult> Edit(int id, [Bind("PosteId,Libelle,Code")] PosteDto posteDto)
+        public async Task<IActionResult> Edit(int id, /*[Bind("PosteId,Libelle,Code")]*/ PosteDto valueDto)
         {
-            if (id != posteDto.PosteId)
+            if (id != valueDto.PosteId)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                var meetPoste = posteDto.ToEntity();              
-                try
-                {
-                    _context.Update(meetPoste);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PosteExists(posteDto.PosteId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                catch(Exception  ex)
-                {
-                   return FormResult.CreateErrorResult(ex.Message);
-                }
-                //return RedirectToAction(nameof(Index));
-                return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                var Poste = valueDto.ToEntity();
+
+                int SavedElts = await _repository.Update(id, Poste);
+                if (SavedElts > 0)
+                    //return RedirectToAction(nameof(Index));
+                    return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                else
+                    return FormResult.CreateErrorResult("Echec on saved entity.");
             }
-            return PartialView("Edit", posteDto);
+            return PartialView("Edit", valueDto);
         }
 
         // GET: Postes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.MeetPostes == null)
+            var findObj = await _repository.GetDetails(id);
+            if (findObj == null)
             {
-                return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
-
-            var poste = await _context.MeetPostes
-                .FirstOrDefaultAsync(m => m.PosteId == id);
-            if (poste == null)
-            {
-                return NotFound();
-            }
-
-            return PartialView("Delete", poste.Adapt<PosteDto>());
+            return PartialView("Delete", findObj.Adapt<PosteDto>());
         }
 
         // POST: Postes/Delete/5
@@ -165,25 +137,23 @@ namespace Meeting.Web.Controllers.Settings
         [FormValidator]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.MeetPostes == null)
+            var findObj = await _repository.GetDetails(id);
+            if (findObj == null)
             {
-                //return Problem("Entity set 'LabosContext.PosteDto'  is null.");
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
+            }
+
+            int SavedElts = await _repository.Delete(id);
+            if (SavedElts > 0)
+                //return RedirectToAction(nameof(Index));
+                return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+            else
                 return FormResult.CreateErrorResult(UtilityController.DeleteOperationFailed);
-            }
-            var posteDto = await _context.MeetPostes.FindAsync(id);
-            if (posteDto != null)
-            {
-                _context.MeetPostes.Remove(posteDto);
-            }
-            
-            await _context.SaveChangesAsync();
-            //return RedirectToAction(nameof(Index));
-            return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
         }
 
-        private bool PosteExists(int id)
-        {
-          return (_context.MeetPostes?.Any(e => e.PosteId == id)).GetValueOrDefault();
-        }
+        //private bool PosteExists(int id)
+        //{
+        //  return (_context.MeetPostes?.Any(e => e.PosteId == id)).GetValueOrDefault();
+        //}
     }
 }
