@@ -186,10 +186,10 @@ namespace Meeting.Web.Controllers
         }
 
         // POST: Etablissements/Delete/5
-        [HttpPost, ActionName("Setdefault")]
+        [HttpPost, ActionName("Setcurrent")]
         [ValidateAntiForgeryToken]
         [FormValidator]
-        public async Task<IActionResult> SetDefault(int id)
+        public async Task<IActionResult> SetCurrent(int id)
         {
             if (_context.CoreEtablissements == null)
             {
