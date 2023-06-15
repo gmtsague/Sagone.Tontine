@@ -10,7 +10,7 @@
 <hr />*@
 <div class="row justify-content-center">
     <div class="card-body">
-        <form asp-action="Edit">
+        <form asp-formhelper="true" asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ModepaieId" />
              <div class="form-group m-3">
