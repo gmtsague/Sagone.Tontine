@@ -10,6 +10,7 @@ using Mapster;
 using Meeting.Web.Dto;
 using FormHelper;
 using Microsoft.AspNetCore.Routing;
+using Meeting.Web.Repository;
 
 namespace Meeting.web.Controllers.Traitements
 {
@@ -17,12 +18,15 @@ namespace Meeting.web.Controllers.Traitements
     {
         private readonly LabosContext _context;
 
+        private readonly ISortiecaisseRepository _repository;
+
         private readonly ILogger<SortieCaissesController> _logger;
 
-        public SortieCaissesController(ILogger<SortieCaissesController> logger, LabosContext context)
+        public SortieCaissesController(ILogger<SortieCaissesController> logger, ISortiecaisseRepository repository)
         {
             _logger = logger;
-            _context = context;
+            //_context = context;
+            _repository = repository;
         }
 
         /// <summary>
@@ -36,16 +40,19 @@ namespace Meeting.web.Controllers.Traitements
 
             TypeAdapterConfig<MeetSortieCaisse,SortieCaisseDto>.NewConfig().MaxDepth(3);
 
-            var labosContext = _context.MeetSortieCaisses
-                                       .Include(m => m.Rubrique)
-                                       .Include(m => m.Seance.CoreSubdivision)
-                                       .Include(m => m.IdinscritNavigation)
-                                       .ThenInclude(m=>m.Person)
-                                       //.Where(m => m.MeetAntenne.EtabId == Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0))
-                                       .Where(m => m.IdinscritNavigation.AnneeId == m.Rubrique.AnneeId)
-                                       .Where(m => m.IdinscritNavigation.AnneeId == Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0))
-                                       .AsNoTracking().ProjectToType<SortieCaisseDto>();
-            return View(await labosContext.ToListAsync());
+            var resultItems = await _repository.GetAll( (int)Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0));
+            return View(resultItems.Items.AsQueryable().ProjectToType<SortieCaisseDto>().ToList());
+
+            //var labosContext = _context.MeetSortieCaisses
+            //                           .Include(m => m.Rubrique)
+            //                           .Include(m => m.Seance.CoreSubdivision)
+            //                           .Include(m => m.IdinscritNavigation)
+            //                           .ThenInclude(m=>m.Person)
+            //                           //.Where(m => m.MeetAntenne.EtabId == Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0))
+            //                           .Where(m => m.IdinscritNavigation.AnneeId == m.Rubrique.AnneeId)
+            //                           .Where(m => m.IdinscritNavigation.AnneeId == Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0))
+            //                           .AsNoTracking().ProjectToType<SortieCaisseDto>();
+            //return View(await labosContext.ToListAsync());
         }
 
         /// <summary>
@@ -61,49 +68,48 @@ namespace Meeting.web.Controllers.Traitements
 
             TypeAdapterConfig<MeetSortieCaisse, SortieCaisseDto>.NewConfig().MaxDepth(3);
 
-            var labosContext = _context.MeetSortieCaisses
-                                       .Include(m => m.Rubrique)
-                                       .Include(m => m.Seance.CoreSubdivision)
-                                       .Include(m => m.IdinscritNavigation)
-                                       .ThenInclude(m => m.Person)
-                                       //.Where(m => m.MeetAntenne.EtabId == Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0))
-                                       .Where(m => (m.IdinscritNavigation == null || m.IdinscritNavigation.AnneeId == m.Rubrique.AnneeId) && m.SeanceId == seanceId)
-                                       .Where(m => m.Rubrique.AnneeId == Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0))
-                                       .AsNoTracking().ProjectToType<SortieCaisseDto>();
-            return PartialView("_PartialOutcomeGridViewBySeance", await labosContext.ToListAsync());
+            var resultItems = await _repository.GetDataBySeance(seanceId, (int)Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0));
+            return PartialView("_PartialOutcomeGridViewBySeance", resultItems.Items.AsQueryable().ProjectToType<SortieCaisseDto>().ToList());
+
+            //var labosContext = _context.MeetSortieCaisses
+            //                           .Include(m => m.Rubrique)
+            //                           .Include(m => m.Seance.CoreSubdivision)
+            //                           .Include(m => m.IdinscritNavigation)
+            //                           .ThenInclude(m => m.Person)
+            //                           //.Where(m => m.MeetAntenne.EtabId == Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0))
+            //                           .Where(m => (m.IdinscritNavigation == null || m.IdinscritNavigation.AnneeId == m.Rubrique.AnneeId) && m.SeanceId == seanceId)
+            //                           .Where(m => m.Rubrique.AnneeId == Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0))
+            //                           .AsNoTracking().ProjectToType<SortieCaisseDto>();
+            //return PartialView("_PartialOutcomeGridViewBySeance", await labosContext.ToListAsync());
+        }
+
+        private void SetViewDataElements(SortieCaisseDto? valueDto)
+        {
+            ViewData["RubriqueId"] = UtilityController.GetSelectListOfRubriques(_repository.GetUnitOfWork(), Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), valueDto?.RubriqueId ?? 0);
+            ViewData["Idinscrit"] = UtilityController.GetSelectListOfInscriptions(_repository.GetUnitOfWork(), Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), valueDto?.Idinscrit ?? 0);
+            ViewData["SeanceId"] = UtilityController.GetSelectListOfSeances(_repository.GetUnitOfWork(), Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0), Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), valueDto?.SeanceId ?? 0);
         }
 
         // GET: SortieCaisses/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.MeetSortieCaisses == null)
+            var findObj = await _repository.GetDetails(id);
+            if (findObj == null)
             {
-                // return NotFound();
+                //return NotFound();
                 return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
 
-            var meetSortieCaisse = await _context.MeetSortieCaisses
-                .Include(m => m.Rubrique)
-                .Include(m => m.IdinscritNavigation.Person)
-                .Include(m => m.IdinscritNavigation.MeetAntenne)
-                .Include(m => m.Seance.CoreSubdivision)
-                .FirstOrDefaultAsync(m => m.SortiecaisseId == id);
-            if (meetSortieCaisse == null)
-            {
-                // return NotFound();
-                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
-            }
-
-            return PartialView("Details", meetSortieCaisse.Adapt<SortieCaisseDto>());
+            return PartialView("Details", findObj.Adapt<SortieCaisseDto>());
         }
 
         // GET: SortieCaisses/Create
         public IActionResult Create([FromQuery]int? InscritId, [FromQuery]int? IdSeance)
         {
-            ViewData["RubriqueId"] = UtilityController.GetSelectListOfRubriques(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0));
-            ViewData["Idinscrit"] = UtilityController.GetSelectListOfInscriptions(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), InscritId ?? 0);
-            ViewData["SeanceId"] = UtilityController.GetSelectListOfSeances(_context, Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0), Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), IdSeance ?? 0);
-           
+            //ViewData["RubriqueId"] = UtilityController.GetSelectListOfRubriques(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0));
+            //ViewData["Idinscrit"] = UtilityController.GetSelectListOfInscriptions(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), InscritId ?? 0);
+            //ViewData["SeanceId"] = UtilityController.GetSelectListOfSeances(_context, Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0), Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), IdSeance ?? 0);
+
             SortieCaisseDto valueDto = new SortieCaisseDto();
             if (InscritId.HasValue)
                 valueDto.Idinscrit = InscritId.Value;
@@ -111,6 +117,7 @@ namespace Meeting.web.Controllers.Traitements
             if (IdSeance.HasValue)
                 valueDto.SeanceId = IdSeance.Value;
 
+            SetViewDataElements(valueDto);
             return PartialView("Create", valueDto);
         }
 
@@ -123,40 +130,40 @@ namespace Meeting.web.Controllers.Traitements
         {
             if (ModelState.IsValid)
             {
-                var meetSortieCaisse = valueDto.Adapt<MeetSortieCaisse>();
-                meetSortieCaisse.RefNo = Guid.NewGuid().ToString().Substring(0, 13);
-                _context.Add(meetSortieCaisse);
-                await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
-                return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                var SortieCaisse = valueDto.Adapt<MeetSortieCaisse>();
+                int SavedElts = await _repository.Add(SortieCaisse);
+
+                if (SavedElts > 0)
+                    // return RedirectToAction(nameof(Index));
+                    return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                else
+                    return FormResult.CreateErrorResult("Echec on saved entity.");
             }
-            //ViewData["EngagementId"] = new SelectList(_context.MeetEngagements, "EngagementId", "EngagementId", valueDto.EngagementId);
-            ViewData["RubriqueId"] = UtilityController.GetSelectListOfRubriques(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), valueDto.RubriqueId);
-            ViewData["Idinscrit"] = UtilityController.GetSelectListOfInscriptions(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), (long)valueDto.Idinscrit);
-            ViewData["SeanceId"] = UtilityController.GetSelectListOfSeances(_context, Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0), Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), valueDto.SeanceId);
+            ////ViewData["EngagementId"] = new SelectList(_context.MeetEngagements, "EngagementId", "EngagementId", valueDto.EngagementId);
+            //ViewData["RubriqueId"] = UtilityController.GetSelectListOfRubriques(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), valueDto.RubriqueId);
+            //ViewData["Idinscrit"] = UtilityController.GetSelectListOfInscriptions(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), (long)valueDto.Idinscrit);
+            //ViewData["SeanceId"] = UtilityController.GetSelectListOfSeances(_context, Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0), Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), valueDto.SeanceId);
+            SetViewDataElements(valueDto);
             return View("Create",valueDto);
         }
 
         // GET: SortieCaisses/Edit/5
         public async Task<IActionResult> Edit(int? id, int? Idseance)
         {
-            if (id == null || _context.MeetSortieCaisses == null)
+            var findObj = await _repository.GetDetails(id);
+            if (findObj == null)
             {
                 //return NotFound();
                 return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
 
-            var meetSortieCaisse = await _context.MeetSortieCaisses.FindAsync(id);
-            if (meetSortieCaisse == null)
-            {
-                //return NotFound();
-                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
-            }
             ViewData["ConstraintSeance"] = Idseance ?? 0;
-            ViewData["RubriqueId"] = UtilityController.GetSelectListOfRubriques(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), meetSortieCaisse.RubriqueId);
-            ViewData["Idinscrit"] = UtilityController.GetSelectListOfInscriptions(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), (long)meetSortieCaisse.Idinscrit);
-            ViewData["SeanceId"] = UtilityController.GetSelectListOfSeances(_context, Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0), Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), meetSortieCaisse.SeanceId);
-            return PartialView("Edit", meetSortieCaisse.Adapt<SortieCaisseDto>());
+            //ViewData["RubriqueId"] = UtilityController.GetSelectListOfRubriques(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), meetSortieCaisse.RubriqueId);
+            //ViewData["Idinscrit"] = UtilityController.GetSelectListOfInscriptions(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), (long)meetSortieCaisse.Idinscrit);
+            //ViewData["SeanceId"] = UtilityController.GetSelectListOfSeances(_context, Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0), Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), meetSortieCaisse.SeanceId);
+            var valueDto = findObj.Adapt<SortieCaisseDto>();
+            SetViewDataElements(valueDto);
+            return PartialView("Edit", valueDto);
         }
 
         // POST: SortieCaisses/Edit/5
@@ -174,54 +181,33 @@ namespace Meeting.web.Controllers.Traitements
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    var meetSortieCaisse = valueDto.Adapt<MeetSortieCaisse>();
-                    _context.Update(meetSortieCaisse);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MeetSortieCaisseExists(valueDto.SortiecaisseId))
-                    {
-                        //return NotFound();
-                        return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
-                    }
+                    var SortieCaisse = valueDto.Adapt<MeetSortieCaisse>();
+                    int SavedElts = await _repository.Update(id, SortieCaisse);
+
+                    if (SavedElts > 0)
+                        // return RedirectToAction(nameof(Index));
+                        return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
                     else
-                    {
-                        throw;
-                    }
-                }
-                //return RedirectToAction(nameof(Index));
-                return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
-            }
-            ViewData["RubriqueId"] = UtilityController.GetSelectListOfRubriques(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), valueDto.RubriqueId);
-            ViewData["Idinscrit"] = UtilityController.GetSelectListOfInscriptions(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), (long) valueDto.Idinscrit);
-            ViewData["SeanceId"] = UtilityController.GetSelectListOfSeances(_context, Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0), Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), (long)valueDto.SeanceId);
+                        return FormResult.CreateErrorResult("Echec on saved entity.");
+             }
+            //ViewData["RubriqueId"] = UtilityController.GetSelectListOfRubriques(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), valueDto.RubriqueId);
+            //ViewData["Idinscrit"] = UtilityController.GetSelectListOfInscriptions(_context, Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), (long) valueDto.Idinscrit);
+            //ViewData["SeanceId"] = UtilityController.GetSelectListOfSeances(_context, Convert.ToInt64(TempData.Peek("SelectedEtab") ?? 0), Convert.ToInt64(TempData.Peek("SelectedYear") ?? 0), (long)valueDto.SeanceId);
+            SetViewDataElements(valueDto);
             return PartialView("Edit", valueDto);
         }
 
         // GET: SortieCaisses/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.MeetSortieCaisses == null)
-            {
-                return NotFound();
-            }
-
-            var meetSortieCaisse = await _context.MeetSortieCaisses
-                .Include(m => m.Rubrique)
-                .Include(m => m.IdinscritNavigation.Person)
-                .Include(m => m.IdinscritNavigation.MeetAntenne)
-                .Include(m => m.Seance.CoreSubdivision)
-                .FirstOrDefaultAsync(m => m.SortiecaisseId == id);
-            if (meetSortieCaisse == null)
+            var findObj = await _repository.GetDetails(id);
+            if (findObj == null)
             {
                 //return NotFound();
                 return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
 
-            return PartialView("Delete", meetSortieCaisse.Adapt<SortieCaisseDto>());
+            return PartialView("Delete", findObj.Adapt<SortieCaisseDto>());
         }
 
         // POST: SortieCaisses/Delete/5
@@ -229,27 +215,24 @@ namespace Meeting.web.Controllers.Traitements
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.MeetSortieCaisses == null)
+            var findObj = await _repository.GetDetails(id);
+            if (findObj == null)
             {
-                return Problem("Entity set 'LabosContext.MeetSortieCaisses'  is null.");
-            }
-            var meetSortieCaisse = await _context.MeetSortieCaisses.FindAsync(id);
-            if (meetSortieCaisse != null)
-            {
-                _context.MeetSortieCaisses.Remove(meetSortieCaisse);
+                //return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
 
-            int NbSaved = await _context.SaveChangesAsync();
-            if (NbSaved > 0)
+            int SavedElts = await _repository.Delete(id);
+            if (SavedElts > 0)
                 //return RedirectToAction(nameof(Index));
                 return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
             else
                 return FormResult.CreateErrorResult(UtilityController.DeleteOperationFailed);
         }
 
-        private bool MeetSortieCaisseExists(int id)
-        {
-          return (_context.MeetSortieCaisses?.Any(e => e.SortiecaisseId == id)).GetValueOrDefault();
-        }
+        //private bool MeetSortieCaisseExists(int id)
+        //{
+        //  return (_context.MeetSortieCaisses?.Any(e => e.SortiecaisseId == id)).GetValueOrDefault();
+        //}
     }
 }
