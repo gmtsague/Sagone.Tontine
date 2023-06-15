@@ -21,7 +21,25 @@ builder.Services.AddDbContext<LabosContext>(options => options.UseNpgsql(connect
 //    .AddEntityFrameworkStores<LabosContext>();
 
 builder.Services.AddUnitOfWork<LabosContext>();
+
 builder.Services.AddScoped<IAnneeRepository, AnneeRepository>();
+builder.Services.AddScoped<IAntenneRepository, AntenneRepository>();
+builder.Services.AddScoped<IBankRepository, BankRepository>();
+builder.Services.AddScoped<IModepaieRepository, ModepaieRepository>();
+builder.Services.AddScoped<ITypeRubriqueRepository, TypeRubriqueRepository>();
+builder.Services.AddScoped<IPosteRepository, PosteRepository>();
+builder.Services.AddScoped<IConfigvisasRepository, ConfigvisasRepository>();
+builder.Services.AddScoped<IPreferencesRepository, PreferencesRepository>();
+
+builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+builder.Services.AddScoped<IInscriptionRepository, InscriptionRepository>();
+builder.Services.AddScoped<IOrdrePassageRepository, OrdrePassageRepository>();
+builder.Services.AddScoped<IRubriqueRepository, RubriqueRepository>();
+builder.Services.AddScoped<IEngagementRepository, EngagementRepository>();
+builder.Services.AddScoped<IPresencesRepository, PresencesRepository>();
+builder.Services.AddScoped<ISeancesRepository, SeancesRepository>();
+builder.Services.AddScoped<ISortiecaisseRepository, SortiecaisseRepository>();
+
 
 builder.Services.AddMapster();
 
