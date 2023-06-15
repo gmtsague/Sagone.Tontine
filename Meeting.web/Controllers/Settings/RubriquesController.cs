@@ -9,19 +9,23 @@ using MeetingEntities.Models;
 using Mapster;
 using Meeting.Web.Dto;
 using FormHelper;
+using Meeting.Web.Repository;
 
 namespace Meeting.web.Controllers.Settings
 {
     public class RubriquesController : Controller
     {
-        private readonly LabosContext _context;
+       // private readonly LabosContext _context;
+
+        private readonly IRubriqueRepository _repository;
 
         private readonly ILogger<RubriquesController> _logger;
 
-        public RubriquesController(ILogger<RubriquesController> logger, LabosContext context)
+        public RubriquesController(ILogger<RubriquesController> logger, IRubriqueRepository repository)
         {
             _logger = logger;
-            _context = context;
+            //_context = context;
+            _repository = repository;
         }
 
         // GET: Rubriques
@@ -31,35 +35,32 @@ namespace Meeting.web.Controllers.Settings
 
             TypeAdapterConfig<MeetRubrique, RubriqueDto>.NewConfig().MaxDepth(3);
 
-            var labosContext = _context.MeetRubriques.Include(m => m.Annee).Include(m => m.Typerub);
-            return View(await labosContext.AsQueryable().ProjectToType<RubriqueDto>().ToListAsync());
+            var resultItems = await _repository.GetAll();
+            return View(resultItems.Items.AsQueryable().ProjectToType<RubriqueDto>().ToList());
+        }
+
+        private void SetViewDataElements(RubriqueDto? valueDto)
+        {
+            ViewData["AnneeId"] = UtilityController.GetSelectListOfAnnees(_repository.GetUnitOfWork(), valueDto?.AnneeId ?? 0);
+            ViewData["TyperubId"] = UtilityController.GetSelectListOfTypeRubriques(_repository.GetUnitOfWork(), valueDto?.TyperubId ?? 0);
         }
 
         // GET: Rubriques/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.MeetRubriques == null)
+            var findObj = await _repository.GetDetails(id);
+            if (findObj == null)
             {
-                return NotFound();
+                //return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
-
-            var meetRubrique = await _context.MeetRubriques
-                .Include(m => m.Annee)
-                .Include(m => m.Typerub)
-                .FirstOrDefaultAsync(m => m.RubriqueId == id);
-            if (meetRubrique == null)
-            {
-                return NotFound();
-            }
-
-            return PartialView("Details", meetRubrique.Adapt<RubriqueDto>());
+            return PartialView("Details", findObj.Adapt<RubriqueDto>());
         }
 
         // GET: Rubriques/Create
         public IActionResult Create()
         {
-            ViewData["AnneeId"] = UtilityController.GetSelectListOfAnnees(_context);
-            ViewData["TyperubId"] = UtilityController.GetSelectListOfTypeRubriques(_context);
+            SetViewDataElements(null);
             return PartialView("Create");
         }
 
@@ -69,37 +70,37 @@ namespace Meeting.web.Controllers.Settings
         [HttpPost]
         [ValidateAntiForgeryToken]
         [FormValidator]
-        public async Task<IActionResult> Create([Bind("RubriqueId,AnneeId,TyperubId,Libelle,Nbmandataire,Montantroute,MontantPerson,IsOutcome,Commentaire")] RubriqueDto valueDto)
+        public async Task<IActionResult> Create(/*[Bind("RubriqueId,AnneeId,TyperubId,Libelle,Nbmandataire,Montantroute,MontantPerson,IsOutcome,Commentaire")]*/ RubriqueDto valueDto)
         {
             if (ModelState.IsValid)
             {
-                var meetRubrique = valueDto.ToEntity();
-                _context.Add(meetRubrique);
-                await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
-                return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                var Rubrique = valueDto.ToEntity();
+
+                int SavedElts = await _repository.Add(Rubrique);
+
+                if (SavedElts > 0)
+                    // return RedirectToAction(nameof(Index));
+                    return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                else
+                    return FormResult.CreateErrorResult("Echec on saved entity.");
             }
-            ViewData["AnneeId"] = UtilityController.GetSelectListOfAnnees(_context, valueDto.AnneeId);
-            ViewData["TyperubId"] = UtilityController.GetSelectListOfTypeRubriques(_context, valueDto.TyperubId);
+
+           SetViewDataElements(valueDto);
             return PartialView("Create", valueDto);
         }
 
         // GET: Rubriques/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.MeetRubriques == null)
+            var findObj = await _repository.GetDetails(id);
+            if (findObj == null)
             {
-                return NotFound();
+                //return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
-
-            var meetRubrique = await _context.MeetRubriques.FindAsync(id);
-            if (meetRubrique == null)
-            {
-                return NotFound();
-            }
-            ViewData["AnneeId"] = UtilityController.GetSelectListOfAnnees(_context, meetRubrique.AnneeId);
-            ViewData["TyperubId"] = UtilityController.GetSelectListOfTypeRubriques(_context, meetRubrique.TyperubId);
-            return PartialView("Edit", meetRubrique.Adapt<RubriqueDto>());
+            var valueDto = findObj.Adapt<RubriqueDto>();
+            SetViewDataElements(valueDto);
+            return PartialView("Edit", valueDto);
         }
 
         // POST: Rubriques/Edit/5
@@ -108,7 +109,7 @@ namespace Meeting.web.Controllers.Settings
         [HttpPost]
         [ValidateAntiForgeryToken]
         [FormValidator]
-        public async Task<IActionResult> Edit(int id, [Bind("RubriqueId,AnneeId,TyperubId,Libelle,Nbmandataire,Montantroute,MontantPerson,IsOutcome,Commentaire")] RubriqueDto valueDto)
+        public async Task<IActionResult> Edit(int id, /*[Bind("RubriqueId,AnneeId,TyperubId,Libelle,Nbmandataire,Montantroute,MontantPerson,IsOutcome,Commentaire")]*/ RubriqueDto valueDto)
         {
             if (id != valueDto.RubriqueId)
             {
@@ -117,49 +118,30 @@ namespace Meeting.web.Controllers.Settings
 
             if (ModelState.IsValid)
             {
-                    var meetRubrique = valueDto.ToEntity();
-                try
-                {
-                    _context.Update(meetRubrique);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MeetRubriqueExists(meetRubrique.RubriqueId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                // return RedirectToAction(nameof(Index));
-                return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                var Rubrique = valueDto.ToEntity();
+
+                int SavedElts = await _repository.Update(id, Rubrique);
+                if (SavedElts > 0)
+                    //return RedirectToAction(nameof(Index));
+                    return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                else
+                    return FormResult.CreateErrorResult("Echec on saved entity.");
             }
-            ViewData["AnneeId"] = UtilityController.GetSelectListOfAnnees(_context, valueDto.AnneeId);
-            ViewData["TyperubId"] = UtilityController.GetSelectListOfTypeRubriques(_context, valueDto.TyperubId);
+
+            SetViewDataElements(valueDto);
             return PartialView("Edit", valueDto);
         }
 
         // GET: Rubriques/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.MeetRubriques == null)
+            var findObj = await _repository.GetDetails(id);
+            if (findObj == null)
             {
-                return NotFound();
+                //return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
-
-            var meetRubrique = await _context.MeetRubriques
-                .Include(m => m.Annee)
-                .Include(m => m.Typerub)
-                .FirstOrDefaultAsync(m => m.RubriqueId == id);
-            if (meetRubrique == null)
-            {
-                return NotFound();
-            }
-
-            return PartialView("Delete", meetRubrique.Adapt<RubriqueDto>());
+            return PartialView("Delete", findObj.Adapt<RubriqueDto>());
         }
 
         // POST: Rubriques/Delete/5
@@ -168,25 +150,24 @@ namespace Meeting.web.Controllers.Settings
         [FormValidator]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.MeetRubriques == null)
+            var findObj = await _repository.GetDetails(id);
+            if (findObj == null)
             {
-                //return Problem("Entity set 'LabosContext.MeetRubriques'  is null.");
+                //return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
+            }
+
+            int SavedElts = await _repository.Delete(id);
+            if (SavedElts > 0)
+                //return RedirectToAction(nameof(Index));
+                return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+            else
                 return FormResult.CreateErrorResult(UtilityController.DeleteOperationFailed);
-            }
-            var meetRubrique = await _context.MeetRubriques.FindAsync(id);
-            if (meetRubrique != null)
-            {
-                _context.MeetRubriques.Remove(meetRubrique);
-            }
-            
-            await _context.SaveChangesAsync();
-            // return RedirectToAction(nameof(Index));
-            return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
         }
 
-        private bool MeetRubriqueExists(int id)
-        {
-          return (_context.MeetRubriques?.Any(e => e.RubriqueId == id)).GetValueOrDefault();
-        }
+        //private bool MeetRubriqueExists(int id)
+        //{
+        //  return (_context.MeetRubriques?.Any(e => e.RubriqueId == id)).GetValueOrDefault();
+        //}
     }
 }
