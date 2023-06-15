@@ -260,7 +260,9 @@ namespace Meeting.web.Controllers
 
             return new SelectList(ItemsList, "Id", "FullName", selectedValue);
         }
+
         //------END-------
+
         public static SelectList GetSelectListOfBureaux(LabosContext context, long selectedValue = 0)
         {
             List<BureauDto>? ItemsList = null;
