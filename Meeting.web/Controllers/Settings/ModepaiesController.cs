@@ -9,19 +9,22 @@ using MeetingEntities.Models;
 using Mapster;
 using Meeting.Web.Dto;
 using FormHelper;
+using Meeting.Web.Repository;
 
 namespace Meeting.web.Controllers.Settings
 {
     public class ModepaiesController : Controller
     {
-        private readonly LabosContext _context;
+        //private readonly LabosContext _context;
+        private readonly IModepaieRepository _repository;
 
         private readonly ILogger<ModepaiesController> _logger;
 
-        public ModepaiesController(ILogger<ModepaiesController> logger, LabosContext context)
+        public ModepaiesController(ILogger<ModepaiesController> logger, IModepaieRepository repository)
         {
             _logger = logger;
-            _context = context;
+            //_context = context;
+            _repository = repository;
         }
 
         // GET: Modepaies
@@ -29,27 +32,21 @@ namespace Meeting.web.Controllers.Settings
         {
             ViewData["TitleObj"] = new FormTitle("Mode paiement");
 
-            return _context.CoreModepaies != null ? 
-                          View(await _context.CoreModepaies.AsQueryable().ProjectToType<ModepaieDto>().ToListAsync()) :
-                          Problem("Entity set 'LabosContext.CoreModepaies'  is null.");
+            var resultItems = await _repository.GetAll();
+            return View(resultItems.Items.AsQueryable().ProjectToType<ModepaieDto>().ToList());
         }
 
         // GET: Modepaies/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.CoreModepaies == null)
+            var Modepaie = await _repository.GetDetails(id);
+            if (Modepaie == null)
             {
-                return NotFound();
+                //return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
 
-            var coreModepaie = await _context.CoreModepaies
-                .FirstOrDefaultAsync(m => m.ModepaieId == id);
-            if (coreModepaie == null)
-            {
-                return NotFound();
-            }
-
-            return PartialView("Details", coreModepaie.Adapt<ModepaieDto>());
+            return PartialView("Details", Modepaie.Adapt<ModepaieDto>());
         }
 
         // GET: Modepaies/Create
@@ -64,15 +61,19 @@ namespace Meeting.web.Controllers.Settings
         [HttpPost]
         [ValidateAntiForgeryToken]
         [FormValidator]
-        public async Task<IActionResult> Create([Bind("ModepaieId,Libelle,IsCash")] ModepaieDto valueDto)
+        public async Task<IActionResult> Create(/*[Bind("ModepaieId,Libelle,IsCash")]*/ ModepaieDto valueDto)
         {
             if (ModelState.IsValid)
             {
-                CoreModepaie coreModepaie = valueDto.ToEntity();
-                _context.Add(coreModepaie);
-                await _context.SaveChangesAsync();
-                // return RedirectToAction(nameof(Index));
-                return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                CoreModepaie Modepaie = valueDto.ToEntity();
+
+                int SavedElts = await _repository.Add(Modepaie);
+
+                if (SavedElts > 0)
+                    // return RedirectToAction(nameof(Index));
+                    return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                else
+                    return FormResult.CreateErrorResult("Echec on saved entity.");
             }
             return PartialView("Create", valueDto);
         }
@@ -80,17 +81,13 @@ namespace Meeting.web.Controllers.Settings
         // GET: Modepaies/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.CoreModepaies == null)
+            var Modepaie = await _repository.GetDetails(id);
+            if (Modepaie == null)
             {
-                return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
 
-            var coreModepaie = await _context.CoreModepaies.FindAsync(id);
-            if (coreModepaie == null)
-            {
-                return NotFound();
-            }
-            return PartialView("Edit", coreModepaie.Adapt<ModepaieDto>());
+            return PartialView("Edit", Modepaie.Adapt<ModepaieDto>());
         }
 
         // POST: Modepaies/Edit/5
@@ -99,7 +96,7 @@ namespace Meeting.web.Controllers.Settings
         [HttpPost]
         [ValidateAntiForgeryToken]
         [FormValidator]
-        public async Task<IActionResult> Edit(int id, [Bind("ModepaieId,Libelle,IsCash")] ModepaieDto valueDto)
+        public async Task<IActionResult> Edit(int id, /*[Bind("ModepaieId,Libelle,IsCash")]*/ ModepaieDto valueDto)
         {
             if (id != valueDto.ModepaieId)
             {
@@ -108,25 +105,13 @@ namespace Meeting.web.Controllers.Settings
 
             if (ModelState.IsValid)
             {
-                CoreModepaie coreModepaie = valueDto.ToEntity();
-                try
-                {
-                    _context.Update(coreModepaie);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CoreModepaieExists(coreModepaie.ModepaieId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                //return RedirectToAction(nameof(Index));
-                return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                var Modepaie = valueDto.ToEntity();
+                int SavedElts = await _repository.Update(id, Modepaie);
+                if (SavedElts > 0)
+                    //return RedirectToAction(nameof(Index));
+                    return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                else
+                    return FormResult.CreateErrorResult("Echec on saved entity.");
             }
             return PartialView("Edit", valueDto);
         }
@@ -134,19 +119,13 @@ namespace Meeting.web.Controllers.Settings
         // GET: Modepaies/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.CoreModepaies == null)
+            var Modepaie = await _repository.GetDetails(id);
+            if (Modepaie == null)
             {
-                return NotFound();
+                // return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
-
-            var coreModepaie = await _context.CoreModepaies
-                .FirstOrDefaultAsync(m => m.ModepaieId == id);
-            if (coreModepaie == null)
-            {
-                return NotFound();
-            }
-
-            return PartialView(coreModepaie.Adapt<ModepaieDto>());
+            return PartialView(Modepaie.Adapt<ModepaieDto>());
         }
 
         // POST: Modepaies/Delete/5
@@ -155,25 +134,24 @@ namespace Meeting.web.Controllers.Settings
         [FormValidator]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.CoreModepaies == null)
+            var Modepaie = await _repository.GetDetails(id);
+            if (Modepaie == null)
             {
-                // return Problem("Entity set 'LabosContext.CoreModepaies'  is null.");
+                // return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
+            }
+
+            int SavedElts = await _repository.Delete(id);
+            if (SavedElts > 0)
+                //return RedirectToAction(nameof(Index));
+                return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+            else
                 return FormResult.CreateErrorResult(UtilityController.DeleteOperationFailed);
-            }
-            var coreModepaie = await _context.CoreModepaies.FindAsync(id);
-            if (coreModepaie != null)
-            {
-                _context.CoreModepaies.Remove(coreModepaie);
-            }
-            
-            await _context.SaveChangesAsync();
-            //return RedirectToAction(nameof(Index));
-            return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
         }
 
-        private bool CoreModepaieExists(int id)
-        {
-          return (_context.CoreModepaies?.Any(e => e.ModepaieId == id)).GetValueOrDefault();
-        }
+        //private bool CoreModepaieExists(int id)
+        //{
+        //  return (_context.CoreModepaies?.Any(e => e.ModepaieId == id)).GetValueOrDefault();
+        //}
     }
 }
