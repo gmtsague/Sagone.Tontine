@@ -9,19 +9,22 @@ using MeetingEntities.Models;
 using Mapster;
 using Meeting.Web.Dto;
 using FormHelper;
+using Meeting.Web.Repository;
 
 namespace Meeting.web.Controllers.Settings
 {
     public class BanksController : Controller
     {
-        private readonly LabosContext _context;
+        // private readonly LabosContext _context;
+        private readonly IBankRepository _repository;
 
         private readonly ILogger<BanksController> _logger;
 
-        public BanksController(ILogger<BanksController> logger, LabosContext context)
+        public BanksController(ILogger<BanksController> logger, IBankRepository repository)
         {
             _logger = logger;
-            _context = context;
+            //_context = context;
+            _repository = repository;
         }
 
         // GET: Banks
@@ -29,33 +32,26 @@ namespace Meeting.web.Controllers.Settings
         {
             ViewData["TitleObj"] = new FormTitle("Banque");
 
-            var labosContext = _context.CoreBanks.Include(c => c.Country);
-            return View(await labosContext.AsQueryable().ProjectToType<BankDto>().ToListAsync());
+            var resultItems = await _repository.GetAll();
+            return View(resultItems.Items.AsQueryable().ProjectToType<BankDto>().ToList());
         }
 
         // GET: Banks/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.CoreBanks == null)
+            var findObj = await _repository.GetDetails(id);
+            if (findObj == null)
             {
-                return NotFound();
+                //return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
-
-            var coreBank = await _context.CoreBanks
-                .Include(c => c.Country)
-                .FirstOrDefaultAsync(m => m.BankId == id);
-            if (coreBank == null)
-            {
-                return NotFound();
-            }
-
-            return PartialView("Details", coreBank.Adapt<BankDto>());
+            return PartialView("Details", findObj.Adapt<BankDto>());
         }
 
         // GET: Banks/Create
         public IActionResult Create()
         {
-            ViewData["CountryId"] = UtilityController.GetSelectListOfCountries(_context);
+            ViewData["CountryId"] = UtilityController.GetSelectListOfCountries(_repository.GetUnitOfWork());
             return PartialView("Create");
         }
 
@@ -65,35 +61,34 @@ namespace Meeting.web.Controllers.Settings
         [HttpPost]
         [ValidateAntiForgeryToken]
         [FormValidator]
-        public async Task<IActionResult> Create([Bind("BankId,CountryId,Libelle,Adresse,Email,Coderib")] BankDto valueDto)
+        public async Task<IActionResult> Create(/*[Bind("BankId,CountryId,Libelle,Adresse,Email,Coderib")]*/ BankDto valueDto)
         {
             if (ModelState.IsValid)
             {
-                CoreBank coreBank = valueDto.ToEntity();
-                _context.Add(coreBank);
-                await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
-                return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                CoreBank Bank = valueDto.ToEntity();
+
+                int SavedElts = await _repository.Add(Bank);
+
+                if (SavedElts > 0)
+                    // return RedirectToAction(nameof(Index));
+                    return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                else
+                    return FormResult.CreateErrorResult("Echec on saved entity.");
             }
-            ViewData["CountryId"] = UtilityController.GetSelectListOfCountries(_context, valueDto.CountryId ?? 0);
+            ViewData["CountryId"] = UtilityController.GetSelectListOfCountries(_repository.GetUnitOfWork(), valueDto.CountryId ?? 0);
             return PartialView("Create",valueDto);
         }
 
         // GET: Banks/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.CoreBanks == null)
+            var findObj = await _repository.GetDetails(id);
+            if (findObj == null)
             {
-                return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
-
-            var coreBank = await _context.CoreBanks.FindAsync(id);
-            if (coreBank == null)
-            {
-                return NotFound();
-            }
-            ViewData["CountryId"] = UtilityController.GetSelectListOfCountries(_context, coreBank.CountryId ?? 0);
-            return PartialView("Edit", coreBank.Adapt<BankDto>());
+            ViewData["CountryId"] = UtilityController.GetSelectListOfCountries(_repository.GetUnitOfWork(), findObj.CountryId ?? 0);
+            return PartialView("Edit", findObj.Adapt<BankDto>());
         }
 
         // POST: Banks/Edit/5
@@ -103,57 +98,39 @@ namespace Meeting.web.Controllers.Settings
         [HttpPost]
         [ValidateAntiForgeryToken]
         [FormValidator]
-        public async Task<IActionResult> Edit(int id, [Bind("BankId,CountryId,Libelle,Adresse,Email,Coderib")] BankDto valueDto)
+        public async Task<IActionResult> Edit(int id, /*[Bind("BankId,CountryId,Libelle,Adresse,Email,Coderib")]*/ BankDto valueDto)
         {
             if (id != valueDto.BankId)
             {
-                return NotFound();
+                //return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
 
             if (ModelState.IsValid)
             {
-                 var coreBank = valueDto.ToEntity();                
-                try
-                {
+                var Bank = valueDto.ToEntity();
+                int SavedElts = await _repository.Update(id, Bank);
+                if (SavedElts > 0)
+                    //return RedirectToAction(nameof(Index));
+                    return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                else
+                    return FormResult.CreateErrorResult("Echec on saved entity.");
 
-                    _context.Update(coreBank);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CoreBankExists(coreBank.BankId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                //return RedirectToAction(nameof(Index));
-                return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
             }
-            ViewData["CountryId"] = UtilityController.GetSelectListOfCountries(_context, valueDto.CountryId ?? 0);
+            ViewData["CountryId"] = UtilityController.GetSelectListOfCountries(_repository.GetUnitOfWork(), valueDto.CountryId ?? 0);
             return PartialView("Edit", valueDto);
         }
 
         // GET: Banks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.CoreBanks == null)
+            var findObj = await _repository.GetDetails(id);
+            if (findObj == null)
             {
-                return NotFound();
+                //return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
-
-            var coreBank = await _context.CoreBanks
-                .Include(c => c.Country)
-                .FirstOrDefaultAsync(m => m.BankId == id);
-            if (coreBank == null)
-            {
-                return NotFound();
-            }
-
-            return PartialView("Delete", coreBank.Adapt<BankDto>());
+            return PartialView("Delete", findObj.Adapt<BankDto>());
         }
 
         // POST: Banks/Delete/5
@@ -162,25 +139,24 @@ namespace Meeting.web.Controllers.Settings
         [FormValidator]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.CoreBanks == null)
+            var findObj = await _repository.GetDetails(id);
+            if (findObj == null)
             {
-                //return Problem("Entity set 'LabosContext.CoreBanks'  is null.");
+                // return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
+            }
+
+            int SavedElts = await _repository.Delete(id);
+            if (SavedElts > 0)
+                //return RedirectToAction(nameof(Index));
+                return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+            else
                 return FormResult.CreateErrorResult(UtilityController.DeleteOperationFailed);
-            }
-            var coreBank = await _context.CoreBanks.FindAsync(id);
-            if (coreBank != null)
-            {
-                _context.CoreBanks.Remove(coreBank);
-            }
-            
-            await _context.SaveChangesAsync();
-            //return RedirectToAction(nameof(Index));
-            return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
         }
 
-        private bool CoreBankExists(int id)
-        {
-          return (_context.CoreBanks?.Any(e => e.BankId == id)).GetValueOrDefault();
-        }
+        //private bool CoreBankExists(int id)
+        //{
+        //  return (_context.CoreBanks?.Any(e => e.BankId == id)).GetValueOrDefault();
+        //}
     }
 }
