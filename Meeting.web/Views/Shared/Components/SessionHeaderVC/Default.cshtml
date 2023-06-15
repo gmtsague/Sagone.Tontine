@@ -6,10 +6,10 @@
     //@model Meeting.web.Controllers.SessionEntitiesDto        
     <div class="d-flex justify-content-start">
         <div class="p-1">
-            <form asp-formhelper="true" asp-action="setdefault" asp-controller="Etablissements" asp-antiforgery="true" method="post">
+            <form asp-formhelper="true" asp-action="setcurrent" asp-controller="Etablissements" asp-antiforgery="true" method="post">
 
                 <label for="EtabId" class="control-label" title="Default Association">
-                    <select for="EtabId" id="EtabId" name="id" class="form-control form-select form-select-sm" asp-items="ViewBag.DefaultEtabId" onchange="$('#btnEtabSubmit').click(); return false;">
+                    <select for="EtabId" id="EtabId" name="id" class="form-control form-select form-select-sm" asp-items="ViewBag.DefaultEtabId" onchange="$('#btnEtabSubmit').click(); return true;">
                         <option value=""> Default Association </option>
                     </select>
                 </label>
@@ -17,10 +17,10 @@
             </form>
         </div>
         <div class="p-1">
-            <form asp-formhelper="true" asp-action="setdefault" asp-controller="Annees" asp-antiforgery="true" method="post">
+            <form asp-formhelper="true" asp-action="setcurrent" asp-controller="Annees" asp-antiforgery="true" method="post">
 
                 <label for="SelectedGlobalYear" class="control-label" title="Default Year">
-                    <select for="SelectedGlobalYear" id="SelectedGlobalYear" name="id" class="form-control form-select form-select-sm" asp-items="ViewBag.DefaultAnneeId" onchange="$('#btnYearSubmit').click(); return false;">
+                    <select for="SelectedGlobalYear" id="SelectedGlobalYear" name="id" class="form-control form-select form-select-sm" asp-items="ViewBag.DefaultAnneeId" onchange="$('#btnYearSubmit').click(); return true;">
                         <option value=""> Default Year </option>
                     </select>
                 </label>
