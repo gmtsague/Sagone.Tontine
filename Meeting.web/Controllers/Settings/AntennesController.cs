@@ -9,19 +9,23 @@ using MeetingEntities.Models;
 using Mapster;
 using Meeting.Web.Dto;
 using FormHelper;
+using Meeting.Web.Repository;
 
 namespace Meeting.web.Controllers.Settings
 {
     public class AntennesController : Controller
     {
-        private readonly LabosContext _context;
+        //private readonly LabosContext _context;
+
+        private readonly IAntenneRepository _repository;
 
         private readonly ILogger<AntennesController> _logger;
 
-        public AntennesController(ILogger<AntennesController> logger, LabosContext context)
+        public AntennesController(ILogger<AntennesController> logger, IAntenneRepository repository)
         {
             _logger = logger;
-            _context = context;
+            // _context = context;
+            _repository = repository;
         }
 
         // GET: Antennes
@@ -29,33 +33,30 @@ namespace Meeting.web.Controllers.Settings
         {
             ViewData["TitleObj"] = new FormTitle("Region");
 
-            var labosContext = _context.MeetAntennes.Include(m => m.Etab);
-            return View(await labosContext.OrderBy(m=>m.Libelle).AsQueryable().ProjectToType<AntenneDto>().ToListAsync());
+            var resultItems = await _repository.GetAll((int?)UtilityController.GetGlobalSelectedAssociation());
+            return View(resultItems.Items.AsQueryable().ProjectToType<AntenneDto>().ToList());
         }
 
+        private void SetViewDataElements(AntenneDto? valueDto)
+        {
+             ViewData["EtabId"] = UtilityController.GetSelectListOfEtablissements(_repository.GetUnitOfWork(), valueDto?.EtabId ?? 0);
+        }
         // GET: Antennes/Details/5
         public async Task<IActionResult> Details(int? IdEtab, int? IdAntenne)
         {
-            if (IdEtab == null || IdAntenne == null || _context.MeetAntennes == null)
+            var findObj = await _repository.GetDetails(IdEtab, IdAntenne);
+            if (findObj == null)
             {
-                return NotFound();
+                //return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
-
-            var meetAntenne = await _context.MeetAntennes
-                .Include(m => m.Etab)
-                .FirstOrDefaultAsync(m => m.EtabId == IdEtab && m.AntenneId == IdAntenne);
-            if (meetAntenne == null)
-            {
-                return NotFound();
-            }
-
-            return PartialView("Details",meetAntenne.Adapt<AntenneDto>());
+            return PartialView("Details", findObj.Adapt<AntenneDto>());
         }
 
         // GET: Antennes/Create
         public IActionResult CreateView()
         {
-            ViewData["EtabId"] = UtilityController.GetSelectListOfEtablissements(_context);
+            SetViewDataElements(null);
             return PartialView("CreateView");
         }
 
@@ -65,38 +66,38 @@ namespace Meeting.web.Controllers.Settings
         [HttpPost]
         [ValidateAntiForgeryToken]
         [FormValidator]
-        public async Task<IActionResult> Create([Bind("EtabId,AntenneId,Libelle,Creationdate")] AntenneDto valueDto)
+        public async Task<IActionResult> Create(/*[Bind("EtabId,AntenneId,Libelle,Creationdate")]*/ AntenneDto valueDto)
         {
             if (ModelState.IsValid)
             {
                 var meetAntenne = valueDto.ToEntity();
-                _context.Add(meetAntenne);
-                await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
-                return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                int SavedElts = await _repository.Add(meetAntenne);
+
+                if (SavedElts > 0)
+                    // return RedirectToAction(nameof(Index));
+                    return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                else
+                    return FormResult.CreateErrorResult("Echec on saved entity.");
             }
-            ViewData["EtabId"] = UtilityController.GetSelectListOfEtablissements(_context, valueDto.EtabId);
+
+            SetViewDataElements(valueDto);
             return PartialView("CreateView", valueDto);
-            //return PartialView(valueDto);
-            // return View(valueDto);
             //return FormResult..CreateErrorResultWithObject(valueDto);
         }
 
         // GET: Antennes/Edit/5
         public async Task<IActionResult> EditView(int? IdEtab, int? IdAntenne)
         {
-            if (IdEtab == null || IdAntenne == null || _context.MeetAntennes == null)
+            var findObj = await _repository.GetDetails(IdEtab, IdAntenne);
+            if (findObj == null)
             {
-                return NotFound();
+                //return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
 
-            var meetAntenne = await _context.MeetAntennes.FirstOrDefaultAsync(m=>m.EtabId == IdEtab && m.AntenneId == IdAntenne);
-            if (meetAntenne == null)
-            {
-                return NotFound();
-            }
-            ViewData["EtabId"] = UtilityController.GetSelectListOfEtablissements(_context, meetAntenne.EtabId);
-            return PartialView("EditView", meetAntenne.Adapt<AntenneDto>());
+            var valueDto = findObj.Adapt<AntenneDto>();
+            SetViewDataElements(valueDto);
+            return PartialView("EditView", valueDto);
         }
 
         // POST: Antennes/Edit/5
@@ -105,7 +106,7 @@ namespace Meeting.web.Controllers.Settings
         [HttpPost]
         [ValidateAntiForgeryToken]
         [FormValidator]
-        public async Task<IActionResult> Edit(int EtabId, int AntenneId, [Bind("EtabId,AntenneId,Libelle,Creationdate")] AntenneDto valueDto)
+        public async Task<IActionResult> Edit(int EtabId, int AntenneId, /*[Bind("EtabId,AntenneId,Libelle,Creationdate")]*/ AntenneDto valueDto)
         {
             if (AntenneId != valueDto.AntenneId && EtabId != valueDto.EtabId)
             {
@@ -115,46 +116,29 @@ namespace Meeting.web.Controllers.Settings
             if (ModelState.IsValid)
             {
                     var meetAntenne = valueDto.ToEntity();
-                try
-                {
-                    _context.Update(meetAntenne);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MeetAntenneExists(meetAntenne.EtabId, meetAntenne.AntenneId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                //return RedirectToAction(nameof(Index));
-                return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+
+                int SavedElts = await _repository.Update(meetAntenne.EtabId, meetAntenne.AntenneId, meetAntenne);
+                if (SavedElts > 0)
+                    //return RedirectToAction(nameof(Index));
+                    return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+                else
+                    return FormResult.CreateErrorResult("Echec on saved entity.");
             }
-            ViewData["EtabId"] = UtilityController.GetSelectListOfEtablissements(_context, valueDto.EtabId);
+
+            SetViewDataElements(valueDto);
             return PartialView("EditView", valueDto);
         }
 
         // GET: Antennes/Delete/5
         public async Task<IActionResult> DeleteView(int? IdEtab, int? IdAntenne)
         {
-            if (IdEtab == null || IdAntenne == null || _context.MeetAntennes == null)
+            var findObj = await _repository.GetDetails(IdEtab, IdAntenne);
+            if (findObj == null)
             {
-                return NotFound();
+                //return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
-
-            var meetAntenne = await _context.MeetAntennes
-                .Include(m => m.Etab)
-                .FirstOrDefaultAsync(m => m.EtabId == IdEtab && m.AntenneId == IdAntenne);
-            if (meetAntenne == null)
-            {
-                return NotFound();
-            }
-
-            return PartialView("DeleteView",meetAntenne.Adapt<AntenneDto>());
+            return PartialView("DeleteView",findObj.Adapt<AntenneDto>());
         }
 
         // POST: Antennes/Delete/5
@@ -163,25 +147,24 @@ namespace Meeting.web.Controllers.Settings
         [FormValidator]
         public async Task<IActionResult> DeleteConfirmed(int? EtabId, int? AntenneId)
         {
-            if (_context.MeetAntennes == null)
+            var findObj = await _repository.GetDetails(EtabId, AntenneId);
+            if (findObj == null)
             {
-                //return Problem("Entity set 'LabosContext.MeetAntennes'  is null.");
+                //return NotFound();
+                return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
+            }
+
+            int SavedElts = await _repository.Delete(EtabId, AntenneId);
+            if (SavedElts > 0)
+                //return RedirectToAction(nameof(Index));
+                return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
+            else
                 return FormResult.CreateErrorResult(UtilityController.DeleteOperationFailed);
-            }
-            var meetAntenne = await _context.MeetAntennes.FirstOrDefaultAsync(m => m.EtabId == EtabId && m.AntenneId == AntenneId);
-            if (meetAntenne != null)
-            {
-                _context.MeetAntennes.Remove(meetAntenne);
-            }
-            
-            await _context.SaveChangesAsync();
-            //return RedirectToAction(nameof(Index));
-            return FormResult.CreateSuccessResult(UtilityController.SuccessOperation, Url.Action(nameof(Index)));
         }
 
-        private bool MeetAntenneExists(int IdEtab, int IdAntenne)
-        {
-          return (_context.MeetAntennes?.Any(e => e.EtabId == IdEtab && e.AntenneId == IdAntenne)).GetValueOrDefault();
-        }
+        //private bool MeetAntenneExists(int IdEtab, int IdAntenne)
+        //{
+        //  return (_context.MeetAntennes?.Any(e => e.EtabId == IdEtab && e.AntenneId == IdAntenne)).GetValueOrDefault();
+        //}
     }
 }
