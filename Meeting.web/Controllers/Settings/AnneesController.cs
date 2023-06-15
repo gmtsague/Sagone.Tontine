@@ -37,28 +37,15 @@ namespace Meeting.web.Controllers.Settings
 
             TypeAdapterConfig<CoreAnnee, AnneeDto>.NewConfig().MaxDepth(3);
 
-            // var labosContext = _context.CoreAnnees.Include(c => c.Bureau).Include(c => c.Frequence).Include(c => c.PreviousYear);
-            // var resultItems = await labosContext.AsNoTracking().ToListAsync();
-
             var resultItems = await _repository.GetAll();
              return View(resultItems.Items.AsQueryable().ProjectToType<AnneeDto>().ToList());
         }
 
         private void SetViewDataElements(AnneeDto? valueDto)
         {
-            //if (valueDto == null)
-            //{
-            //    ViewData["BureauId"] = UtilityController.GetSelectListOfBureaux(_context);
-            //    ViewData["FrequenceId"] = UtilityController.GetSelectListOfFrequenceDivisions(_context);
-            //    ViewData["PreviousYearId"] = UtilityController.GetSelectListOfAnnees(_repository.GetUnitOfWork());
-            //}
-            //else
-            {
-                ViewData["BureauId"] = UtilityController.GetSelectListOfBureaux(_repository.GetUnitOfWork(), valueDto?.BureauId ?? 0);
-                ViewData["FrequenceId"] = UtilityController.GetSelectListOfFrequenceDivisions(_repository.GetUnitOfWork(), valueDto?.FrequenceId ?? 0);
-                ViewData["PreviousYearId"] = UtilityController.GetSelectListOfAnnees(_repository.GetUnitOfWork(), valueDto?.PreviousYearId ?? 0, valueDto?.AnneeId ?? 0);
-
-            }
+            ViewData["BureauId"] = UtilityController.GetSelectListOfBureaux(_repository.GetUnitOfWork(), valueDto?.BureauId ?? 0);
+            ViewData["FrequenceId"] = UtilityController.GetSelectListOfFrequenceDivisions(_repository.GetUnitOfWork(), valueDto?.FrequenceId ?? 0);
+            ViewData["PreviousYearId"] = UtilityController.GetSelectListOfAnnees(_repository.GetUnitOfWork(), valueDto?.PreviousYearId ?? 0, valueDto?.AnneeId ?? 0);
         }
 
         // GET: Annees/Details/5
@@ -75,14 +62,6 @@ namespace Meeting.web.Controllers.Settings
         // GET: Annees/Create
         public IActionResult Create()
         {
-            //ViewData["BureauId"] = UtilityController.GetSelectListOfBureaux(_context);
-            //ViewData["FrequenceId"] = UtilityController.GetSelectListOfFrequenceDivisions(_context);
-            //ViewData["PreviousYearId"] = UtilityController.GetSelectListOfAnnees(_context);
-
-            //ViewData["BureauId"] = UtilityController.GetSelectListOfBureaux(_repository.GetUnitOfWork());
-            //ViewData["FrequenceId"] = UtilityController.GetSelectListOfFrequenceDivisions(_repository.GetUnitOfWork());
-            //ViewData["PreviousYearId"] = UtilityController.GetSelectListOfAnnees(_repository.GetUnitOfWork(), 0, true);
-
             SetViewDataElements(null);
             return PartialView();
         }
@@ -106,13 +85,6 @@ namespace Meeting.web.Controllers.Settings
                     return FormResult.CreateErrorResult("Echec on saved entity.");
             }
 
-            //ViewData["BureauId"] = UtilityController.GetSelectListOfBureaux(_context, valueDto.BureauId??0);
-            //ViewData["FrequenceId"] = UtilityController.GetSelectListOfFrequenceDivisions(_context, valueDto.FrequenceId);
-            //ViewData["PreviousYearId"] = UtilityController.GetSelectListOfAnnees(_context, valueDto.PreviousYearId ?? 0);
-
-            //ViewData["BureauId"] = UtilityController.GetSelectListOfBureaux(_context, valueDto.BureauId??0);
-            //ViewData["FrequenceId"] = UtilityController.GetSelectListOfFrequenceDivisions(_context, valueDto.FrequenceId);
-            //ViewData["PreviousYearId"] = UtilityController.GetSelectListOfAnnees(_repository.GetUnitOfWork(), valueDto.PreviousYearId ?? 0, true);           
             SetViewDataElements(valueDto);
             return PartialView("Create",valueDto);
         }
@@ -125,9 +97,7 @@ namespace Meeting.web.Controllers.Settings
             {
                 return FormResult.CreateErrorResult(UtilityController.RequestedEntityNotFound);
             }
-            //ViewData["BureauId"] = UtilityController.GetSelectListOfBureaux(_context, coreAnnee.BureauId ?? 0);
-            //ViewData["FrequenceId"] = UtilityController.GetSelectListOfFrequenceDivisions(_context, coreAnnee.FrequenceId);
-            //ViewData["PreviousYearId"] = UtilityController.GetSelectListOfAnnees(_context, coreAnnee.PreviousYearId ?? 0); 
+
             var valueDto = AnneeDto.FromEntity(coreAnnee);
             SetViewDataElements(valueDto);
             return PartialView("Edit", valueDto);
@@ -157,10 +127,6 @@ namespace Meeting.web.Controllers.Settings
                 else
                     return FormResult.CreateErrorResult("Echec on saved entity.");
             }
-
-            //ViewData["BureauId"] = UtilityController.GetSelectListOfBureaux(_context, valueDto.BureauId ?? 0);
-            //ViewData["FrequenceId"] = UtilityController.GetSelectListOfFrequenceDivisions(_context, valueDto.FrequenceId);
-            //ViewData["PreviousYearId"] = UtilityController.GetSelectListOfAnnees(_context, valueDto.PreviousYearId ?? 0);
 
             SetViewDataElements(valueDto);
             return PartialView("Edit", valueDto);
@@ -251,58 +217,6 @@ namespace Meeting.web.Controllers.Settings
             TempData["SelectedYear"] = UtilityController.SessionEntities.GlobalSelectedYear.AnneeId;
             return FormResult.CreateSuccessResult(UtilityController.SuccessOperation);
         }
-
-        //private async Task BuildMonthsAsync(CoreAnnee coreAnnee)
-        //{
-        //    if (coreAnnee != null)
-        //    {
-        //        string ErrorMessage = String.Format("Error in the defined End date ({0}) compared to effective End date {1}, considering the number of months {2}.", coreAnnee.Datefin, coreAnnee.Datedebut.AddMonths(coreAnnee.Nbdivision), coreAnnee.Nbdivision);
-
-        //        var ExistantDivisions = await _context.CoreSubdivisions.Where(m => m.AnneeId == coreAnnee.AnneeId).ToListAsync();
-
-        //        if ((coreAnnee.Nbdivision == 0) || (coreAnnee.Nbdivision == ExistantDivisions?.Count && coreAnnee.Nbdivision > 0))
-        //            return;
-
-        //        if (coreAnnee?.Datefin.Month != coreAnnee?.Datedebut.AddMonths(coreAnnee.Nbdivision - 1).Month)
-        //            throw new Exception(ErrorMessage);
-        //        //return FormResult.CreateErrorResult(ErrorMessage);
-
-        //        var startDate = coreAnnee?.Datedebut;
-        //        string MonthName = string.Empty;
-
-        //        if (coreAnnee?.Nbdivision < ExistantDivisions?.Count)
-        //        {
-        //           // for(int i = ((int)(ExistantDivisions?.Count-1)); i >= coreAnnee?.Nbdivision; i--)
-        //            {
-        //                _context.CoreSubdivisions.RemoveRange(ExistantDivisions.GetRange((int)(coreAnnee?.Nbdivision), (int)(ExistantDivisions?.Count - coreAnnee?.Nbdivision)));
-        //            }
-        //        }
-
-        //        for (int i = 0; i < coreAnnee?.Nbdivision; i++)
-        //        {
-        //            startDate = coreAnnee.Datedebut.AddMonths(i);
-        //            MonthName = string.Format("{0:MMMM}-{1}", startDate, startDate.Value.Year);
-
-        //            if (i < ExistantDivisions?.Count)
-        //            {
-        //                var periode = ExistantDivisions.ElementAt(i);
-        //                periode.Libelle = MonthName;
-        //                periode.Numordre = i + 1;
-        //                periode.MonthDate = startDate.Value;
-        //                coreAnnee.CoreSubdivisions.Add(periode);
-        //            }
-        //            else 
-        //                coreAnnee.CoreSubdivisions.Add(new CoreSubdivision
-        //                {
-        //                    AnneeId = coreAnnee.AnneeId,
-        //                    Numordre = i + 1,
-        //                    Libelle = MonthName,
-        //                    MonthDate = startDate.Value
-        //                });
-        //        }
-
-        //    }
-        //}
 
         //private bool CoreAnneeExists(int id)
         //{
